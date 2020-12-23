@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Medic.iml" filepath="$PROJECT_DIR$/.idea/modules/Medic.iml" group="Medic" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Medic/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pickerview/pickerview.iml" filepath="$PROJECT_DIR$/.idea/modules/pickerview/pickerview.iml" group="Medic/pickerview" />
+    </modules>
+  </component>
+</project>
