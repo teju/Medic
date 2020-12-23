@@ -50,10 +50,12 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="wrap_content">
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:src="@drawable/camera_plus"
+                            android:id="@+id/reg_proof"
+                            android:scaleType="fitXY"
                             android:layout_gravity="center_horizontal"
-                            android:layout_height="wrap_content">
+                            android:layout_height="100dp">
 
                         </ImageView>
                         <TextView
@@ -96,10 +98,12 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="wrap_content">
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:src="@drawable/camera_plus"
+                            android:id="@+id/degree_proof"
+                            android:scaleType="fitXY"
                             android:layout_gravity="center_horizontal"
-                            android:layout_height="wrap_content">
+                            android:layout_height="100dp">
 
                         </ImageView>
                         <TextView
@@ -142,10 +146,12 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="wrap_content">
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:src="@drawable/camera_plus"
+                            android:id="@+id/id_proof"
+                            android:scaleType="fitXY"
                             android:layout_gravity="center_horizontal"
-                            android:layout_height="wrap_content">
+                            android:layout_height="100dp">
 
                         </ImageView>
                         <TextView

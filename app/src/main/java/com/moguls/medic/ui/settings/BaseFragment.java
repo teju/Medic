@@ -3,6 +3,7 @@ package com.moguls.medic.ui.settings;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
@@ -77,6 +79,16 @@ public class BaseFragment extends GenericFragment {
 
         }
     });
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        List<String> permissions = new ArrayList<String>();
+        permissions.add(Manifest.permission.CAMERA);
+        permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        checkPermissions(permissions, permissionListener);
+    }
 
     public void checkPermissions(List<String> permissionsThatNeedTobeCheck, PermissionListener permissionListener) {
         this.permissionsThatNeedTobeCheck = permissionsThatNeedTobeCheck;
