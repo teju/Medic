@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llRoot"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/light_gray"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="60dp"
+            android:textSize="@dimen/text_med"
+            android:id="@+id/weekday_txt"
+            android:fontFamily="@font/opensansregular"
+            android:textColor="@color/black"
+            android:text="Sun"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="10dp"
+            android:layout_height="match_parent">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/llmorning"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_med"
+                    android:fontFamily="@font/opensansregular"
+                    android:textColor="@color/black"
+                    android:text="Morning"
+                    android:layout_height="match_parent">
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_small"
+                    android:fontFamily="@font/opensansregular"
+                    android:textColor="@color/black"
+                    android:text="8.30 - 12.00"
+                    android:layout_height="wrap_content">
+                </TextView>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:id="@+id/llevening"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_med"
+                    android:fontFamily="@font/opensansregular"
+                    android:textColor="@color/black"
+                    android:text="Evening"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_small"
+                    android:fontFamily="@font/opensansregular"
+                    android:textColor="@color/red"
+                    android:text="Closed"
+                    android:layout_height="wrap_content">
+                </TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:paddingTop="10dp"
+                android:id="@+id/llNight"
+                android:paddingBottom="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_med"
+                    android:fontFamily="@font/opensansregular"
+                    android:textColor="@color/black"
+                    android:text="Night"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_small"
+                    android:fontFamily="@font/opensansregular"
+                    android:textColor="@color/orange"
+                    android:text="+ Add shift"
+                    android:layout_height="wrap_content">
+                </TextView>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/light_gray"
+        android:layout_height="0.5dp"></View>
+
+</LinearLayout>

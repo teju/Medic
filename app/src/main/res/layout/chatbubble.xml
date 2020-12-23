@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bubble_layout_parent"
+    android:layout_width="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@color/white"
+    android:layout_height="wrap_content" >
+    <LinearLayout
+        android:id="@+id/sender_msgs"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@drawable/sender_chat_bubble"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/sender_message_text"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_med"
+            android:fontFamily="@font/opensansregular"
+            android:layout_height="wrap_content"
+            android:maxEms="12"
+            android:layout_gravity="start"
+            android:visibility="visible"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="25dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/white" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/sender_msgs_date"
+                android:paddingLeft="5dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="5dp"
+                android:textSize="@dimen/text_small"
+                android:textColor="@color/white"
+                android:fontFamily="@font/opensansregular"
+                android:layout_height="wrap_content">
+
+            </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/my_msgs"
+        android:layout_width="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/receiver_chat_bubble"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/my_msgs_message_text"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_med"
+            android:fontFamily="@font/opensansregular"
+            android:layout_height="wrap_content"
+            android:maxEms="12"
+            android:visibility="visible"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:layout_gravity="end"
+            android:paddingBottom="5dp"
+            android:paddingLeft="25dp"
+            android:textColor="@color/white" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:paddingRight="5dp"
+            android:id="@+id/my_msg_date"
+            android:layout_gravity="right"
+            android:paddingBottom="5dp"
+            android:textSize="@dimen/text_small"
+            android:paddingLeft="25dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/opensansregular"
+            android:layout_height="wrap_content">
+
+        </TextView>
+    </LinearLayout>
+
+</RelativeLayout>

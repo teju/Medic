@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <include layout="@layout/header"></include>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:padding="15dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:src="@drawable/hospital_img"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="3dp"
+                    android:layout_height="80dp">
+                </ImageView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_med"
+                        android:id="@+id/edt_one"
+                        android:fontFamily="@font/opensansregular"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:layout_marginLeft="10dp"
+                        android:hint="First Name"
+                        android:layout_height="wrap_content">
+                    </EditText>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:src="@drawable/navigation"
+                            android:rotation="45"
+                            android:tint="@color/sky_blue"
+                            android:layout_marginTop="6dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_height="wrap_content">
+
+                        </ImageView>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:textSize="@dimen/text_med"
+                            android:fontFamily="@font/opensansregular"
+                            android:imeOptions="actionNext"
+                            android:hint="Last Name"
+                            android:singleLine="true"
+                            android:id="@+id/edt_two"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="wrap_content">
+                        </EditText>
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/grey"
+            android:layout_height="0.5dp"></View>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@color/light_gray"
+            android:padding="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="@dimen/text_small"
+                android:fontFamily="@font/opensansregular"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:text="Create time slots as per your availability"
+                android:layout_height="wrap_content">
+            </TextView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/text_small"
+                    android:fontFamily="@font/opensansregular"
+                    android:text="Duration"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/text_small"
+                    android:fontFamily="@font/opensansregular"
+                    android:text="15 min"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/sky_blue"
+                    android:layout_height="wrap_content">
+                </TextView>
+
+            </LinearLayout>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/grey"
+            android:layout_height="0.5dp"></View>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:id="@+id/recyclerView"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+</LinearLayout>

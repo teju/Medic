@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/light_white"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:layout_height="wrap_content">
+            <include layout="@layout/header"></include>
+            <ImageView
+                android:layout_width="match_parent"
+                android:src="@drawable/hospital_img_new"
+                android:scaleType="fitXY"
+                android:layout_height="150dp">
+            </ImageView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_med"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/opensansregular"
+                    android:text="Today"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_small"
+                    android:textColor="@color/red"
+                    android:fontFamily="@font/opensansregular"
+                    android:text="Closed"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/recyclerView"
+                    android:layout_height="wrap_content">
+
+                </androidx.recyclerview.widget.RecyclerView>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="@dimen/text_small"
+                        android:textColor="@color/sky_blue"
+                        android:fontFamily="@font/opensansregular"
+                        android:text="Edit slots"
+                        android:layout_height="wrap_content">
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="@dimen/text_small"
+                        android:textColor="@color/sky_blue"
+                        android:fontFamily="@font/opensansregular"
+                        android:text="View full work days"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="wrap_content">
+                    </TextView>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/light_gray"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="0.5dp">
+                </View>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_med"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/opensansregular"
+                    android:text="A5, Block 12, JP Nagar\nBangalore 120009"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_small"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/opensansregular"
+                    android:text="23 km"
+                    android:drawableLeft="@drawable/map_marker"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content">
+                </TextView>
+            </LinearLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:text="Leave Hospital"
+                android:textColor="@color/red"
+                android:background="@color/light_white"
+                android:layout_height="wrap_content">
+
+            </Button>
+
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

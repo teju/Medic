@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <include layout="@layout/header"></include>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="15dp"
+        android:elevation="5dp"
+        app:cardCornerRadius="10dp"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:fontFamily="@font/opensansregular"
+                            android:textSize="@dimen/text_med"
+                            android:textColor="@color/black"
+                            android:text="Physical Visit"
+                            android:layout_height="wrap_content">
+                        </TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:fontFamily="@font/opensansregular"
+                            android:textSize="@dimen/text_small"
+                            android:text="Slots duration 15 mins"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:fontFamily="@font/opensansregular"
+                            android:textSize="@dimen/text_med"
+                            android:textColor="@color/black"
+                            android:text="Rs 200"
+                            android:layout_gravity="end"
+                            android:layout_height="wrap_content">
+                        </TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:fontFamily="@font/opensansregular"
+                            android:textSize="@dimen/text_small"
+                            android:textAlignment="textEnd"
+                            android:text="per/booking"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/opensansregular"
+                        android:textSize="@dimen/text_med"
+                        android:textColor="@color/black"
+                        android:text="Fortis Hospital"
+                        android:layout_height="wrap_content">
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/opensansregular"
+                        android:textSize="@dimen/text_small"
+                        android:text="JP Nagar , Bangalore"
+                        android:layout_height="wrap_content">
+                    </TextView>
+
+                </LinearLayout>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:background="@color/light_gray"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/opensansregular"
+                        android:textSize="@dimen/text_med"
+                        android:textColor="@color/black"
+                        android:text="Fortis Hospital"
+                        android:layout_height="wrap_content">
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/opensansregular"
+                        android:textSize="@dimen/text_small"
+                        android:text="JP Nagar , Bangalore"
+                        android:layout_height="wrap_content">
+                    </TextView>
+                </LinearLayout>
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:checked="false"
+                    android:layout_height="wrap_content">
+
+                </Switch>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/plain_plus"/>
+
+</FrameLayout>

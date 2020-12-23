@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="iapps">
+        <attr name="loadingMessageColor" format="color"/>
+        <attr name="loadingErrorTitleColor" format="color"/>
+        <attr name="loadingErrorMessageColor" format="color"/>
+        <attr name="loadingMessage" format="string"/>
+        <attr name="loadingErrorNetworkTitle" format="string"/>
+        <attr name="loadingErrorNoInternetMessage" format="string"/>
+        <attr name="loadingErrorUnknownResponseMessage" format="string"/>
+        <attr name="loadingRetryButtonText" format="string"/>
+        <attr name="loadingGifNila" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="wheelview">
+        <attr name="gravity">
+            <enum name="center" value="17"/>
+            <enum name="left" value="3"/>
+            <enum name="right" value="5"/>
+        </attr>
+        <attr name="textSize" format="dimension"/>
+        <attr name="textColorOut" format="color"/>
+        <attr name="textColorCenter" format="color"/>
+        <attr name="dividerColor" format="color"/>
+    </declare-styleable>
+    <declare-styleable name="CellImageView">
+        <attr name="meow_imageview_useColor" format="boolean" />
+        <attr name="meow_imageview_isBitmap" format="boolean" />
+        <attr name="meow_imageview_resource" format="reference" />
+        <attr name="meow_imageview_color" format="color" />
+        <attr name="meow_imageview_size" format="dimension" />
+        <attr name="meow_imageview_isAction" format="boolean" />
+        <attr name="meow_imageview_actionBackgroundAlpha" format="boolean" />
+        <attr name="meow_imageview_changeSize" format="boolean" />
+        <attr name="meow_imageview_fitImage" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="MeowBottomNavigation">
+        <attr name="mbn_defaultIconColor" format="color" />
+        <attr name="mbn_selectedIconColor" format="color" />
+        <attr name="mbn_backgroundBottomColor" format="color" />
+        <attr name="mbn_circleColor" format="color" />
+        <attr name="mbn_countTextColor" format="color" />
+        <attr name="mbn_countBackgroundColor" format="color" />
+        <attr name="mbn_countTypeface" format="string" />
+        <attr name="mbn_rippleColor" format="color" />
+        <attr name="mbn_shadowColor" format="color" />
+    </declare-styleable>
+
+</resources>

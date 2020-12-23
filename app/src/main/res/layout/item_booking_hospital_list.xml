@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:id="@+id/llRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/rlRoot"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:src="@drawable/white_balance_sunny"
+                android:layout_height="wrap_content">
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/hospital_name"
+                android:textColor="@color/black"
+                android:fontFamily="@font/opensansregular"
+                android:layout_gravity="center"
+                android:textSize="@dimen/text_med"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/opensansregular"
+                android:textSize="@dimen/text_small"
+                android:id="@+id/timing"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content">
+            </TextView>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@drawable/navigation"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:rotation="30"
+            app:tint="@color/colorAccent"
+            android:layout_height="wrap_content">
+        </ImageView>
+
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:divider="@color/light_gray"
+        android:dividerHeight="0.5dp"
+        android:groupIndicator="@null"
+        android:visibility="visible"
+        android:id="@+id/recyclerView"
+        android:layout_marginTop="10dp"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
+
