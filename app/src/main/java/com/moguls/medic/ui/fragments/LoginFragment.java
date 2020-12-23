@@ -162,8 +162,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             @Override
             public void onChanged(Integer integer) {
                 SharedPreference.setBoolean(getActivity(),SharedPreference.isLoggedIn,true);
-                SharedPreference.setBoolean(getActivity(),SharedPreference.isDOCTOR,Boolean.valueOf(postVerifyOtpViewModel.verifyOtp.getResult().getIsDoctor()));
-                //SharedPreference.setBoolean(getActivity(),SharedPreference.isDOCTOR,true);
+                //SharedPreference.setBoolean(getActivity(),SharedPreference.isDOCTOR,Boolean.valueOf(postVerifyOtpViewModel.verifyOtp.getResult().getIsDoctor()));
+                SharedPreference.setBoolean(getActivity(),SharedPreference.isDOCTOR,true);
                 SharedPreference.setString(getActivity(),SharedPreference.AccountID,postVerifyOtpViewModel.verifyOtp.getResult().getID());
                 SharedPreference.setString(getActivity(), BaseKeys.Authorization,postVerifyOtpViewModel.verifyOtp.getResult().getToken());
                 home().setFragment(new MainTabFragment());

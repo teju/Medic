@@ -3,6 +3,7 @@ package com.moguls.medic.etc;
 public class APIs {
     public static String BaseUrl = "http://207.180.231.136:5060/api/";
     public static String SecuredBaseUrl = "http://207.180.231.136:5060/secured-api/";
+    public static String ChatUrl = "http://207.180.231.136:32802/secured-hub/";
     public static String mobility = "mobility";
     public static String register = BaseUrl + mobility +"/register-user";
     public static String sendOtp = BaseUrl + mobility +"/send-otp";

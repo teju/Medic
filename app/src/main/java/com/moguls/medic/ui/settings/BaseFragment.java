@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -31,6 +32,7 @@ import com.moguls.medic.ui.dialog.OtpDialogFragment;
 import com.moguls.medic.model.BookingData;
 import com.moguls.medic.model.getrelations.Result;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -259,5 +261,13 @@ public class BaseFragment extends GenericFragment {
                 }));
 
     }
-
+    public static void hideSpinnerDropDown(Spinner spinner) {
+        try {
+            Method method = Spinner.class.getDeclaredMethod("onDetachedFromWindow");
+            method.setAccessible(true);
+            method.invoke(spinner);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

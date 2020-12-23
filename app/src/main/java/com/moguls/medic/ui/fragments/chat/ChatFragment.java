@@ -120,29 +120,29 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
     }
 
     public void chatSettings() {
-        try {
-
-            hubConnection = HubConnectionBuilder.create("http://207.180.231.136:5060/secured-hub/chathub")
-                    .withAccessTokenProvider(Single.defer(() -> {
-                        // Your logic here.
-                        return Single.just("Bearer "
-                                + SharedPreference.getString(getActivity(), BaseKeys.Authorization));
-                    })).build();
-            hubConnection.on("ReceiveMessage", (message) -> {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                });
-            }, String.class);
-            new HubConnectionTask().execute(hubConnection);
-        } catch (Exception e){
-
-        }
-        /*Intent intent = new Intent();
+//        try {
+//
+//            hubConnection = HubConnectionBuilder.create(APIs.ChatUrl)
+//                    .withAccessTokenProvider(Single.defer(() -> {
+//                        // Your logic here.
+//                        return Single.just("Bearer "
+//                                + SharedPreference.getString(getActivity(), BaseKeys.Authorization));
+//                    })).build();
+//            hubConnection.on("ReceiveMessage", (message) -> {
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                    }
+//                });
+//            }, String.class);
+//            new HubConnectionTask().execute(hubConnection);
+//        } catch (Exception e){
+//
+//        }
+        Intent intent = new Intent();
         intent.setClass(getActivity(), SignalRService.class);
-        getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);*/
+        getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
     private void initAdapter() {
         recyclerView.setHasFixedSize(true);
@@ -247,10 +247,10 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
                 // However, if this call were something that might hang, then this request should
                 // occur in a separate thread to avoid slowing down the activity performance.
                     if(!message.getText().toString().isEmpty()){
-                        hubConnection.send("Send", message);
+                      //  hubConnection.send("Send", message);
 
                         // postSendMessageViewModel.loadData(ToUserID,message.getText().toString(),new JSONObject());
-                        //mService.sendMessage(message.getText().toString());
+                        mService.sendMessage(message.getText().toString());
 
                     }
             }
@@ -274,7 +274,6 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
             mBound = false;
         }
     };
-}
     class HubConnectionTask extends AsyncTask<HubConnection, Void, Void> {
 
         @Override
@@ -288,4 +287,5 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
             hubConnection.start().blockingAwait();
             return null;
         }
+    }
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:padding="15dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/opensansregular"
+                android:textSize="@dimen/text_med"
+                android:textColor="@color/black"
+                android:text="Fortis Hospital"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/opensansregular"
+                android:textSize="@dimen/text_small"
+                android:text="JP Nagar,Bangalore,581123"
+                android:layout_height="wrap_content">
+            </TextView>
+        </LinearLayout>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:id="@+id/radio_button"
+            android:layout_height="wrap_content">
+        </RadioButton>
+    </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/light_gray"
+        android:layout_height="0.5dp">
+    </View>
+
+</LinearLayout>

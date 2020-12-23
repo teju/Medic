@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.microsoft.signalr.HubConnectionBuilder;
+import com.moguls.medic.etc.APIs;
 import com.moguls.medic.etc.BaseKeys;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.SharedPreference;
@@ -93,7 +94,7 @@ public class SignalRService extends Service {
             }
         };
 
-        String serverUrl = "http://207.180.231.136:5060/secured-hub/chathub";
+        String serverUrl = APIs.ChatUrl;
         mHubConnection = new HubConnection(serverUrl);
         mHubConnection.setCredentials(credentials);
         String SERVER_HUB_CHAT = "chathub";

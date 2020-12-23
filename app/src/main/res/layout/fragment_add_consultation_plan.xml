@@ -18,13 +18,23 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:background="@color/white"
-        android:padding="15dp"
+        android:padding="10dp"
+        android:visibility="visible"
+        android:id="@+id/rl_visit_type"
         android:layout_height="wrap_content">
+        <Spinner
+            android:layout_width="match_parent"
+            android:id="@+id/sp_visit_type"
+            android:background="@drawable/spinner_background"
+            android:layout_height="wrap_content">
+        </Spinner>
         <TextView
             android:layout_width="wrap_content"
             android:fontFamily="@font/opensansregular"
             android:textSize="@dimen/text_med"
             android:textColor="@color/black"
+            android:id="@+id/tv_visitType"
+            android:visibility="gone"
             android:layout_centerVertical="true"
             android:text="Physical Visit"
             android:layout_height="wrap_content">
@@ -32,6 +42,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:src="@drawable/chevron_down"
+            android:visibility="gone"
             android:layout_alignParentRight="true"
             android:layout_height="wrap_content">
         </ImageView>
@@ -45,22 +56,39 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:background="@color/white"
-        android:padding="15dp"
         android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/opensansregular"
-            android:textSize="@dimen/text_med"
-            android:text="Select Hospital/Clinic"
-            android:layout_centerVertical="true"
+        <Spinner
+            android:layout_width="match_parent"
+            android:id="@+id/sp_hospital"
+            android:visibility="gone"
+            android:background="@null"
+            android:spinnerMode="dialog"
+            android:gravity="center"
             android:layout_height="wrap_content">
-        </TextView>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:src="@drawable/chevron_down"
-            android:layout_alignParentRight="true"
+        </Spinner>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:padding="15dp"
+            android:id="@+id/rl_doctor_list"
             android:layout_height="wrap_content">
-        </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/opensansregular"
+                android:textSize="@dimen/text_med"
+                android:visibility="visible"
+                android:id="@+id/hospital_name"
+                android:text="Select Hospital/Clinic"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content">
+            </TextView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:src="@drawable/chevron_down"
+                android:visibility="visible"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content">
+            </ImageView>
+        </RelativeLayout>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
@@ -164,6 +192,7 @@
         android:layout_margin="15dp"
         android:backgroundTint="@color/colorAccent"
         android:text="Create Plan"
+        android:id="@+id/create_plan"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/white"
         android:background="@drawable/button_bg_selector"
