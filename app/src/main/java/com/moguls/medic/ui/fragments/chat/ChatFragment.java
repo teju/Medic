@@ -28,6 +28,7 @@ import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.HubConnectionBuilder;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.APIs;
 import com.moguls.medic.etc.BaseKeys;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.etc.SharedPreference;
@@ -120,26 +121,26 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
     }
 
     public void chatSettings() {
-//        try {
-//
-//            hubConnection = HubConnectionBuilder.create(APIs.ChatUrl)
-//                    .withAccessTokenProvider(Single.defer(() -> {
-//                        // Your logic here.
-//                        return Single.just("Bearer "
-//                                + SharedPreference.getString(getActivity(), BaseKeys.Authorization));
-//                    })).build();
-//            hubConnection.on("ReceiveMessage", (message) -> {
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                    }
-//                });
-//            }, String.class);
-//            new HubConnectionTask().execute(hubConnection);
-//        } catch (Exception e){
-//
-//        }
+       /* try {
+
+            hubConnection = HubConnectionBuilder.create(APIs.ChatUrl)
+                    .withAccessTokenProvider(Single.defer(() -> {
+                        // Your logic here.
+                        return Single.just("Bearer "
+                                + SharedPreference.getString(getActivity(), BaseKeys.Authorization));
+                    })).build();
+            hubConnection.on("ReceiveMessage", (message) -> {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }, String.class);
+            new HubConnectionTask().execute(hubConnection);
+        } catch (Exception e){
+
+        }*/
         Intent intent = new Intent();
         intent.setClass(getActivity(), SignalRService.class);
         getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
@@ -243,13 +244,9 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.send_msg :
                 if (mBound) {
-                // Call a method from the SignalRService.
-                // However, if this call were something that might hang, then this request should
-                // occur in a separate thread to avoid slowing down the activity performance.
                     if(!message.getText().toString().isEmpty()){
                       //  hubConnection.send("Send", message);
-
-                        // postSendMessageViewModel.loadData(ToUserID,message.getText().toString(),new JSONObject());
+                        postSendMessageViewModel.loadData(ToUserID,message.getText().toString(),new JSONObject());
                         mService.sendMessage(message.getText().toString());
 
                     }
@@ -261,9 +258,7 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
     private final ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            // We've bound to SignalRService, cast the IBinder and get SignalRService instance
+        public void onServiceConnected(ComponentName className, IBinder service) {
             SignalRService.LocalBinder binder = (SignalRService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
