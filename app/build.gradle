@@ -1,6 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/Users/tejaswinin/Documents/Freelancing_Basavaraj/Keystore/medic')
+            keyAlias 'BookMyMedic'
+            storePassword 'BookMyMedic'
+            keyPassword 'BookMyMedic'
+        }
+        release {
+            storeFile file('/Users/tejaswinin/Documents/Freelancing_Basavaraj/Keystore/medic')
+            storePassword 'BookMyMedic'
+            keyAlias 'BookMyMedic'
+            keyPassword 'BookMyMedic'
+        }
+    }
     compileSdkVersion project.ext.myCompileSdkVersion
     buildToolsVersion project.ext.myBuildToolsVersion
     defaultConfig {
@@ -11,6 +25,7 @@ android {
         versionName project.ext.myVersionName
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
     dataBinding {
         enabled = true

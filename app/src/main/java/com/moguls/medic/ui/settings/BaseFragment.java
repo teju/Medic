@@ -35,6 +35,7 @@ import com.moguls.medic.model.BookingData;
 import com.moguls.medic.model.getrelations.Result;
 
 import java.lang.reflect.Method;
+import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,19 +96,22 @@ public class BaseFragment extends GenericFragment {
         this.permissionListener = permissionListener;
         ArrayList<String> permissionsNeeded =new  ArrayList<String>();
         List<String> permissionsList = permissionsThatNeedTobeCheck;
-
-        for (String s:permissionsThatNeedTobeCheck) {
-            if (s.equals(Manifest.permission.CAMERA)) {
-                if (!addPermission(permissionsList, Manifest.permission.CAMERA))
-                    permissionsNeeded.add("Camera");
-                else if (s.equalsIgnoreCase(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                    if (!addPermission(permissionsList, Manifest.permission.ACCESS_COARSE_LOCATION))
-                        permissionsNeeded.add("ACCESS COARSE LOCATION");
-                }else if (s.equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    if (!addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION))
-                        permissionsNeeded.add("ACCESS FINE LOCATION");
+        try {
+            for (String s : permissionsThatNeedTobeCheck) {
+                if (s.equals(Manifest.permission.CAMERA)) {
+                    if (!addPermission(permissionsList, Manifest.permission.CAMERA))
+                        permissionsNeeded.add("Camera");
+                    else if (s.equalsIgnoreCase(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                        if (!addPermission(permissionsList, Manifest.permission.ACCESS_COARSE_LOCATION))
+                            permissionsNeeded.add("ACCESS COARSE LOCATION");
+                    } else if (s.equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        if (!addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION))
+                            permissionsNeeded.add("ACCESS FINE LOCATION");
+                    }
                 }
             }
+        } catch (Exception e){
+
         }
 
         if (permissionsList.size() > 0) {
