@@ -31,6 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="Fortis Hospital"
+                android:id="@+id/hospital_name"
                 android:fontFamily="@font/opensansregular"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -40,6 +41,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="5 appointments"
+                android:id="@+id/sppointment_cnt"
                 android:fontFamily="@font/opensansregular"
                 android:textColor="@color/dark_orange"
                 android:textStyle="bold"
@@ -55,6 +57,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_marginTop="10dp"
+                android:id="@+id/appointments"
                 android:text="Mon - Fri : 10.00AM - 9.00PM\nSat, Sun : 3.00PM - 9.00PM"
                 android:fontFamily="@font/opensansregular"
                 android:textSize="@dimen/text_small"

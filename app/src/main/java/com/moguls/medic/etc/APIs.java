@@ -34,5 +34,7 @@ public class APIs {
 
     public static String getdoctordashboard = SecuredBaseUrl + mobility +"/get-doctor-dashboard";
     public static String getdoctorpatients = SecuredBaseUrl + mobility +"/get-doctor-patients";
+    public static String getdoctorappointments = SecuredBaseUrl + mobility +"/get-doctor-appointments";
+    public static String gethospitalsview = SecuredBaseUrl + mobility +"/get-hospitals-view";
 
 }

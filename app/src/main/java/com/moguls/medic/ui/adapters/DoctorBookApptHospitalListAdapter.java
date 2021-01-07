@@ -76,7 +76,7 @@ public class DoctorBookApptHospitalListAdapter extends RecyclerView.Adapter<Doct
         holder.recyclerView.setHasFixedSize(true);
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        DoctorBookPatientDetailsAdapter appointmentAdapter = new DoctorBookPatientDetailsAdapter(context, new DoctorBookPatientDetailsAdapter.OnItemClickListner() {
+      /*  DoctorBookPatientDetailsAdapter appointmentAdapter = new DoctorBookPatientDetailsAdapter(sessions.getSlots(), context, new DoctorBookPatientDetailsAdapter.OnItemClickListner() {
             @Override
             public void OnItemClick(int position) {
 
@@ -93,7 +93,7 @@ public class DoctorBookApptHospitalListAdapter extends RecyclerView.Adapter<Doct
             }
         });
 
-        holder.recyclerView.setAdapter(appointmentAdapter);
+        holder.recyclerView.setAdapter(appointmentAdapter);*/
     }
 
     @Override

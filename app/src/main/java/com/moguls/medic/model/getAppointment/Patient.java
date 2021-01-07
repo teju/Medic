@@ -20,4 +20,15 @@ public class Patient {
     }
 
     private String ID;
+    private String MobileNo;
+
+    public String getMobileNo() {
+        return MobileNo;
+    }
+
+    public String getPhotoUrl() {
+        return PhotoUrl;
+    }
+
+    private String PhotoUrl;
 }

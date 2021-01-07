@@ -34,6 +34,5 @@ public class Result {
     }
 
     private List<Sessions> Sessions = new ArrayList<>();
-    private List<Slots> slots = new ArrayList<>();
 
 }

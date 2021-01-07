@@ -27,6 +27,7 @@
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/opensansregular"
                     android:text="8:30"
+                    android:id="@+id/time"
                     android:textColor="@color/red"
                     android:textSize="@dimen/text_large"></TextView>
 
@@ -36,6 +37,7 @@
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/opensansregular"
                     android:text="AM"
+                    android:id="@+id/am_pm"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_small"></TextView>
             </LinearLayout>
@@ -70,6 +72,7 @@
                         android:textColor="@color/black"
                         android:layout_gravity="center_horizontal"
                         android:text="Amily Watson"
+                        android:id="@+id/name"
                         android:textSize="@dimen/text_med"
                         android:layout_height="wrap_content">
                     </TextView>

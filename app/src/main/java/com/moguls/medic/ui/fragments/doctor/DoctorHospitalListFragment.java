@@ -9,13 +9,19 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.ui.adapters.DoctorHospitalsAdapter;
-import com.moguls.medic.ui.fragments.appointment.DoctorBookAppointmentFragment;
+import com.moguls.medic.ui.fragments.appointment.PatientBookAppointmentFragment;
 import com.moguls.medic.ui.settings.BaseFragment;
+import com.moguls.medic.webservices.BaseViewModel;
+import com.moguls.medic.webservices.GetHospitalsViewModel;
 
 import java.util.ArrayList;
 
@@ -28,6 +34,9 @@ public class DoctorHospitalListFragment extends BaseFragment implements View.OnC
     ArrayList<String> rowsArrayList = new ArrayList<>();
     private DoctorHospitalsAdapter myHospitalsAdapter;
     private Handler handler;
+    private LoadingCompound ld;
+    private GetHospitalsViewModel hospitalsViewModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,16 +51,18 @@ public class DoctorHospitalListFragment extends BaseFragment implements View.OnC
         setBackButtonToolbarStyleOne(v);
         header_title = (TextView)v.findViewById(R.id.header_title);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        ld = (LoadingCompound)v.findViewById(R.id.ld);
+
         header_title.setText("My Hospitals");
-        populateData();
-        initAdapter();
-        initScrollListener();
+
+        setGetHospitalAPIObserver();
+        hospitalsViewModel.loadData();
     }
 
     private void initAdapter() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        myHospitalsAdapter = new DoctorHospitalsAdapter(getActivity(),rowsArrayList,this);
+        myHospitalsAdapter = new DoctorHospitalsAdapter(getActivity(),hospitalsViewModel.hospitalView.getResult(),this);
         recyclerView.setAdapter(myHospitalsAdapter);
     }
 
@@ -129,9 +140,49 @@ public class DoctorHospitalListFragment extends BaseFragment implements View.OnC
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                home().setFragment(new DoctorBookAppointmentFragment());
+                PatientBookAppointmentFragment patientBookAppointmentFragment = new PatientBookAppointmentFragment();
+                home().setFragment(patientBookAppointmentFragment);
             }
         },500);
+    }
+    public void setGetHospitalAPIObserver() {
+        hospitalsViewModel = ViewModelProviders.of(this).get(GetHospitalsViewModel.class);
+        hospitalsViewModel.errorMessage.observe(this, new Observer<BaseViewModel.ErrorMessageModel>() {
+            @Override
+            public void onChanged(BaseViewModel.ErrorMessageModel errorMessageModel) {
+                showNotifyDialog(errorMessageModel.title,
+                        errorMessageModel.message, "OK",
+                        "", (NotifyListener) (new NotifyListener() {
+                            public void onButtonClicked(int which) {
+
+                            }
+                        }));
+            }
+        });
+        hospitalsViewModel.isOauthExpired.observe(this, new Observer() {
+            @Override
+            public void onChanged(Object o) {
+                logOut(getActivity());
+
+            }
+        });
+        hospitalsViewModel.isLoading.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoading) {
+                if(isLoading) {
+                    ld.showLoadingV2();
+                } else {
+                    ld.hide();
+                }
+            }
+        });
+        hospitalsViewModel.isNetworkAvailable.observe(this, obsNoInternet);
+        hospitalsViewModel.getTrigger().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+               initAdapter();
+            }
+        });
     }
 
 }

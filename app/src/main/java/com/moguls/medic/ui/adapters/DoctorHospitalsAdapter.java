@@ -2,17 +2,21 @@ package com.moguls.medic.ui.adapters;
 
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.model.hospitalViews.Result;
 
 import java.util.List;
 
@@ -21,14 +25,14 @@ public class DoctorHospitalsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-    public List<String> mItemList;
+    public List<Result> mItemList;
     public Context context;
 
     private OnItemClickListner listener;
     public interface OnItemClickListner {
         void OnItemClick(int position);
     }
-    public DoctorHospitalsAdapter(Context context, List<String> itemList, OnItemClickListner listener) {
+    public DoctorHospitalsAdapter(Context context, List<Result> itemList, OnItemClickListner listener) {
         this.listener = listener;
         this.context = context;
         mItemList = itemList;
@@ -72,9 +76,13 @@ public class DoctorHospitalsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         private final RecyclerView recyclerView;
         LinearLayout llRoot;
+        TextView appointments,sppointment_cnt,hospital_name;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             llRoot = itemView.findViewById(R.id.llRoot);
+            appointments = itemView.findViewById(R.id.appointments);
+            sppointment_cnt = itemView.findViewById(R.id.sppointment_cnt);
+            hospital_name = itemView.findViewById(R.id.hospital_name);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerview);
 
         }
@@ -95,9 +103,10 @@ public class DoctorHospitalsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
 
-        String item = mItemList.get(position);
+        Result item = mItemList.get(position);
         viewHolder.llRoot.setTag(position);
         viewHolder.llRoot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +116,11 @@ public class DoctorHospitalsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         });
         viewHolder.recyclerView.setHasFixedSize(true);
         viewHolder.recyclerView.setLayoutManager(new GridLayoutManager(context,5));
+        viewHolder.hospital_name.setText(mItemList.get(position).getName());
+        String str = String.join(",", mItemList.get(position).getSessions());
 
+        viewHolder.appointments.setText(str);
+        viewHolder.sppointment_cnt.setText(mItemList.get(position).getAppointmentCount()+" appointments");
         DoctorBookedPatientAdapter appointmentAdapter = new DoctorBookedPatientAdapter(context,
                 new DoctorBookedPatientAdapter.OnItemClickListner() {
             @Override

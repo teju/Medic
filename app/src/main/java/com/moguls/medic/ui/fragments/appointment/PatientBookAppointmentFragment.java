@@ -18,10 +18,15 @@ import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
+import com.moguls.medic.etc.SharedPreference;
+import com.moguls.medic.model.appointmentSlots.DoctorSlots;
 import com.moguls.medic.model.appointmentSlots.Sessions;
 import com.moguls.medic.model.appointmentSlots.Slots;
 import com.moguls.medic.ui.adapters.AppointmentDateAdapter;
 import com.moguls.medic.ui.adapters.PatientBookApptHospitalAdapter;
+import com.moguls.medic.ui.dialog.NotifyDialogFragment;
+import com.moguls.medic.ui.fragments.chat.ChatFragment;
+import com.moguls.medic.ui.fragments.me.ProfileUpdateFragment;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.moguls.medic.model.BookingData;
 import com.moguls.medic.model.appointmentSlots.Result;
@@ -83,6 +88,9 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
         setBackButtonToolbarStyleOne(v);
         initData();
         initDateAdapter();
+        if(SharedPreference.getBoolean(getActivity(),SharedPreference.isDOCTOR)) {
+            book_now.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -125,9 +133,9 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
         for(int i=0;i<postGetAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions().size();i++ ) {
             List<Slots> slotsArr = new ArrayList<>();
             Sessions sessions = postGetAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions().get(i);
-            for(String s : sessions.getSlots()) {
+            for(DoctorSlots s : sessions.getSlots()) {
                 Slots slots = new Slots();
-                slots.setTime(s);
+                slots.setTime(s.getID());
                 slots.setParentID(i);
                 slots.setID(ID);
                 ID= ID + 1;
@@ -138,14 +146,43 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
         patientBookApptHospitalAdapter = new PatientBookApptHospitalAdapter(getActivity(),
                 postGetAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions(),
                 new PatientBookApptHospitalAdapter.OnItemClickListner() {
-            @Override
-            public void OnItemClick(int position) {
-                selectedPos = position;
-            }
-        }, new PatientBookApptHospitalAdapter.OnTimeClickListner() {
+                    @Override
+                    public void OnItemClick(int position) {
+                        selectedPos = position;
+                    }
+                }, new PatientBookApptHospitalAdapter.OnTimeClickListner() {
             @Override
             public void OnItemClick(String time) {
                 selectedTime = time;
+            }
+        }, new PatientBookApptHospitalAdapter.OnClickListner() {
+            @Override
+            public void OnItemClick(String position) {
+                ProfileUpdateFragment profileUpdateFragment = new ProfileUpdateFragment();
+                profileUpdateFragment.setIsprofile(false);
+                profileUpdateFragment.setPatient_id(position);
+               // home().setFragment(profileUpdateFragment);
+            }
+
+            @Override
+            public void OnCancelClick(String position) {
+                showNotifyDialog("Are you sure you want to cancel the appointment?",
+                        "", "OK",
+                        "Cancel", (NotifyListener)(new NotifyListener() {
+                            public void onButtonClicked(int which) {
+                                if(which == NotifyDialogFragment.BUTTON_POSITIVE) {
+
+                                }
+                            }
+                        }));
+            }
+
+            @Override
+            public void OnChatClicked(String position,String name) {
+                ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setToUserID(position);
+                chatFragment.setName(name);
+                home().setFragment(chatFragment);
             }
         });
 

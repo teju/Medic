@@ -9,9 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.etc.SharedPreference;
 import com.moguls.medic.model.appointmentSlots.Sessions;
 import com.moguls.medic.model.appointmentSlots.Slots;
 
@@ -37,9 +39,17 @@ public class PatientBookApptHospitalAdapter extends RecyclerView.Adapter<Patient
     public interface OnTimeClickListner {
         void OnItemClick(String time);
     }
+    private OnClickListner onClickListner;
+    public interface OnClickListner {
+        void OnItemClick(String position);
+        void OnCancelClick(String position);
+        void OnChatClicked(String position,String name);
+    }
     public PatientBookApptHospitalAdapter(Context context,List<Sessions> expandableListTitle,
-                                          OnItemClickListner onItemClickListner, OnTimeClickListner onTimeClickListner) {
+                                          OnItemClickListner onItemClickListner,
+                                          OnTimeClickListner onTimeClickListner,OnClickListner onClickListner) {
         this.listener = onItemClickListner;
+        this.onClickListner = onClickListner;
         this.onTimeClickListner = onTimeClickListner;
         this.expandableListTitle = expandableListTitle;
         this.context = context;
@@ -65,22 +75,47 @@ public class PatientBookApptHospitalAdapter extends RecyclerView.Adapter<Patient
             holder.rlRoot.setBackgroundColor(context.getResources().getColor(R.color.white));
         }
         holder.recyclerView.setHasFixedSize(true);
-        holder.recyclerView.setLayoutManager(new GridLayoutManager(context,4));
 
+        if(!SharedPreference.getBoolean(context,SharedPreference.isDOCTOR)) {
+            holder.recyclerView.setLayoutManager(new GridLayoutManager(context,4));
+            appointmentAdapter = new AppointmentTimeAdapter(context, expandableListTitle.get(position).getSlotsArr(),
+                    new AppointmentTimeAdapter.OnItemClickListner() {
+                        @Override
+                        public void OnItemClick(String time, int pos, int parent_id) {
+                            timeselectedPos = pos;
+                            selectedPos = parent_id;
+                            notifyDataSetChanged();
+                            listener.OnItemClick(selectedPos);
+                            onTimeClickListner.OnItemClick(time);
+                        }
+                    });
+            appointmentAdapter.selectedPos = timeselectedPos;
+            holder.recyclerView.setAdapter(appointmentAdapter);
+        } else {
+            holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-         appointmentAdapter = new AppointmentTimeAdapter(context,expandableListTitle.get(position).getSlotsArr(),
-                new AppointmentTimeAdapter.OnItemClickListner() {
-                    @Override
-                    public void OnItemClick(String time,int pos,int parent_id) {
-                        timeselectedPos = pos;
-                        selectedPos = parent_id;
-                        notifyDataSetChanged();
-                        listener.OnItemClick(selectedPos);
-                        onTimeClickListner.OnItemClick(time);
-                    }
-                });
-        appointmentAdapter.selectedPos = timeselectedPos;
-        holder.recyclerView.setAdapter(appointmentAdapter);
+            DoctorBookPatientDetailsAdapter appointmentAdapter =
+                    new DoctorBookPatientDetailsAdapter(sessions.getSlots(),
+                            context, new DoctorBookPatientDetailsAdapter.OnItemClickListner() {
+                @Override
+                public void OnItemClick(String position) {
+                    onClickListner.OnItemClick(position);
+
+                }
+
+                @Override
+                public void OnCancelClick(String position) {
+                    onClickListner.OnCancelClick(position);
+                }
+
+                @Override
+                public void OnChatClicked(String ID,String  name) {
+                    onClickListner.OnChatClicked(ID,name);
+                }
+            });
+
+            holder.recyclerView.setAdapter(appointmentAdapter);
+        }
         holder.rlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -12,30 +12,30 @@ import com.moguls.medic.etc.Constants;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.SharedPreference;
 import com.moguls.medic.model.Response;
-import com.moguls.medic.model.appointmentSlots.GetAppointmentSlots;
+import com.moguls.medic.model.dashboard.DashBoard;
+import com.moguls.medic.model.hospitalViews.HospitalView;
 import com.moguls.medic.webservices.settings.HTTPAsyncTask;
 import com.moguls.medic.webservices.settings.SingleLiveEvent;
 
 import org.json.JSONObject;
 
-public class PostGetAppointmentsSlotsViewModel extends BaseViewModel {
+public class GetHospitalsViewModel extends BaseViewModel {
 
 
     private final Application apl;
     private HTTPAsyncTask genericHttpAsyncTask;
     SingleLiveEvent trigger = new SingleLiveEvent<Integer>();
-    public GetAppointmentSlots getAppointmentSlots = null;
+    public HospitalView hospitalView = null;
 
-    public PostGetAppointmentsSlotsViewModel(@NonNull Application application) {
+    public GetHospitalsViewModel(@NonNull Application application) {
         super(application);
         apl = application;
     }
-
     public SingleLiveEvent<Integer> getTrigger()  {
         return trigger;
     }
 
-    public void loadData(String doctorid,String date) {
+    public void loadData() {
         genericHttpAsyncTask = new Helper.GenericHttpAsyncTask(new Helper.GenericHttpAsyncTask.TaskListener() {
 
 
@@ -61,8 +61,8 @@ public class PostGetAppointmentsSlotsViewModel extends BaseViewModel {
                     if (json != null) {
                         try {
                             Gson gson = new GsonBuilder().create();
-                            getAppointmentSlots = gson.fromJson(response.getContent().toString(), GetAppointmentSlots.class);
-                            if (getAppointmentSlots.getStatus().equals(BaseKeys.STATUS_CODE)) {
+                            hospitalView = gson.fromJson(response.getContent().toString(), HospitalView.class);
+                            if (hospitalView.getStatus().equals(BaseKeys.STATUS_CODE)) {
                                 trigger.postValue(NEXT_STEP);
                             } else{
                                 errorMessage.postValue(createErrorMessageObject(response));
@@ -77,12 +77,7 @@ public class PostGetAppointmentsSlotsViewModel extends BaseViewModel {
         });
 
         genericHttpAsyncTask.method = Constants.GET;
-        if(SharedPreference.getBoolean(apl,SharedPreference.isDOCTOR)) {
-            genericHttpAsyncTask.setUrl(APIs.getdoctorappointments+"/"+date);
-
-        } else {
-            genericHttpAsyncTask.setUrl(APIs.getappointmentslots+"/"+doctorid+"/"+date);
-        }
+        genericHttpAsyncTask.setUrl(APIs.gethospitalsview);
         Helper.applyHeader(apl,genericHttpAsyncTask);
         genericHttpAsyncTask.context = apl.getApplicationContext();
         genericHttpAsyncTask.setCache(false);

@@ -9,6 +9,7 @@ public class Sessions {
     private String SessionName;
     private String Fee;
 
+
     public String getHospitalID() {
         return HospitalID;
     }
@@ -41,15 +42,15 @@ public class Sessions {
         Fee = fee;
     }
 
-    public List<String> getSlots() {
+    public List<DoctorSlots> getSlots() {
         return Slots;
     }
 
-    public void setSlots(List<String> slots) {
+    public void setSlots(List<DoctorSlots> slots) {
         this.Slots = slots;
     }
 
-    private List<String> Slots = new ArrayList<>();
+    private List<DoctorSlots> Slots = new ArrayList<>();
 
     public List<com.moguls.medic.model.appointmentSlots.Slots> getSlotsArr() {
         return SlotsArr;
