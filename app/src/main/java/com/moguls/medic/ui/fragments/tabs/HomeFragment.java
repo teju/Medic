@@ -43,8 +43,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private RelativeLayout ll_three;
     private RelativeLayout ll_one;
     private LinearLayout upcoming_appt;
-    private TextView tv_desc_one,tv_title_one,tv_title_two,tv_desc_two,msgs_cnt,doctor_name,specialization,address,
-            date_time,patient_name,remarks;
+    private TextView tv_desc_one,tv_title_one,tv_title_two,tv_desc_two,msgs_cnt,doctor_name,
+            specialization,address, date_time,patient_name,remarks;
     private ImageView img_doctor_white;
     private ImageView icn_one,icn_two,book_appointment_banner;
     private GetDashBoardViewModel getDashBoardViewModel;
@@ -67,7 +67,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         initUI();
         getDashBoardViewModel.loadData();
-
     }
 
     public void initUI() {
@@ -103,9 +102,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         chat.setOnClickListener(this);
         call.setOnClickListener(this);
         upcoming_appt.setOnClickListener(this);
-        if(SharedPreference.getBoolean(getActivity(),SharedPreference.isDOCTOR)) {
-           initDoctorView();
-        }
     }
 
     @Override
@@ -134,8 +130,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         ll_three.setVisibility(View.GONE);
         tv_title_one.setText("My Patients");
         tv_title_two.setText("My Hospitals");
-        tv_desc_one.setText("20 Patients");
-        tv_desc_two.setText("10 Hospitals");
+        tv_desc_one.setText(getDashBoardViewModel.dashBoard.getResult().getNoOfPatients()+" Patients");
+        tv_desc_two.setText(getDashBoardViewModel.dashBoard.getResult().getNoOfHospitals()+" Hospitals");
         icn_one.setImageDrawable(getActivity().getDrawable(R.drawable.account_group));
         icn_two.setImageDrawable(getActivity().getDrawable(R.drawable.domain));
     }
@@ -215,6 +211,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             }
         }, 100);
     }
+
     public void setGetDashboardAPIObserver() {
         getDashBoardViewModel = ViewModelProviders.of(this).get(GetDashBoardViewModel.class);
         getDashBoardViewModel.errorMessage.observe(this, new Observer<BaseViewModel.ErrorMessageModel>() {
@@ -269,6 +266,4 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             }
         });
     }
-
-
 }

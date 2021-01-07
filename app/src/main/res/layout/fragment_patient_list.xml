@@ -33,6 +33,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"
+                android:id="@+id/search"
                 android:hint="Search Patient"
                 android:textSize="@dimen/text_small"
                 android:fontFamily="@font/opensansregular"
@@ -50,5 +51,13 @@
             android:layout_height="wrap_content">
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
+    <com.moguls.medic.etc.LoadingCompound
+        android:id="@+id/ld"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:clickable="true"
+        android:visibility="gone" />
+
 </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

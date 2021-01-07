@@ -3,6 +3,7 @@ package com.moguls.medic.ui.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
 import com.moguls.medic.model.PatientList;
+import com.moguls.medic.model.doctorPatients.Result;
 
 import java.util.List;
 
@@ -25,6 +27,10 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
     public static final int VIEW_TYPE_LOADING = 2;
     public  final Context context;
 
+    public void setmItemList(List<PatientList> mItemList) {
+        this.mItemList = mItemList;
+    }
+
     public List<PatientList> mItemList;
 
     private OnItemClickListner listner;
@@ -32,8 +38,7 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
         void OnItemClick(int position);
         void OnChatClicked(int position);
     }
-    public DoctorPatientListAdapter(Context context, List<PatientList> itemList,OnItemClickListner listner) {
-        mItemList = itemList;
+    public DoctorPatientListAdapter(Context context, OnItemClickListner listner) {
         this.context = context;
         this.listner = listner;
     }
@@ -41,15 +46,15 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_patient, parent, false);
-            return new ItemViewHolder(view);
+        if (viewType == VIEW_TYPE_LOADING) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false);
+            return new LoadingViewHolder(view);
         } else if(viewType == SECTION_VIEW){
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header_title, parent, false);
             return new SectionHeaderViewHolder(view);
         }else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false);
-            return new LoadingViewHolder(view);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_patient, parent, false);
+            return new ItemViewHolder(view);
         }
     }
 
@@ -61,7 +66,7 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
         } else if (viewHolder instanceof SectionHeaderViewHolder) {
             SectionHeaderViewHolder sectionHeaderViewHolder = (SectionHeaderViewHolder) viewHolder;
             PatientList sectionItem = mItemList.get(position);
-           // sectionHeaderViewHolder.headerTitleTextview.setText(sectionItem.getName());
+            sectionHeaderViewHolder.headerTitleTextview.setText(sectionItem.getName());
         } else if (viewHolder instanceof LoadingViewHolder) {
             showLoadingView((LoadingViewHolder) viewHolder, position);
         }
@@ -75,7 +80,10 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public int getItemViewType(int position) {
         try {
-            if(mItemList.get(position).getType() == VIEW_TYPE_ITEM) {
+            if( mItemList.get(position) == null) {
+                return VIEW_TYPE_LOADING;
+            }
+            else if(mItemList.get(position).getType() == VIEW_TYPE_ITEM) {
                 return VIEW_TYPE_ITEM;
             } else  {
                 return SECTION_VIEW;
@@ -88,11 +96,20 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
     private class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ph_call,chat;
+        TextView remarks,age,blood_group,height,weight,date,mobile_number,name;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             ph_call = itemView.findViewById(R.id.ph_call);
             chat = itemView.findViewById(R.id.chat);
+            age = itemView.findViewById(R.id.age);
+            remarks = itemView.findViewById(R.id.remarks);
+            blood_group = itemView.findViewById(R.id.blood_group);
+            height = itemView.findViewById(R.id.height);
+            weight = itemView.findViewById(R.id.weight);
+            date = itemView.findViewById(R.id.date);
+            mobile_number = itemView.findViewById(R.id.mobile_number);
+            name = itemView.findViewById(R.id.name);
         }
     }
     public class SectionHeaderViewHolder extends RecyclerView.ViewHolder {
@@ -122,7 +139,18 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
         viewHolder.ph_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent call = new Intent(Intent.ACTION_DIAL);
+                Uri number = null;
+                Intent call;
+                if(mItemList.get(position).getResult().getMobileNo() != null) {
+                    number = Uri.parse("tel:" + mItemList.get(position).getResult().getMobileNo());
+                }
+                if(number != null) {
+                    call = new Intent(Intent.ACTION_DIAL,number);
+
+                } else {
+                    call = new Intent(Intent.ACTION_DIAL);
+
+                }
                 context.startActivity(call);
             }
         });
@@ -132,5 +160,14 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
                listner.OnChatClicked(position);
             }
         });
+        viewHolder.name.setText(mItemList.get(position).getResult().getName());
+        viewHolder.mobile_number.setText(mItemList.get(position).getResult().getMobileNo());
+        viewHolder.date.setText(mItemList.get(position).getResult().getAppointmentOn());
+        viewHolder.age.setText(mItemList.get(position).getResult().getAge());
+        viewHolder.blood_group.setText(mItemList.get(position).getResult().getBloodGroup());
+        viewHolder.height.setText(mItemList.get(position).getResult().getHeight()+"ft");
+        viewHolder.weight.setText(mItemList.get(position).getResult().getWeight()+" Kgs");
+        viewHolder.remarks.setText(mItemList.get(position).getResult().getAppointmentRemark());
     }
+
 }

@@ -30,4 +30,9 @@ public class APIs {
     public static String getdoctorprofile = SecuredBaseUrl + mobility +"/get-doctor-profile";
     public static String deletepatient = SecuredBaseUrl + mobility +"/delete-patient";
 
+    /* ----------------------------------Doctor API----------------------------------- */
+
+    public static String getdoctordashboard = SecuredBaseUrl + mobility +"/get-doctor-dashboard";
+    public static String getdoctorpatients = SecuredBaseUrl + mobility +"/get-doctor-patients";
+
 }

@@ -1,24 +1,46 @@
 package com.moguls.medic.ui.fragments.doctor;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.BaseKeys;
+import com.moguls.medic.etc.LoadingCompound;
+import com.moguls.medic.etc.SharedPreference;
+import com.moguls.medic.model.doctorPatients.Result;
+import com.moguls.medic.ui.fragments.MainTabFragment;
 import com.moguls.medic.ui.fragments.chat.ChatFragment;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.moguls.medic.ui.adapters.DoctorPatientListAdapter;
 import com.moguls.medic.model.PatientList;
+import com.moguls.medic.webservices.BaseViewModel;
+import com.moguls.medic.webservices.GetDoctorPatientsViewModel;
+import com.moguls.medic.webservices.PostVerifyOtpViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 public class DoctorPatientListFragment extends BaseFragment {
@@ -27,7 +49,14 @@ public class DoctorPatientListFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private boolean isLoading = false;
     ArrayList<PatientList> rowsArrayList = new ArrayList<>();
+    ArrayList<Result> resultArrayList = new ArrayList<>();
     private TextView header_title;
+    public GetDoctorPatientsViewModel getDoctorPatientsViewModel;
+    private LoadingCompound ld;
+    int pageSize = 10;
+    int pageNo = 1;
+    private EditText search;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,17 +71,35 @@ public class DoctorPatientListFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
         header_title = (TextView)v.findViewById(R.id.header_title);
-        initAdapter();
-        populateData();
-        initScrollListener();
+        search = (EditText)v.findViewById(R.id.search);
+        ld = (LoadingCompound)v.findViewById(R.id.ld);
+        setGetDoctorPatientsAPIObserver();
         setBackButtonToolbarStyleOne(v);
+        initScrollListener();
         header_title.setText("My Patients");
+        getDoctorPatientsViewModel.loadData(pageNo,pageSize,"");
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                resultArrayList.clear();
+                getDoctorPatientsViewModel.loadData(1,10,s.toString());
+            }
+        });
     }
 
     private void initAdapter() {
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        doctorPatientListAdapter = new DoctorPatientListAdapter(getActivity(), rowsArrayList, new DoctorPatientListAdapter.OnItemClickListner() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
+        doctorPatientListAdapter = new DoctorPatientListAdapter(getActivity(),
+                new DoctorPatientListAdapter.OnItemClickListner() {
             @Override
             public void OnItemClick(int position) {
 
@@ -60,10 +107,88 @@ public class DoctorPatientListFragment extends BaseFragment {
 
             @Override
             public void OnChatClicked(int position) {
-                    home().setFragment(new ChatFragment());
+                ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setToUserID(resultArrayList.get(position).getID());
+                chatFragment.setName(resultArrayList.get(position).getName());
+                home().setFragment(chatFragment);
             }
         });
+        makeArrayList(resultArrayList);
+        doctorPatientListAdapter.setmItemList(rowsArrayList);
         recyclerView.setAdapter(doctorPatientListAdapter);
+    }
+
+    public void makeArrayList(ArrayList<Result> resultArrayList) {
+        ArrayList<String> listHeader = new ArrayList<String>();
+        ArrayList<PatientList> list = new ArrayList<>();
+        for (Result r : resultArrayList) {
+            listHeader.add(r.getName().substring(0,1));
+        }
+        HashSet uniqueDate = new HashSet(listHeader);
+        ArrayList<String> uniqueheaderList = new ArrayList(uniqueDate);
+        Collections.sort(uniqueheaderList);
+        Collections.reverseOrder();
+        PatientList patientList = new PatientList();
+
+        for(int j =0;j<uniqueheaderList.size();j++) {
+            String s = uniqueheaderList.get(j);
+            for(int i = 0;i<resultArrayList.size();i++) {
+                String nameAlphabet = resultArrayList.get(i).getName().substring(0,1);;
+                if(s.toLowerCase().equals(nameAlphabet.toLowerCase())) {
+                    if(doCheck(s,list)) {
+                        patientList = new PatientList();
+                        patientList.setType(DoctorPatientListAdapter.SECTION_VIEW);
+                        patientList.setName(nameAlphabet);
+                        patientList.setResult(resultArrayList.get(i));
+                        list.add(patientList);
+                        if(doCheckResult(resultArrayList.get(i).getID(),list)) {
+                            patientList = new PatientList();
+                            patientList.setName(nameAlphabet);
+                            patientList.setType(DoctorPatientListAdapter.VIEW_TYPE_ITEM);
+                            patientList.setResult(resultArrayList.get(i));
+                            list.add(patientList);
+                        }
+
+                    } else {
+                        if(doCheckResult(resultArrayList.get(i).getID(),list)) {
+                            patientList = new PatientList();
+                            patientList.setType(DoctorPatientListAdapter.VIEW_TYPE_ITEM);
+                            patientList.setName(nameAlphabet);
+                            patientList.setResult(resultArrayList.get(i));
+                            list.add(patientList);
+                        }
+
+                    }
+                }
+            }
+        }
+        rowsArrayList.clear();
+        rowsArrayList.addAll(list);
+    }
+
+    public boolean doCheck(String s, ArrayList<PatientList> list) {
+        boolean isUnique = true;
+        for (int k = 0;k<list.size();k++){
+            if(list.get(k).getName().equalsIgnoreCase(s)) {
+                isUnique = false;
+            } else  {
+                isUnique = true;
+            }
+        }
+        return isUnique;
+    }
+    public boolean doCheckResult(String s, ArrayList<PatientList> list) {
+        boolean isUnique = true;
+        for (int k = 0;k<list.size();k++){
+            if(list.get(k).getResult() != null) {
+                if (list.get(k).getResult().getID().equalsIgnoreCase(s)) {
+                    isUnique = false;
+                } else {
+                    isUnique = true;
+                }
+            }
+        }
+        return isUnique;
     }
 
     private void initScrollListener() {
@@ -81,36 +206,17 @@ public class DoctorPatientListFragment extends BaseFragment {
 
                 if (!isLoading) {
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == rowsArrayList.size() - 1) {
-                        //bottom of list!
-                        loadMore();
+                        getDoctorPatientsViewModel.loadData(pageNo,pageSize,"");
                         isLoading = true;
                     }
                 }
             }
         });
-
-
-    }
-    private void populateData() {
-        int i = 0;
-        while (i < 10) {
-            PatientList patientList = new PatientList();
-            patientList.setName("Item " + i);
-            if(i == 0 || i == 3 || i == 9) {
-                patientList.setType(DoctorPatientListAdapter.SECTION_VIEW);
-            } else {
-                patientList.setType(DoctorPatientListAdapter.VIEW_TYPE_ITEM);
-            }
-            rowsArrayList.add(patientList);
-            i++;
-        }
     }
 
     private void loadMore() {
         rowsArrayList.add(null);
         doctorPatientListAdapter.notifyItemInserted(rowsArrayList.size() - 1);
-
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -118,26 +224,55 @@ public class DoctorPatientListFragment extends BaseFragment {
                 rowsArrayList.remove(rowsArrayList.size() - 1);
                 int scrollPosition = rowsArrayList.size();
                 doctorPatientListAdapter.notifyItemRemoved(scrollPosition);
-                int currentSize = scrollPosition;
-                int nextLimit = currentSize + 10;
-
-                while (currentSize - 1 < nextLimit) {
-                    PatientList patientList = new PatientList();
-                    patientList.setName("Item " + currentSize);
-                    if(currentSize == 0 || currentSize == 3 || currentSize == 9) {
-                        patientList.setType(DoctorPatientListAdapter.SECTION_VIEW);
-                    } else {
-                        patientList.setType(DoctorPatientListAdapter.VIEW_TYPE_ITEM);
-                    }
-                    rowsArrayList.add(patientList);
-                    currentSize++;
-                }
-
+                makeArrayList(resultArrayList);
+                doctorPatientListAdapter.setmItemList(rowsArrayList);
                 doctorPatientListAdapter.notifyDataSetChanged();
                 isLoading = false;
             }
         }, 2000);
+    }
 
+    public void setGetDoctorPatientsAPIObserver() {
+        getDoctorPatientsViewModel = ViewModelProviders.of(this).get(GetDoctorPatientsViewModel.class);
+        getDoctorPatientsViewModel.errorMessage.observe(this, new Observer<BaseViewModel.ErrorMessageModel>() {
+            @Override
+            public void onChanged(BaseViewModel.ErrorMessageModel errorMessageModel) {
+                showNotifyDialog(errorMessageModel.title,
+                        errorMessageModel.message, "OK",
+                        "", (NotifyListener) (new NotifyListener() {
+                            public void onButtonClicked(int which) {
 
+                            }
+                        }));
+            }
+        });
+        getDoctorPatientsViewModel.isLoading.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoadin) {
+                if(!isLoading && isLoadin) {
+                    ld.showLoadingV2();
+                } else {
+                    ld.hide();
+                }
+            }
+        });
+        getDoctorPatientsViewModel.isNetworkAvailable.observe(this, obsNoInternet);
+        getDoctorPatientsViewModel.getTrigger().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(isLoading) {
+                    if(getDoctorPatientsViewModel.doctorsPatients.getResult().size() != 0) {
+                        resultArrayList.addAll(getDoctorPatientsViewModel.doctorsPatients.getResult());
+                        loadMore();
+                    }
+                } else {
+                    resultArrayList.addAll(getDoctorPatientsViewModel.doctorsPatients.getResult());
+                    initAdapter();
+                }
+                if(getDoctorPatientsViewModel.doctorsPatients.getResult().size() != 0) {
+                    pageNo = pageNo + 1;
+                }
+            }
+        });
     }
 }

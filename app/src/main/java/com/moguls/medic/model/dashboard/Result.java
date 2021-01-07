@@ -7,6 +7,25 @@ public class Result {
     private String NoOfDoctors;
     private String NoOfAppointments;
     private String NoOfUnreadMessages;
+    private String NoOfPatients;
+
+    public String getNoOfPatients() {
+        return NoOfPatients;
+    }
+
+    public void setNoOfPatients(String noOfPatients) {
+        NoOfPatients = noOfPatients;
+    }
+
+    public String getNoOfHospitals() {
+        return NoOfHospitals;
+    }
+
+    public void setNoOfHospitals(String noOfHospitals) {
+        NoOfHospitals = noOfHospitals;
+    }
+
+    private String NoOfHospitals;
 
     public String getNoOfDoctors() {
         return NoOfDoctors;

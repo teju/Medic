@@ -16,7 +16,7 @@
             android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="60dp"
-                android:src="@drawable/doctor_profile_pic"
+                android:src="@drawable/doctor_profile_pic_default"
                 android:id="@+id/logo"
                 app:civ_border_color="@color/colorPrimary"
                 app:civ_border_width="2dp"
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="Anderson"
+                    android:id="@+id/name"
                     android:fontFamily="@font/opensansbold"
                     android:textColor="@color/black"
                     android:textStyle="bold"
@@ -39,7 +39,7 @@
                 </TextView>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="+918765456778"
+                    android:id="@+id/mobile_number"
                     android:textStyle="bold"
                     android:textSize="@dimen/text_small"
                     android:fontFamily="@font/opensansregular"
@@ -47,8 +47,8 @@
                 </TextView>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="12 Feb 2020, 12:45 PM"
                     android:textSize="@dimen/text_small"
+                    android:id="@+id/date"
                     android:fontFamily="@font/opensansregular"
                     android:layout_height="wrap_content">
                 </TextView>
@@ -123,7 +123,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:textSize="@dimen/text_small"
-                        android:text="36 yrs"
+                        android:id="@+id/age"
                         android:fontFamily="@font/opensansregular"
                         android:textColor="@color/black"
                         android:layout_centerVertical="true"
@@ -156,7 +156,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:textSize="@dimen/text_small"
-                            android:text="O +ve"
+                            android:id="@+id/blood_group"
                             android:fontFamily="@font/opensansregular"
                             android:textColor="@color/black"
                             android:layout_centerVertical="true"
@@ -183,7 +183,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:textSize="@dimen/text_small"
-                            android:text="5'6 ft"
+                            android:id="@+id/height"
                             android:fontFamily="@font/opensansregular"
                             android:textColor="@color/black"
                             android:layout_centerVertical="true"
@@ -212,7 +212,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:textSize="@dimen/text_small"
-                        android:text="40 kgs"
+                        android:id="@+id/weight"
                         android:fontFamily="@font/opensansregular"
                         android:textColor="@color/black"
                         android:layout_centerVertical="true"
@@ -226,8 +226,8 @@
                 android:layout_width="wrap_content"
                 android:textSize="@dimen/text_small"
                 android:fontFamily="@font/opensansregular"
+                android:id="@+id/remarks"
                 android:layout_marginTop="5dp"
-                android:text="I'm suffering from fever from last 10 days"
                 android:layout_centerVertical="true"
                 android:layout_height="wrap_content">
 

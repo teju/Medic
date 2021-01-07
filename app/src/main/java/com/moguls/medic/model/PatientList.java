@@ -1,5 +1,7 @@
 package com.moguls.medic.model;
 
+import com.moguls.medic.model.doctorPatients.Result;
+
 public class PatientList {
     String name;
 
@@ -20,6 +22,16 @@ public class PatientList {
     }
 
     int type;
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
+
+    Result result;
 
 
 }

@@ -10,6 +10,7 @@ import com.moguls.medic.etc.APIs;
 import com.moguls.medic.etc.BaseKeys;
 import com.moguls.medic.etc.Constants;
 import com.moguls.medic.etc.Helper;
+import com.moguls.medic.etc.SharedPreference;
 import com.moguls.medic.model.Response;
 import com.moguls.medic.model.dashboard.DashBoard;
 import com.moguls.medic.webservices.settings.HTTPAsyncTask;
@@ -75,7 +76,11 @@ public class GetDashBoardViewModel extends BaseViewModel {
         });
 
         genericHttpAsyncTask.method = Constants.GET;
-        genericHttpAsyncTask.setUrl(APIs.getDashboard);
+        if(SharedPreference.getBoolean(apl,SharedPreference.isDOCTOR)) {
+            genericHttpAsyncTask.setUrl(APIs.getdoctordashboard);
+        } else {
+            genericHttpAsyncTask.setUrl(APIs.getDashboard);
+        }
         Helper.applyHeader(apl,genericHttpAsyncTask);
         genericHttpAsyncTask.context = apl.getApplicationContext();
         genericHttpAsyncTask.setCache(false);
