@@ -54,6 +54,7 @@ public class DoctorPatientListFragment extends BaseFragment {
     private LoadingCompound ld;
     int pageSize = 10;
     int pageNo = 1;
+    int searchPAgeNo = 1;
     private EditText search;
 
 
@@ -90,7 +91,7 @@ public class DoctorPatientListFragment extends BaseFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 resultArrayList.clear();
-                getDoctorPatientsViewModel.loadData(1,10,s.toString());
+                getDoctorPatientsViewModel.loadData(searchPAgeNo,10,s.toString());
             }
         });
     }
@@ -182,7 +183,6 @@ public class DoctorPatientListFragment extends BaseFragment {
         return isUnique;
     }
 
-
     public boolean doCheckResult(String s, ArrayList<PatientList> list) {
         boolean isUnique = true;
         for (int k = 0;k<list.size();k++){
@@ -212,7 +212,11 @@ public class DoctorPatientListFragment extends BaseFragment {
 
                 if (!isLoading) {
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == rowsArrayList.size() - 1) {
-                        getDoctorPatientsViewModel.loadData(pageNo,pageSize,"");
+                        if(!search.getText().toString().isEmpty()) {
+                            getDoctorPatientsViewModel.loadData(searchPAgeNo,pageSize,search.getText().toString());
+                        } else {
+                            getDoctorPatientsViewModel.loadData(pageNo,pageSize,"");
+                        }
                         isLoading = true;
                     }
                 }
@@ -271,11 +275,15 @@ public class DoctorPatientListFragment extends BaseFragment {
                         resultArrayList.addAll(getDoctorPatientsViewModel.doctorsPatients.getResult());
                         loadMore();
                     }
-                } else {
+                } else{
                     resultArrayList.addAll(getDoctorPatientsViewModel.doctorsPatients.getResult());
                     initAdapter();
                 }
-                if(getDoctorPatientsViewModel.doctorsPatients.getResult().size() != 0) {
+                if(!search.getText().toString().isEmpty()
+                        && getDoctorPatientsViewModel.doctorsPatients.getResult().size() != 0
+                        && resultArrayList.size() % 10 == 0){
+                    searchPAgeNo = searchPAgeNo + 1;
+                }else if(getDoctorPatientsViewModel.doctorsPatients.getResult().size() != 0) {
                     pageNo = pageNo + 1;
                 }
             }
