@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,7 +40,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import java.util.TreeSet;
 
 public class DoctorPatientListFragment extends BaseFragment {
 
@@ -108,8 +107,8 @@ public class DoctorPatientListFragment extends BaseFragment {
             @Override
             public void OnChatClicked(int position) {
                 ChatFragment chatFragment = new ChatFragment();
-                chatFragment.setToUserID(resultArrayList.get(position).getID());
-                chatFragment.setName(resultArrayList.get(position).getName());
+                //chatFragment.setToUserID(resultArrayList.get(position).getID());
+                //chatFragment.setName(resultArrayList.get(position).getName());
                 home().setFragment(chatFragment);
             }
         });
@@ -118,7 +117,10 @@ public class DoctorPatientListFragment extends BaseFragment {
         recyclerView.setAdapter(doctorPatientListAdapter);
     }
 
-    public void makeArrayList(ArrayList<Result> resultArrayList) {
+    public void makeArrayList(ArrayList<Result> resultArrayLis) {
+        Set<Result> hashresultArrayList = new HashSet(resultArrayLis);
+        ArrayList<Result> resultArrayList = new ArrayList<Result>(hashresultArrayList);
+
         ArrayList<String> listHeader = new ArrayList<String>();
         ArrayList<PatientList> list = new ArrayList<>();
         for (Result r : resultArrayList) {
@@ -128,12 +130,14 @@ public class DoctorPatientListFragment extends BaseFragment {
         ArrayList<String> uniqueheaderList = new ArrayList(uniqueDate);
         Collections.sort(uniqueheaderList);
         Collections.reverseOrder();
-        PatientList patientList = new PatientList();
 
+        PatientList patientList = new PatientList();
         for(int j =0;j<uniqueheaderList.size();j++) {
             String s = uniqueheaderList.get(j);
             for(int i = 0;i<resultArrayList.size();i++) {
                 String nameAlphabet = resultArrayList.get(i).getName().substring(0,1);;
+                System.out.println("resultArrayList "+doCheckResult(resultArrayList.get(i).getMobileNo(),list));
+                boolean isUnique = doCheckResult(resultArrayList.get(i).getMobileNo(),list);
                 if(s.toLowerCase().equals(nameAlphabet.toLowerCase())) {
                     if(doCheck(s,list)) {
                         patientList = new PatientList();
@@ -141,7 +145,7 @@ public class DoctorPatientListFragment extends BaseFragment {
                         patientList.setName(nameAlphabet);
                         patientList.setResult(resultArrayList.get(i));
                         list.add(patientList);
-                        if(doCheckResult(resultArrayList.get(i).getID(),list)) {
+                        if(isUnique) {
                             patientList = new PatientList();
                             patientList.setName(nameAlphabet);
                             patientList.setType(DoctorPatientListAdapter.VIEW_TYPE_ITEM);
@@ -150,7 +154,7 @@ public class DoctorPatientListFragment extends BaseFragment {
                         }
 
                     } else {
-                        if(doCheckResult(resultArrayList.get(i).getID(),list)) {
+                        if(isUnique) {
                             patientList = new PatientList();
                             patientList.setType(DoctorPatientListAdapter.VIEW_TYPE_ITEM);
                             patientList.setName(nameAlphabet);
@@ -177,14 +181,16 @@ public class DoctorPatientListFragment extends BaseFragment {
         }
         return isUnique;
     }
+
+
     public boolean doCheckResult(String s, ArrayList<PatientList> list) {
         boolean isUnique = true;
         for (int k = 0;k<list.size();k++){
             if(list.get(k).getResult() != null) {
-                if (list.get(k).getResult().getID().equalsIgnoreCase(s)) {
+                System.out.println("resultArrayList "+list.get(k).getResult().getMobileNo()
+                        +" str "+s+" equalsIgnoreCase "+list.get(k).getResult().getMobileNo().equalsIgnoreCase(s));
+                if (list.get(k).getResult().getMobileNo().equalsIgnoreCase(s)) {
                     isUnique = false;
-                } else {
-                    isUnique = true;
                 }
             }
         }
@@ -275,4 +281,5 @@ public class DoctorPatientListFragment extends BaseFragment {
             }
         });
     }
+
 }

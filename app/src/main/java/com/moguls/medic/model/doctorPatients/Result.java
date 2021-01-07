@@ -2,12 +2,14 @@ package com.moguls.medic.model.doctorPatients;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.moguls.medic.model.PatientList;
 import com.moguls.medic.ui.adapters.DoctorPatientListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class Result {
+public class Result implements Comparable<Result>{
 
     @SerializedName("PhotoUrl")
     @Expose
@@ -152,4 +154,14 @@ public class Result {
     }
 
     private String header;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ID);
+    }
+
+    @Override
+    public int compareTo(Result o) {
+        return 1;
+    }
 }

@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class DoctorsPatients {
@@ -32,16 +31,16 @@ public class DoctorsPatients {
     @Expose
     private String Message;
 
-    public HashSet<Result> getResult() {
+    public List<Result> getResult() {
         return result;
     }
 
-    public void setResult(HashSet<Result> result) {
+    public void setResult(List<Result> result) {
         this.result = result;
     }
 
     @SerializedName("Result")
     @Expose
-    private HashSet<Result> result = new HashSet<>();
+    private List<Result> result = new ArrayList<>();
 
 }
