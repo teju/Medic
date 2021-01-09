@@ -8,13 +8,16 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.moguls.medic.R;
 import com.moguls.medic.etc.Helper;
+import com.moguls.medic.model.doctorProfileDetails.Result;
 import com.moguls.medic.ui.settings.BaseFragment;
 
 
@@ -25,7 +28,12 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
     int PICK_ID_PHOTO_PHOTO = 10010;
     int PICK_REG_PHOTO_PHOTO = 10011;
     int PICK_DEGREE_PHOTO_PHOTO = 10012;
+    private Result profileInit;
+    private EditText statement;
 
+    public void setProfileInit(Result profileInit) {
+        this.profileInit = profileInit;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,7 +48,8 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
         reg_proof = (ImageView)v.findViewById(R.id.reg_proof);
         degree_proof = (ImageView)v.findViewById(R.id.degree_proof);
         id_proof = (ImageView)v.findViewById(R.id.id_proof);
-
+        statement = (EditText)v.findViewById(R.id.statement);
+        statement.setText(profileInit.getPersonnel().getStatement());
         reg_proof.setOnClickListener(this);
         degree_proof.setOnClickListener(this);
         id_proof.setOnClickListener(this);

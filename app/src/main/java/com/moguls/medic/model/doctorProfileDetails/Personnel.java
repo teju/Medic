@@ -11,7 +11,7 @@ public class Personnel {
     String LastName;
     String MobileNo;
     String EmailID;
-    String IsMale;
+    boolean IsMale;
     String DateOfBirth;
     String PracticingFrom;
     String Location;
@@ -60,11 +60,11 @@ public class Personnel {
         EmailID = emailID;
     }
 
-    public String getIsMale() {
+    public boolean getIsMale() {
         return IsMale;
     }
 
-    public void setIsMale(String isMale) {
+    public void setIsMale(boolean isMale) {
         IsMale = isMale;
     }
 

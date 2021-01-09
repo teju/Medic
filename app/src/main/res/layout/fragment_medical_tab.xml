@@ -25,10 +25,10 @@
                     android:layout_height="wrap_content">
                 </TextView>
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:textSize="@dimen/text_med"
+                    android:id="@+id/specialization"
                     android:fontFamily="@font/opensansregular"
-                    android:text="General Obstertrics"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content">
                 </TextView>
@@ -41,10 +41,10 @@
                     android:layout_height="wrap_content">
                 </TextView>
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:textSize="@dimen/text_med"
                     android:fontFamily="@font/opensansregular"
-                    android:text="MBBS D Ortho"
+                    android:id="@+id/education"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content">
                 </TextView>
@@ -58,11 +58,10 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
-                <RelativeLayout
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_margin="15dp"
-
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="wrap_content"
@@ -72,22 +71,20 @@
                         android:textColor="@color/black"
                         android:layout_height="wrap_content">
                     </TextView>
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:layout_width="match_parent"
                         android:textSize="@dimen/text_med"
+                        android:background="@drawable/button_border_rounder_rect"
+                        android:id="@+id/registration_no"
                         android:fontFamily="@font/opensansregular"
-                        android:text="DN09877"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="10dp"
                         android:layout_alignParentRight="true"
-                        android:layout_height="wrap_content">
-                    </TextView>
-                </RelativeLayout>
-                <View
+                        android:layout_height="40dp">
+                    </EditText>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/light_gray">
-                </View>
-                <RelativeLayout
-                    android:layout_width="wrap_content"
                     android:orientation="vertical"
                     android:layout_margin="15dp"
                     android:layout_height="wrap_content">
@@ -99,22 +96,20 @@
                         android:textColor="@color/black"
                         android:layout_height="wrap_content">
                     </TextView>
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:layout_width="match_parent"
                         android:textSize="@dimen/text_med"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/button_border_rounder_rect"
+                        android:paddingLeft="10dp"
                         android:fontFamily="@font/opensansregular"
-                        android:text="Dental Council of India"
+                        android:id="@+id/reg_council"
                         android:layout_alignParentRight="true"
-                        android:layout_height="wrap_content">
-                    </TextView>
-                </RelativeLayout>
-                <View
+                        android:layout_height="40dp">
+                    </EditText>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/light_gray">
-                </View>
-                <RelativeLayout
-                    android:layout_width="wrap_content"
                     android:orientation="vertical"
                     android:layout_margin="15dp"
                     android:layout_height="wrap_content">
@@ -126,15 +121,18 @@
                         android:textColor="@color/black"
                         android:layout_height="wrap_content">
                     </TextView>
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:layout_width="match_parent"
                         android:textSize="@dimen/text_med"
                         android:fontFamily="@font/opensansregular"
-                        android:text="2018"
+                        android:id="@+id/reg_year"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/button_border_rounder_rect"
+                        android:paddingLeft="10dp"
                         android:layout_alignParentRight="true"
-                        android:layout_height="wrap_content">
-                    </TextView>
-                </RelativeLayout>
+                        android:layout_height="40dp">
+                    </EditText>
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,8 @@ import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.callback.PopUpListener;
 import com.moguls.medic.etc.LoadingCompound;
+import com.moguls.medic.model.doctorProfileDetails.Personnel;
+import com.moguls.medic.model.doctorProfileDetails.Result;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.moguls.medic.webservices.BaseViewModel;
 import com.moguls.medic.webservices.GeDoctorProdileDetailsViewModel;
@@ -32,7 +35,12 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
     private TextView dob;
     final Calendar myCalendar = Calendar.getInstance();
     private TextView gender;
+    private Result profileInit;
+    private EditText phone_number,edt_email_id,edt_exp_yrs,emergency_contact,location,edt_one,edt_two;
 
+    public void setProfileInit(Result profileInit) {
+        this.profileInit = profileInit;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,10 +54,47 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         dob = (TextView) v.findViewById(R.id.dob);
-
+        phone_number = (EditText) v.findViewById(R.id.phone_number);
+        edt_email_id = (EditText) v.findViewById(R.id.edt_email_id);
+        edt_exp_yrs = (EditText) v.findViewById(R.id.edt_exp_yrs);
+        edt_one = (EditText) v.findViewById(R.id.edt_one);
+        edt_two = (EditText) v.findViewById(R.id.edt_two);
+        emergency_contact = (EditText) v.findViewById(R.id.emergency_contact);
+        location = (EditText) v.findViewById(R.id.location);
         gender = (TextView) v.findViewById(R.id.gender);
         gender.setOnClickListener(this);
         dob.setOnClickListener(this);
+        setData();
+    }
+
+    public void setData(){
+        Personnel personnel = profileInit.getPersonnel();
+        if(personnel.getMobileNo() != null) {
+            phone_number.setText(personnel.getMobileNo());
+        }
+        if(personnel.getEmailID() != null) {
+            edt_email_id.setText(personnel.getEmailID());
+        }
+        if(personnel.getPracticingFrom() != null) {
+            edt_exp_yrs.setText(personnel.getPracticingFrom());
+        }
+        if(personnel.getFirstName() != null) {
+            edt_one.setText(personnel.getFirstName());
+        }
+        if(personnel.getLastName() != null) {
+            edt_two.setText(personnel.getLastName());
+        }
+        if(personnel.getEmergencyContactNo() != null) {
+            emergency_contact.setText(personnel.getEmergencyContactNo());
+        }
+        if(personnel.getLocation() != null) {
+            location.setText(personnel.getLocation());
+        }
+        if(personnel.getIsMale()) {
+            gender.setText("Male");
+        } else {
+            gender.setText("Female");
+        }
 
     }
 
@@ -95,6 +140,7 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
                 break;
         }
     }
+
 
 
 }

@@ -26,11 +26,11 @@ import com.moguls.medic.webservices.GeDoctorProdileDetailsViewModel;
 public class DoctorProfileTabbedFragment extends BaseFragment implements View.OnClickListener{
 
     private TabLayout tabLayout;
-    private TextView header_title;
+    private TextView header_title,percentage;
     private ViewPager viewPager;
     private LoadingCompound ld;
     private GeDoctorProdileDetailsViewModel getDoctorProdileDetailsViewModel;
-
+    public int percentageVal;
     public void setBottomNavigation(BottomNavigationView bottomNavigation) {
         this.bottomNavigation = bottomNavigation;
     }
@@ -41,9 +41,6 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_doctor_profile_viewpager, container, false);
         return v;
-    }
-
-    private void updateData() {
     }
 
 
@@ -57,18 +54,26 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
         viewPager = (ViewPager) v.findViewById(R.id.viewPager);
         tabLayout.setupWithViewPager(viewPager);
         header_title = (TextView)v.findViewById(R.id.header_title);
+        percentage = (TextView)v.findViewById(R.id.percentage);
         header_title.setText("Your Profile");
         ld = (LoadingCompound)v.findViewById(R.id.ld);
         getDoctorProdileDetailsViewModel.loadData();
+        percentage.setText(percentageVal+"% Completed");
 
-        addTabs();
+
     }
 
     private void addTabs() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFrag(new DoctorProfileUpdateFragment(), "Personal");
-        adapter.addFrag(new DoctorMedicalTabFragment(), "Medical");
-        adapter.addFrag(new DoctorIDProofTabFragment(), "ID Proof");
+        DoctorProfileUpdateFragment doctorProfileUpdateFragment = new DoctorProfileUpdateFragment();
+        DoctorMedicalTabFragment doctorMedicalTabFragment = new DoctorMedicalTabFragment();
+        DoctorIDProofTabFragment doctorIDProofTabFragment = new DoctorIDProofTabFragment();
+        doctorProfileUpdateFragment.setProfileInit(getDoctorProdileDetailsViewModel.getdDoctorsProfileDetails.getResult());
+        doctorMedicalTabFragment.setProfileInit(getDoctorProdileDetailsViewModel.getdDoctorsProfileDetails.getResult());
+        doctorIDProofTabFragment.setProfileInit(getDoctorProdileDetailsViewModel.getdDoctorsProfileDetails.getResult());
+        adapter.addFrag(doctorProfileUpdateFragment, "Personal");
+        adapter.addFrag(doctorMedicalTabFragment, "Medical");
+        adapter.addFrag(doctorIDProofTabFragment, "ID Proof");
         viewPager.setAdapter(adapter);
     }
     @Override
@@ -118,8 +123,8 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
         getDoctorProdileDetailsViewModel.getTrigger().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                updateData();
 
+                addTabs();
             }
         });
     }

@@ -47,7 +47,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:id="@+id/update"
+                    android:id="@+id/percentage"
                     android:textSize="@dimen/text_small"
                     android:visibility="visible"
                     android:fontFamily="@font/opensansregular"
