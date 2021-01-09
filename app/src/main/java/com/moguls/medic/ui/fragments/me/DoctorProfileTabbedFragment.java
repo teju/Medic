@@ -8,13 +8,19 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.moguls.medic.R;
+import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.moguls.medic.ui.adapters.ViewPagerAdapter;
+import com.moguls.medic.webservices.BaseViewModel;
+import com.moguls.medic.webservices.GeDoctorProdileDetailsViewModel;
 
 
 public class DoctorProfileTabbedFragment extends BaseFragment implements View.OnClickListener{
@@ -22,6 +28,8 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
     private TabLayout tabLayout;
     private TextView header_title;
     private ViewPager viewPager;
+    private LoadingCompound ld;
+    private GeDoctorProdileDetailsViewModel getDoctorProdileDetailsViewModel;
 
     public void setBottomNavigation(BottomNavigationView bottomNavigation) {
         this.bottomNavigation = bottomNavigation;
@@ -35,15 +43,24 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
         return v;
     }
 
+    private void updateData() {
+    }
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setBackButtonToolbarStyleOne(v);
+        setProfileAPIObserver();
+
         tabLayout = (TabLayout) v.findViewById(R.id.tabLayout);
         viewPager = (ViewPager) v.findViewById(R.id.viewPager);
         tabLayout.setupWithViewPager(viewPager);
         header_title = (TextView)v.findViewById(R.id.header_title);
         header_title.setText("Your Profile");
+        ld = (LoadingCompound)v.findViewById(R.id.ld);
+        getDoctorProdileDetailsViewModel.loadData();
+
         addTabs();
     }
 
@@ -67,4 +84,44 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
 
         }
     }
+    public void setProfileAPIObserver() {
+        getDoctorProdileDetailsViewModel = ViewModelProviders.of(this).get(GeDoctorProdileDetailsViewModel.class);
+        getDoctorProdileDetailsViewModel.errorMessage.observe(this, new Observer<BaseViewModel.ErrorMessageModel>() {
+            @Override
+            public void onChanged(BaseViewModel.ErrorMessageModel errorMessageModel) {
+                showNotifyDialog(errorMessageModel.title,
+                        errorMessageModel.message, "OK",
+                        "", (NotifyListener) (new NotifyListener() {
+                            public void onButtonClicked(int which) {
+
+                            }
+                        }));
+            }
+        });
+        getDoctorProdileDetailsViewModel.isOauthExpired.observe(this, new Observer() {
+            @Override
+            public void onChanged(Object o) {
+                logOut(getActivity());
+            }
+        });
+        getDoctorProdileDetailsViewModel.isLoading.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoading) {
+                if(isLoading) {
+                    ld.showLoadingV2();
+                } else {
+                    ld.hide();
+                }
+            }
+        });
+        getDoctorProdileDetailsViewModel.isNetworkAvailable.observe(this, obsNoInternet);
+        getDoctorProdileDetailsViewModel.getTrigger().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                updateData();
+
+            }
+        });
+    }
+
 }

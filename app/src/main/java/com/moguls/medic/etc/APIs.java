@@ -41,5 +41,6 @@ public class APIs {
     public static String saveconsultationplan = SecuredBaseUrl + mobility +"/save-consultationplan";
     public static String gethospitalsummary = SecuredBaseUrl + mobility +"/get-hospital-summary";
     public static String gethospital = SecuredBaseUrl + mobility +"/get-hospital";
+    public static String getdoctorprofileinit = SecuredBaseUrl + mobility +"/get-doctor-profile-init";
 
 }

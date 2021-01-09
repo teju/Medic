@@ -10,10 +10,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.moguls.medic.R;
+import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.callback.PopUpListener;
+import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.ui.settings.BaseFragment;
+import com.moguls.medic.webservices.BaseViewModel;
+import com.moguls.medic.webservices.GeDoctorProdileDetailsViewModel;
+import com.moguls.medic.webservices.GetProfilePatientViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,6 +32,7 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
     private TextView dob;
     final Calendar myCalendar = Calendar.getInstance();
     private TextView gender;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,9 +46,11 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         dob = (TextView) v.findViewById(R.id.dob);
+
         gender = (TextView) v.findViewById(R.id.gender);
         gender.setOnClickListener(this);
         dob.setOnClickListener(this);
+
     }
 
     @Override
@@ -85,4 +95,6 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
                 break;
         }
     }
+
+
 }
