@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="Fortis Hospital"
+                        android:id="@+id/hospital_name"
                         android:fontFamily="@font/opensansregular"
                         android:textColor="@color/black"
                         android:textStyle="bold"
@@ -47,15 +47,15 @@
                     </TextView>
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="JP Nagar Bangalore"
                         android:fontFamily="@font/opensansregular"
+                        android:id="@+id/hospital_address"
                         android:textSize="@dimen/text_small"
                         android:layout_height="wrap_content">
                     </TextView>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Mon - Fri : 10.00AM - 9.00PM\nSat, Sun : 3.00PM - 9.00PM"
+                        android:id="@+id/slots"
                         android:fontFamily="@font/opensansregular"
                         android:textSize="@dimen/text_small"
                         android:layout_height="wrap_content">
@@ -79,17 +79,17 @@
                             android:layout_height="wrap_content">
                             <ImageView
                                 android:layout_width="15dp"
+                                android:id="@+id/icon"
                                 android:src="@drawable/check_circle"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginRight="5dp"
-                                android:tint="@color/green"
                                 android:layout_marginTop="1dp"
                                 android:layout_height="15dp">
 
                             </ImageView>
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:text="Verified"
+                                android:id="@+id/verifies"
                                 android:gravity="center_vertical"
                                 android:textColor="@color/green"
                                 android:layout_gravity="center_vertical"

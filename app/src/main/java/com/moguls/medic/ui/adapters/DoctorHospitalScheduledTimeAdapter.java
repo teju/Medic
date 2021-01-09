@@ -7,27 +7,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.model.hospitalSummary.Sessions;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class DoctorHospitalScheduledTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-    public List<String> mItemList;
+    public ArrayList<Sessions> mItemList = new ArrayList<>();
     public Context context;
 
     private OnItemClickListner listener;
+
+
+
     public interface OnItemClickListner {
         void OnItemClick(int position);
     }
-    public DoctorHospitalScheduledTimeAdapter(Context context, List<String> itemList, OnItemClickListner listener) {
+    public DoctorHospitalScheduledTimeAdapter(Context context, ArrayList<Sessions> itemList, OnItemClickListner listener) {
         this.listener = listener;
         this.context = context;
         mItemList = itemList;
@@ -58,7 +63,10 @@ public class DoctorHospitalScheduledTimeAdapter extends RecyclerView.Adapter<Rec
 
     @Override
     public int getItemCount() {
-        return 3;
+        /*if(mItemList.size() > 3) {
+            return  3;
+        }*/
+        return mItemList.size();
     }
 
     @Override
@@ -70,9 +78,12 @@ public class DoctorHospitalScheduledTimeAdapter extends RecyclerView.Adapter<Rec
     private class ItemViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout llRoot;
+        TextView day,time;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             llRoot = itemView.findViewById(R.id.llRoot);
+            day = itemView.findViewById(R.id.day);
+            time = itemView.findViewById(R.id.time);
         }
     }
 
@@ -98,5 +109,7 @@ public class DoctorHospitalScheduledTimeAdapter extends RecyclerView.Adapter<Rec
                 listener.OnItemClick(position);
             }
         });
+        viewHolder.day.setText(mItemList.get(position).getDay());
+        viewHolder.time.setText(mItemList.get(position).getTime());
     }
 }

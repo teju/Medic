@@ -31,6 +31,10 @@ public class BaseKeys {
 	public static final String Location = "Location";
 	public static final String PhotoData = "PhotoData";
 	public static final String HospitalID = "HospitalID";
+	public static final String Timeslot = "Timeslot";
+	public static final String Fee = "Fee";
+	public static final String AdvanceBookingDays = "AdvanceBookingDays";
+	public static final String ConsultationType = "ConsultationType";
 	public static final String AppointmentOn = "AppointmentOn";
 	public static final String Remarks = "Remarks";
 	public static final String PatientID = "PatientID";

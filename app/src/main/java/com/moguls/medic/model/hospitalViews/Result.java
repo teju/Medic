@@ -60,15 +60,15 @@ public class Result {
         PhotoUrl = photoUrl;
     }
 
-    public String getIsVerified() {
+    public boolean getIsVerified() {
         return IsVerified;
     }
 
-    public void setIsVerified(String isVerified) {
+    public void setIsVerified(boolean isVerified) {
         IsVerified = isVerified;
     }
 
-    String IsVerified;
+    boolean IsVerified;
 
 
 }

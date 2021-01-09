@@ -2,16 +2,21 @@ package com.moguls.medic.ui.adapters;
 
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.model.hospitalViews.Result;
 
 import java.util.List;
 
@@ -20,14 +25,14 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-    public List<String> mItemList;
+    public List<Result> mItemList;
     public Context context;
 
     private OnItemClickListner listener;
     public interface OnItemClickListner {
         void OnItemClick(int position);
     }
-    public DoctorHospitalsClinicsAdapter(Context context, List<String> itemList, OnItemClickListner listener) {
+    public DoctorHospitalsClinicsAdapter(Context context, List<Result> itemList, OnItemClickListner listener) {
         this.listener = listener;
         this.context = context;
         mItemList = itemList;
@@ -45,6 +50,7 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
@@ -58,7 +64,7 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-        return 8;
+        return mItemList.size();
     }
 
     @Override
@@ -70,9 +76,16 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
     private class ItemViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout llRoot;
+        ImageView icon;
+        TextView hospital_name,hospital_address,slots,verifies;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             llRoot = itemView.findViewById(R.id.llRoot);
+            hospital_name = itemView.findViewById(R.id.hospital_name);
+            hospital_address = itemView.findViewById(R.id.hospital_address);
+            slots = itemView.findViewById(R.id.slots);
+            verifies = itemView.findViewById(R.id.verifies);
+            icon = itemView.findViewById(R.id.icon);
 
         }
     }
@@ -92,6 +105,7 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
         viewHolder.llRoot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +113,17 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
                 listener.OnItemClick(position);
             }
         });
+        viewHolder.hospital_name.setText(mItemList.get(position).getName());
+        viewHolder.hospital_address.setText(mItemList.get(position).getAddress());
+        String str = String.join(",", mItemList.get(position).getSessions());
+        viewHolder.slots.setText(str);
+        if(mItemList.get(position).getIsVerified()) {
+            viewHolder.verifies.setText("Verified");
+            viewHolder.icon.setImageDrawable(context.getDrawable(R.drawable.check_circle));
+        } else {
+            viewHolder.icon.setImageDrawable(context.getDrawable(R.drawable.close_circle));
+            viewHolder.verifies.setText("UnVerified");
+        }
     }
 
 

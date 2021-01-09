@@ -1,0 +1,147 @@
+package com.moguls.medic.ui.fragments.doctor;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.moguls.medic.R;
+import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.LoadingCompound;
+import com.moguls.medic.model.hospitalSummary.Result;
+import com.moguls.medic.ui.settings.BaseFragment;
+import com.moguls.medic.ui.adapters.DoctorHospitalScheduledTimeAdapter;
+import com.moguls.medic.model.PatientList;
+import com.moguls.medic.webservices.BaseViewModel;
+import com.moguls.medic.webservices.GetHospitalSymmaryViewModel;
+
+import java.util.ArrayList;
+
+
+public class DoctorViewProfileHospitalFragment extends BaseFragment implements View.OnClickListener {
+
+    private boolean isLoading = false;
+    ArrayList<PatientList> rowsArrayList = new ArrayList<>();
+    private TextView header_title,update,hospital_status,hospital_address,distance,editSlots,viewSlots;
+    private RecyclerView recyclerView;
+    private DoctorHospitalScheduledTimeAdapter doctorHospitalScheduledTimeAdapter;
+    private GetHospitalSymmaryViewModel getHospitalSymmaryViewModel;
+    private LoadingCompound ld;
+    String hospitalID;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        v = inflater.inflate(R.layout.fragment_view_doctor_profile, container, false);
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        header_title = (TextView)v.findViewById(R.id.header_title);
+        ld = (LoadingCompound)v.findViewById(R.id.ld);
+        hospital_status = (TextView)v.findViewById(R.id.hospital_status);
+        editSlots = (TextView)v.findViewById(R.id.editSlots);
+        viewSlots = (TextView)v.findViewById(R.id.viewSlots);
+        hospital_address = (TextView)v.findViewById(R.id.hospital_address);
+        distance = (TextView)v.findViewById(R.id.distance);
+        setBackButtonToolbarStyleOne(v);
+        setGetHospitalAPIObserver();
+        recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
+        getHospitalSymmaryViewModel.loadData(hospitalID);
+        editSlots.setOnClickListener(this);
+        viewSlots.setOnClickListener(this);
+    }
+
+    private void setData() {
+        Result result = getHospitalSymmaryViewModel.hospitalSummary.getResult();
+        header_title.setText(result.getName());
+        hospital_status.setText(result.getToday());
+        hospital_address.setText(result.getAddress());
+        //distance.setText(result.());
+        iniAdapter();
+    }
+    private void iniAdapter() {
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        doctorHospitalScheduledTimeAdapter = new DoctorHospitalScheduledTimeAdapter(getActivity(),
+                getHospitalSymmaryViewModel.hospitalSummary.getResult().getSessions(), new DoctorHospitalScheduledTimeAdapter.OnItemClickListner() {
+            @Override
+            public void OnItemClick(int position) {
+
+            }
+        });
+        recyclerView.setAdapter(doctorHospitalScheduledTimeAdapter);
+    }
+
+    public void setGetHospitalAPIObserver() {
+        getHospitalSymmaryViewModel = ViewModelProviders.of(this).get(GetHospitalSymmaryViewModel.class);
+        getHospitalSymmaryViewModel.errorMessage.observe(this, new Observer<BaseViewModel.ErrorMessageModel>() {
+            @Override
+            public void onChanged(BaseViewModel.ErrorMessageModel errorMessageModel) {
+                showNotifyDialog(errorMessageModel.title,
+                        errorMessageModel.message, "OK",
+                        "", (NotifyListener) (new NotifyListener() {
+                            public void onButtonClicked(int which) {
+
+                            }
+                        }));
+            }
+        });
+        getHospitalSymmaryViewModel.isOauthExpired.observe(this, new Observer() {
+            @Override
+            public void onChanged(Object o) {
+                logOut(getActivity());
+
+            }
+        });
+        getHospitalSymmaryViewModel.isLoading.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoading) {
+                if(isLoading) {
+                    ld.showLoadingV2();
+                } else {
+                    ld.hide();
+                }
+            }
+        });
+        getHospitalSymmaryViewModel.isNetworkAvailable.observe(this, obsNoInternet);
+        getHospitalSymmaryViewModel.getTrigger().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                setData();
+            }
+        });
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.editSlots :
+                DoctorAddDoctorFragment doctorAddDoctorFragment = new DoctorAddDoctorFragment();
+                doctorAddDoctorFragment.isEdit = true;
+                doctorAddDoctorFragment.hospitalID = hospitalID;
+                home().setFragment(doctorAddDoctorFragment);
+                break;
+            case R.id.viewSlots :
+                doctorAddDoctorFragment = new DoctorAddDoctorFragment();
+                doctorAddDoctorFragment.isEdit = false;
+                doctorAddDoctorFragment.hospitalID = hospitalID;
+                home().setFragment(doctorAddDoctorFragment);
+                break;
+        }
+    }
+}

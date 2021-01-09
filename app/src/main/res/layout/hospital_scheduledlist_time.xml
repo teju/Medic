@@ -13,18 +13,18 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textSize="@dimen/text_small"
+            android:id="@+id/day"
             android:fontFamily="@font/opensansregular"
             android:textColor="@color/black"
-            android:text="Wednesday"
             android:layout_height="wrap_content">
         </TextView>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:id="@+id/time"
             android:fontFamily="@font/opensansregular"
             android:textSize="@dimen/text_small"
             android:textColor="@color/black"
-            android:text="11.00 - 18.00"
             android:layout_height="wrap_content">
         </TextView>
     </LinearLayout>

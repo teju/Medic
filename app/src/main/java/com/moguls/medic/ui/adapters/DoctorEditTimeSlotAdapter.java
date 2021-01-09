@@ -24,6 +24,7 @@ public class DoctorEditTimeSlotAdapter extends RecyclerView.Adapter<RecyclerView
 
     public List<String> mItemList;
     public Context context;
+    public boolean isAdd;
 
     private OnItemClickListner listener;
 
@@ -73,7 +74,7 @@ public class DoctorEditTimeSlotAdapter extends RecyclerView.Adapter<RecyclerView
     private class ItemViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout llRoot,llNight,llevening,llmorning;
-        TextView weekday_txt;
+        TextView weekday_txt,evening_shift_timing,morning_shift_timing,night_shift_timing;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             llRoot = itemView.findViewById(R.id.llRoot);
@@ -81,6 +82,9 @@ public class DoctorEditTimeSlotAdapter extends RecyclerView.Adapter<RecyclerView
             llNight = itemView.findViewById(R.id.llNight);
             llevening = itemView.findViewById(R.id.llevening);
             llmorning = itemView.findViewById(R.id.llmorning);
+            evening_shift_timing = itemView.findViewById(R.id.evening_shift_timing);
+            morning_shift_timing = itemView.findViewById(R.id.morning_shift_timing);
+            night_shift_timing = itemView.findViewById(R.id.night_shift_timing);
         }
     }
 
@@ -126,5 +130,15 @@ public class DoctorEditTimeSlotAdapter extends RecyclerView.Adapter<RecyclerView
 
             }
         });
+        if(isAdd) {
+            viewHolder.morning_shift_timing.setText("+ Add shift");
+            viewHolder.morning_shift_timing.setTextColor(context.getResources().getColor(R.color.orange));
+
+            viewHolder.evening_shift_timing.setText("+ Add shift");
+            viewHolder.evening_shift_timing.setTextColor(context.getResources().getColor(R.color.orange));
+
+            viewHolder.night_shift_timing.setText("+ Add shift");
+            viewHolder.night_shift_timing.setTextColor(context.getResources().getColor(R.color.orange));
+        }
     }
 }

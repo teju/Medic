@@ -11,9 +11,23 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.model.hospitalViews.Result;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HospitalSpinnerAdapter extends BaseAdapter {
     private final OnItemClickListner onItemClickListner;
+
+    public List<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
+    }
+
+    List<Result> results = new ArrayList<>();
     Context context;
     int selPos = 0;
     public interface OnItemClickListner {
@@ -26,17 +40,17 @@ public class HospitalSpinnerAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return results.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return results.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -45,6 +59,8 @@ public class HospitalSpinnerAdapter extends BaseAdapter {
 
         view = inflter.inflate(R.layout.hospital_spinner_items, null);
         RadioButton radio_button = (RadioButton)view.findViewById(R.id.radio_button);
+        TextView hospital_address = (TextView)view.findViewById(R.id.hospital_address);
+        TextView hospital_name = (TextView)view.findViewById(R.id.hospital_name);
         radio_button.setTag(i);
         if(i == selPos) {
             radio_button.setChecked(true);
@@ -59,6 +75,15 @@ public class HospitalSpinnerAdapter extends BaseAdapter {
                 onItemClickListner.OnItemClick(selPos);
             }
         });
+        radio_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notifyDataSetChanged();
+                onItemClickListner.OnItemClick(selPos);
+            }
+        });
+        hospital_name.setText(results.get(i).getName());
+        hospital_address.setText(results.get(i).getAddress());
         return view;
     }
 }

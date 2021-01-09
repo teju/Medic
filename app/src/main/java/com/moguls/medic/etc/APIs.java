@@ -36,5 +36,10 @@ public class APIs {
     public static String getdoctorpatients = SecuredBaseUrl + mobility +"/get-doctor-patients";
     public static String getdoctorappointments = SecuredBaseUrl + mobility +"/get-doctor-appointments";
     public static String gethospitalsview = SecuredBaseUrl + mobility +"/get-hospitals-view";
+    public static String getdoctorprofilesummary = SecuredBaseUrl + mobility +"/get-doctor-profile-summary";
+    public static String getconsultationplans = SecuredBaseUrl + mobility +"/get-consultationplans";
+    public static String saveconsultationplan = SecuredBaseUrl + mobility +"/save-consultationplan";
+    public static String gethospitalsummary = SecuredBaseUrl + mobility +"/get-hospital-summary";
+    public static String gethospital = SecuredBaseUrl + mobility +"/get-hospital";
 
 }

@@ -1,203 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@color/light_gray"
-    android:layout_height="match_parent">
-    <include layout="@layout/header"></include>
-    <TextView
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ScrollView
         android:layout_width="match_parent"
-        android:padding="15dp"
-        android:text="Set up your free plan for physical visit"
-        android:textAlignment="center"
-        android:background="@color/light_gray"
         android:layout_height="wrap_content">
-    </TextView>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:padding="10dp"
-        android:visibility="visible"
-        android:id="@+id/rl_visit_type"
-        android:layout_height="wrap_content">
-        <Spinner
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:id="@+id/sp_visit_type"
-            android:background="@drawable/spinner_background"
-            android:layout_height="wrap_content">
-        </Spinner>
-        <TextView
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/opensansregular"
-            android:textSize="@dimen/text_med"
-            android:textColor="@color/black"
-            android:id="@+id/tv_visitType"
-            android:visibility="gone"
-            android:layout_centerVertical="true"
-            android:text="Physical Visit"
-            android:layout_height="wrap_content">
-        </TextView>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:src="@drawable/chevron_down"
-            android:visibility="gone"
-            android:layout_alignParentRight="true"
-            android:layout_height="wrap_content">
-        </ImageView>
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:background="@color/light_gray"
-        android:layout_height="0.5dp">
-    </View>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
-        <Spinner
-            android:layout_width="match_parent"
-            android:id="@+id/sp_hospital"
-            android:visibility="gone"
-            android:background="@null"
-            android:spinnerMode="dialog"
-            android:gravity="center"
-            android:layout_height="wrap_content">
-        </Spinner>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:padding="15dp"
-            android:id="@+id/rl_doctor_list"
-            android:layout_height="wrap_content">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical"
+            android:background="@color/light_gray"
+            android:layout_height="match_parent">
+            <include layout="@layout/header"></include>
             <TextView
-                android:layout_width="wrap_content"
-                android:fontFamily="@font/opensansregular"
-                android:textSize="@dimen/text_med"
-                android:visibility="visible"
-                android:id="@+id/hospital_name"
-                android:text="Select Hospital/Clinic"
-                android:layout_centerVertical="true"
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:text="Set up your free plan for physical visit"
+                android:textAlignment="center"
+                android:background="@color/light_gray"
                 android:layout_height="wrap_content">
             </TextView>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:src="@drawable/chevron_down"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="10dp"
                 android:visibility="visible"
-                android:layout_alignParentRight="true"
+                android:id="@+id/rl_visit_type"
                 android:layout_height="wrap_content">
-            </ImageView>
-        </RelativeLayout>
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:background="@color/light_gray"></View>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:padding="15dp"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/opensansregular"
-            android:textSize="@dimen/text_med"
-            android:text="Consultation Fees"
-            android:textColor="@color/black"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
-        </TextView>
-        <EditText
-            android:layout_width="wrap_content"
-            android:minWidth="100dp"
-            android:textAlignment="textEnd"
-            android:fontFamily="@font/opensansregular"
-            android:textSize="@dimen/text_med"
-            android:background="@color/transparent"
-            android:layout_alignParentRight="true"
-            android:text="Rs 0.0"
-            android:textColor="@color/grey"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
-        </EditText>
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:background="@color/light_gray"
-        android:layout_height="0.5dp">
-    </View>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:padding="15dp"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/opensansregular"
-            android:textSize="@dimen/text_med"
-            android:text="Slots duration"
-            android:textColor="@color/black"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
-        </TextView>
-        <EditText
-            android:layout_width="wrap_content"
-            android:minWidth="100dp"
-            android:textAlignment="textEnd"
-            android:fontFamily="@font/opensansregular"
-            android:textSize="@dimen/text_med"
-            android:textColor="@color/grey"
-            android:background="@color/transparent"
-            android:layout_alignParentRight="true"
-            android:text="15 mins"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
-        </EditText>
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:padding="15dp"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/opensansregular"
-            android:textSize="@dimen/text_med"
-            android:text="Block Status"
-            android:textColor="@color/black"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
-        </TextView>
-        <EditText
-            android:layout_width="wrap_content"
-            android:minWidth="100dp"
-            android:textAlignment="textEnd"
-            android:fontFamily="@font/opensansregular"
-            android:textSize="@dimen/text_med"
-            android:background="@color/transparent"
-            android:layout_alignParentRight="true"
-            android:text="Disabled"
-            android:textColor="@color/grey"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
-        </EditText>
-    </RelativeLayout>
-    <Button
-        android:layout_width="150dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="15dp"
-        android:backgroundTint="@color/colorAccent"
-        android:text="Create Plan"
-        android:id="@+id/create_plan"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/white"
-        android:background="@drawable/button_bg_selector"
-        android:layout_height="40dp">
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/sp_visit_type"
+                    android:background="@drawable/spinner_background"
+                    android:layout_height="wrap_content">
+                </Spinner>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/opensansregular"
+                    android:textSize="@dimen/text_med"
+                    android:textColor="@color/black"
+                    android:id="@+id/tv_visitType"
+                    android:visibility="gone"
+                    android:layout_centerVertical="true"
+                    android:text="Physical Visit"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/chevron_down"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content">
+                </ImageView>
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/light_gray"
+                android:layout_height="0.5dp">
+            </View>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_height="wrap_content">
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/sp_hospital"
+                    android:visibility="gone"
+                    android:background="@null"
+                    android:spinnerMode="dialog"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+                </Spinner>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:padding="15dp"
+                    android:id="@+id/rl_doctor_list"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/opensansregular"
+                        android:textSize="@dimen/text_med"
+                        android:visibility="visible"
+                        android:id="@+id/hospital_name"
+                        android:text="Select Hospital/Clinic"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content">
+                    </TextView>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/chevron_down"
+                        android:visibility="visible"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="wrap_content">
+                    </ImageView>
+                </RelativeLayout>
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/light_gray"></View>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="15dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/opensansregular"
+                    android:textSize="@dimen/text_med"
+                    android:text="Consultation Fees"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/text_med"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:hint="Rs 0.00"
+                    android:id="@+id/consultationFee"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/dark_gray"
+                    android:background="@drawable/button_border_rounder_rect"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="40dp">
+                </EditText>
 
-    </Button>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/light_gray"
+                android:layout_height="0.5dp">
+            </View>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="15dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/opensansregular"
+                    android:textSize="@dimen/text_med"
+                    android:text="Slots duration"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/text_med"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:hint="0 mins"
+                    android:id="@+id/slots_duration"
+                    android:inputType="number"
+                    android:textColor="@color/dark_gray"
+                    android:background="@drawable/button_border_rounder_rect"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="40dp">
+                </EditText>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="15dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/opensansregular"
+                    android:textSize="@dimen/text_med"
+                    android:text="Advance Booking Days"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/text_med"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:hint="0 days"
+                    android:id="@+id/advance_booking_days"
+                    android:inputType="number"
+                    android:textColor="@color/dark_gray"
+                    android:background="@drawable/button_border_rounder_rect"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="40dp">
+                </EditText>
+            </LinearLayout>
 
-</LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="15dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/opensansregular"
+                    android:textSize="@dimen/text_med"
+                    android:text="Block Status"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:checked="false"
+                    android:layout_height="wrap_content">
+                </Switch>
+            </RelativeLayout>
+            <Button
+                android:layout_width="150dp"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="15dp"
+                android:backgroundTint="@color/colorAccent"
+                android:text="Create Plan"
+                android:id="@+id/create_plan"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:background="@drawable/button_bg_selector"
+                android:layout_height="40dp">
+
+            </Button>
+        </LinearLayout>
+
+    </ScrollView>
+    <com.moguls.medic.etc.LoadingCompound
+        android:id="@+id/ld"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:clickable="true"
+        android:visibility="gone" />
+
+</RelativeLayout>
