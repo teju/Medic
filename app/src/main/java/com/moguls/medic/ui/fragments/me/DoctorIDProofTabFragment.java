@@ -107,10 +107,11 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
                 pickImage(PICK_DEGREE_PHOTO_PHOTO);
                 break;
             case R.id.btnSave:
-                Personnel personnel = baseParams.getPersonnel();
+                Personnel personnel = profileInit.getPersonnel();
                 if(!statement.getText().toString().isEmpty()) {
                     personnel.setStatement(statement.getText().toString());
                 }
+                baseParams.setPersonnel(personnel);
                 doctorSaveListener.onButtonClicked();
                 break;
         }

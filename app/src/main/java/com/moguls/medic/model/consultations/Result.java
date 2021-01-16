@@ -1,8 +1,48 @@
 package com.moguls.medic.model.consultations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Result {
 
     String Hospital;
+    String Name;
+    String Address;
+    String HospitalID;
+    String Timeslot;
+    String Fee;
+    Double Latitude = 0.0;
+
+    public Double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        Latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        Longitude = longitude;
+    }
+
+    Double Longitude = 0.0;
+
+    public String getConsultationFee() {
+        return ConsultationFee;
+    }
+
+    public void setConsultationFee(String consultationFee) {
+        ConsultationFee = consultationFee;
+    }
+
+    String ConsultationFee;
+    String AdvanceBookingDays;
+    List<Sessions> Sessions = new ArrayList<>();
+    ConsultationType ConsultationType;
 
     public String getName() {
         return Name;
@@ -12,12 +52,6 @@ public class Result {
         Name = name;
     }
 
-    String Name;
-    String Address;
-    String HospitalID;
-    String Timeslot;
-    String Fee;
-    String AdvanceBookingDays;
 
     public String getHospital() {
         return Hospital;
@@ -75,7 +109,16 @@ public class Result {
         ConsultationType = consultationType;
     }
 
-    ConsultationType ConsultationType;
+
+
+    public List<com.moguls.medic.model.consultations.Sessions> getSessions() {
+        return Sessions;
+    }
+
+    public void setSessions(List<com.moguls.medic.model.consultations.Sessions> sessions) {
+        Sessions = sessions;
+    }
+
 
 
 }

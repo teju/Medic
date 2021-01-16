@@ -73,7 +73,15 @@ public class DoctorProfileHospitalListFragment extends BaseFragment implements V
                 doctorViewProfileHospitalFragment.hospitalID = hospitalsViewModel.hospitalView.getResult().get(position).getID();
                 home().setFragment(doctorViewProfileHospitalFragment);
             }
-        });
+
+                    @Override
+                    public void onEditClick(int position) {
+                        DoctorAddDoctorFragment doctorAddDoctorFragment = new DoctorAddDoctorFragment();
+                        doctorAddDoctorFragment.isEdit = true;
+                        doctorAddDoctorFragment.hospitalID = hospitalsViewModel.hospitalView.getResult().get(position).getID();
+                        home().setFragment(doctorAddDoctorFragment);
+                    }
+                });
         recyclerView.setAdapter(doctorPatientListAdapter);
     }
 

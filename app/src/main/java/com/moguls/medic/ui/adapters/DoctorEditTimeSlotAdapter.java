@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.model.consultations.Sessions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,17 +22,20 @@ public class DoctorEditTimeSlotAdapter extends RecyclerView.Adapter<RecyclerView
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
+    public static int MORNING = 2;
+    public static int AFTERNOON = 3;
+    public static int EVENING = 4;
 
-    public List<String> mItemList;
+    public List<Sessions> mItemList;
     public Context context;
     public boolean isAdd;
 
     private OnItemClickListner listener;
 
     public interface OnItemClickListner {
-        void OnItemClick(int position);
+        void OnItemClick(int position,int type);
     }
-    public DoctorEditTimeSlotAdapter(Context context, List<String> itemList, OnItemClickListner listener) {
+    public DoctorEditTimeSlotAdapter(Context context, List<Sessions> itemList, OnItemClickListner listener) {
         this.listener = listener;
         this.context = context;
         mItemList = itemList;
@@ -104,41 +108,49 @@ public class DoctorEditTimeSlotAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
-        viewHolder.llRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.OnItemClick(position);
-            }
-        });
-        viewHolder.weekday_txt.setText(mItemList.get(position));
+        viewHolder.weekday_txt.setText(mItemList.get(position).getDay());
         viewHolder.llmorning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                listener.OnItemClick(position,MORNING);
             }
         });
         viewHolder.llevening.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                listener.OnItemClick(position,AFTERNOON);
             }
         });
         viewHolder.llNight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                listener.OnItemClick(position,EVENING);
             }
         });
-        if(isAdd) {
-            viewHolder.morning_shift_timing.setText("+ Add shift");
+
+        if(mItemList.get(position).getMorning() != null) {
+            viewHolder.morning_shift_timing.setTextColor(context.getResources().getColor(R.color.black));
+            viewHolder.morning_shift_timing.setText(mItemList.get(position).getMorning().getStart()+" - "+
+                    mItemList.get(position).getMorning().getEnd());
+        } else {
             viewHolder.morning_shift_timing.setTextColor(context.getResources().getColor(R.color.orange));
-
-            viewHolder.evening_shift_timing.setText("+ Add shift");
+            viewHolder.morning_shift_timing.setText("+ Add shift");
+        }
+        if(mItemList.get(position).getAfterNoon() != null) {
+            viewHolder.evening_shift_timing.setTextColor(context.getResources().getColor(R.color.black));
+            viewHolder.evening_shift_timing.setText(mItemList.get(position).getAfterNoon().getStart()+" - "+
+                    mItemList.get(position).getAfterNoon().getEnd());
+        } else {
             viewHolder.evening_shift_timing.setTextColor(context.getResources().getColor(R.color.orange));
-
-            viewHolder.night_shift_timing.setText("+ Add shift");
+            viewHolder.evening_shift_timing.setText("+ Add shift");
+        }
+        if(mItemList.get(position).getEvening() != null) {
+            viewHolder.night_shift_timing.setTextColor(context.getResources().getColor(R.color.black));
+            viewHolder.night_shift_timing.setText(mItemList.get(position).getEvening().getStart()+" - "+
+                    mItemList.get(position).getEvening().getEnd());
+        } else {
             viewHolder.night_shift_timing.setTextColor(context.getResources().getColor(R.color.orange));
+            viewHolder.night_shift_timing.setText("+ Add shift");
         }
     }
 }

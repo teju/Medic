@@ -20,6 +20,7 @@ import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.etc.SharedPreference;
 import com.moguls.medic.model.doctorProfileSummary.Result;
+import com.moguls.medic.ui.dialog.NotifyDialogFragment;
 import com.moguls.medic.ui.fragments.LoginFragment;
 import com.moguls.medic.ui.fragments.consultation.ConsultationFragment;
 import com.moguls.medic.ui.settings.BaseFragment;
@@ -121,13 +122,16 @@ public class DoctorMeFragment extends BaseFragment implements View.OnClickListen
             case R.id.ll_logout :
                 showNotifyDialog("",
                         "Are you sure you want to logout ?", "OK",
-                        "", (NotifyListener) (new NotifyListener() {
+                        "Cancel", (NotifyListener) (new NotifyListener() {
                             public void onButtonClicked(int which) {
-                                home().clearFragment();
-                                SharedPreference.setBoolean(getActivity(),SharedPreference.isLoggedIn,false);
-                                home().setFragment(new LoginFragment());
+                                if(which == NotifyDialogFragment.BUTTON_POSITIVE) {
+                                    home().clearFragment();
+                                    SharedPreference.setBoolean(getActivity(), SharedPreference.isLoggedIn, false);
+                                    home().setFragment(new LoginFragment());
+                                }
                             }
                         }));
+
 
                 break;
 

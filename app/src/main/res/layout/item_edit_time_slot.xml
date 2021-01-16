@@ -51,7 +51,6 @@
                     android:id="@+id/morning_shift_timing"
                     android:fontFamily="@font/opensansregular"
                     android:textColor="@color/black"
-                    android:text="8.30 - 12.00"
                     android:layout_height="wrap_content">
                 </TextView>
 
@@ -79,7 +78,6 @@
                     android:id="@+id/evening_shift_timing"
                     android:fontFamily="@font/opensansregular"
                     android:textColor="@color/red"
-                    android:text="Closed"
                     android:layout_height="wrap_content">
                 </TextView>
 
@@ -108,7 +106,6 @@
                     android:id="@+id/night_shift_timing"
                     android:fontFamily="@font/opensansregular"
                     android:textColor="@color/orange"
-                    android:text="+ Add shift"
                     android:layout_height="wrap_content">
                 </TextView>
 

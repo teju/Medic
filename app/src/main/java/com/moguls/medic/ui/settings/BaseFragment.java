@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer;
 
 import com.moguls.medic.activity.MainActivity;
 import com.moguls.medic.R;
+import com.moguls.medic.callback.EditSlotsListener;
 import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.callback.OtpListener;
 import com.moguls.medic.callback.PermissionListener;
@@ -27,6 +28,7 @@ import com.moguls.medic.etc.Constants;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.SharedPreference;
 import com.moguls.medic.model.BaseParams;
+import com.moguls.medic.ui.dialog.EditDialogFragment;
 import com.moguls.medic.ui.fragments.LoginFragment;
 import com.moguls.medic.ui.dialog.ConfirmBookingDialogFragment;
 import com.moguls.medic.ui.dialog.ApptActionsDialogFragment;
@@ -211,6 +213,14 @@ public class BaseFragment extends GenericFragment {
         f.show(getActivity().getSupportFragmentManager(), NotifyDialogFragment.TAG);
 
     }
+    public void showEDitSlotsDialog(EditSlotsListener n) {
+        EditDialogFragment f = new EditDialogFragment();
+        f.listener = n;
+        f.setCancelable(false);
+        f.show(getActivity().getSupportFragmentManager(), EditDialogFragment.TAG);
+
+    }
+
     public void showBookingConfirmyDialog(String refNo, BookingData bookingData, NotifyListener n) {
         ConfirmBookingDialogFragment f = new ConfirmBookingDialogFragment();
         f.listener = n;

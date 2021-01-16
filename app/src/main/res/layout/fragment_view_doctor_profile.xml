@@ -88,6 +88,7 @@
                     </View>
                     <RelativeLayout
                         android:layout_width="match_parent"
+                        android:id="@+id/goTogoogle"
                         android:layout_height="wrap_content">
                         <TextView
                             android:layout_width="250dp"
@@ -127,6 +128,7 @@
                     android:layout_marginTop="15dp"
                     android:text="Leave Hospital"
                     android:textColor="@color/red"
+                    android:id="@+id/leave_hospital"
                     android:background="@color/light_white"
                     android:layout_height="wrap_content">
 

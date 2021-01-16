@@ -271,6 +271,10 @@ public abstract class HTTPAsyncTask
 		}
 		this.setMethod(Constants.POST);
 	}
+	public void setPostParams(JSONObject value) {
+		this.params = value;
+		this.setMethod(Constants.POST);
+	}
 
 	public void setPostParams(String key, String value, boolean allowWhiteSpace) {
 		if (key == null || key.trim().length() <= 0) { return; }

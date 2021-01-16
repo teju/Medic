@@ -3,11 +3,23 @@ package com.moguls.medic.model;
 import com.moguls.medic.model.doctorProfileDetails.IDProof;
 import com.moguls.medic.model.doctorProfileDetails.Medical;
 import com.moguls.medic.model.doctorProfileDetails.Personnel;
+import com.moguls.medic.model.consultations.Result;
+import com.moguls.medic.model.hospital.Hospital;
 
 public class BaseParams {
     Personnel personnel;
     Medical medical;
+    IDProof idProof;
 
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
+
+    Result result;
     public Personnel getPersonnel() {
         return personnel;
     }
@@ -32,5 +44,4 @@ public class BaseParams {
         this.idProof = idProof;
     }
 
-    IDProof idProof;
 }

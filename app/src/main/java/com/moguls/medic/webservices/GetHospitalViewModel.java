@@ -65,6 +65,7 @@ public class GetHospitalViewModel extends BaseViewModel {
                                 errorMessage.postValue(createErrorMessageObject(response));
                             }
                         } catch ( Exception e) {
+                            e.printStackTrace();
                             showUnknowResponseErrorMessage();
                         }
                     }

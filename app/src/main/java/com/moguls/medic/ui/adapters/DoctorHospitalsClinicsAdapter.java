@@ -31,6 +31,7 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
     private OnItemClickListner listener;
     public interface OnItemClickListner {
         void OnItemClick(int position);
+        void onEditClick(int position);
     }
     public DoctorHospitalsClinicsAdapter(Context context, List<Result> itemList, OnItemClickListner listener) {
         this.listener = listener;
@@ -77,7 +78,7 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
 
         LinearLayout llRoot;
         ImageView icon;
-        TextView hospital_name,hospital_address,slots,verifies;
+        TextView hospital_name,hospital_address,slots,verifies,edit_slots;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             llRoot = itemView.findViewById(R.id.llRoot);
@@ -86,6 +87,7 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
             slots = itemView.findViewById(R.id.slots);
             verifies = itemView.findViewById(R.id.verifies);
             icon = itemView.findViewById(R.id.icon);
+            edit_slots = itemView.findViewById(R.id.edit_slots);
 
         }
     }
@@ -124,6 +126,12 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
             viewHolder.icon.setImageDrawable(context.getDrawable(R.drawable.close_circle));
             viewHolder.verifies.setText("UnVerified");
         }
+        viewHolder.edit_slots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onEditClick(position);
+            }
+        });
     }
 
 
