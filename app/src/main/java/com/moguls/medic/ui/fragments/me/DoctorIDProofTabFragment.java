@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,7 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.moguls.medic.R;
+import com.moguls.medic.callback.DoctorSaveListener;
 import com.moguls.medic.etc.Helper;
+import com.moguls.medic.model.doctorProfileDetails.Personnel;
 import com.moguls.medic.model.doctorProfileDetails.Result;
 import com.moguls.medic.ui.settings.BaseFragment;
 
@@ -30,6 +33,8 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
     int PICK_DEGREE_PHOTO_PHOTO = 10012;
     private Result profileInit;
     private EditText statement;
+    DoctorSaveListener doctorSaveListener;
+    private Button btnSave;
 
     public void setProfileInit(Result profileInit) {
         this.profileInit = profileInit;
@@ -49,10 +54,12 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
         degree_proof = (ImageView)v.findViewById(R.id.degree_proof);
         id_proof = (ImageView)v.findViewById(R.id.id_proof);
         statement = (EditText)v.findViewById(R.id.statement);
+        btnSave = (Button)v.findViewById(R.id.btnSave);
         statement.setText(profileInit.getPersonnel().getStatement());
         reg_proof.setOnClickListener(this);
         degree_proof.setOnClickListener(this);
         id_proof.setOnClickListener(this);
+        btnSave.setOnClickListener(this);
 
     }
 
@@ -98,6 +105,13 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
                 break;
             case R.id.degree_proof:
                 pickImage(PICK_DEGREE_PHOTO_PHOTO);
+                break;
+            case R.id.btnSave:
+                Personnel personnel = baseParams.getPersonnel();
+                if(!statement.getText().toString().isEmpty()) {
+                    personnel.setStatement(statement.getText().toString());
+                }
+                doctorSaveListener.onButtonClicked();
                 break;
         }
     }

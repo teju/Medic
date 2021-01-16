@@ -195,6 +195,7 @@
                 android:layout_margin="15dp"
                 android:backgroundTint="@color/colorAccent"
                 android:text="Save"
+                android:id="@+id/btnSave"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/white"
                 android:background="@drawable/button_bg_selector"

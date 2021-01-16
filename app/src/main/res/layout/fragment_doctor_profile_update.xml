@@ -164,18 +164,19 @@
                                 android:text="Experience"
                                 android:layout_height="wrap_content">
                             </TextView>
-                            <EditText
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:textSize="@dimen/text_med"
                                 android:layout_marginTop="10dp"
                                 android:paddingLeft="10dp"
                                 android:background="@drawable/button_border_rounder_rect"
                                 android:inputType="number"
+                                android:gravity="center_vertical"
                                 android:id="@+id/edt_exp_yrs"
                                 android:drawablePadding="10dp"
                                 android:textColor="@color/dark_gray"
                                 android:layout_height="40dp">
-                            </EditText>
+                            </TextView>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -311,7 +312,7 @@
                 </LinearLayout>
                 <Button
                     android:layout_width="150dp"
-                    android:id="@+id/btn_delete"
+                    android:id="@+id/btn_save"
                     android:visibility="visible"
                     android:backgroundTint="@color/colorAccent"
                     android:background="@drawable/button_bg_selector"

@@ -46,4 +46,7 @@ public class BaseKeys {
 	public static final String File = "File";
 	public static final String FirstName = "FirstName";
 	public static final String LastName = "LastName";
+	public static final String Personnel = "Personnel";
+	public static final String Medical = "Medical";
+	public static final String IDProof = "IDProof";
 }

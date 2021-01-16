@@ -1,9 +1,12 @@
 package com.moguls.medic.model.doctorProfileDetails;
 
+import com.google.gson.GsonBuilder;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Personnel {
+public class Personnel implements Serializable {
 
 
     String PhotoUrl;
@@ -134,4 +137,8 @@ public class Personnel {
 
     List<Specializations> Qualifications = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return new GsonBuilder().create().toJson(this, Personnel.class);
+    }
 }

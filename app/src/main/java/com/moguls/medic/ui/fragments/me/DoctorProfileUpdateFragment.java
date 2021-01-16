@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,8 +16,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.moguls.medic.R;
+import com.moguls.medic.callback.DoctorSaveListener;
 import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.callback.PopUpListener;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.model.doctorProfileDetails.Personnel;
 import com.moguls.medic.model.doctorProfileDetails.Result;
@@ -36,8 +39,16 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
     final Calendar myCalendar = Calendar.getInstance();
     private TextView gender;
     private Result profileInit;
-    private EditText phone_number,edt_email_id,edt_exp_yrs,emergency_contact,location,edt_one,edt_two;
-
+    private EditText phone_number;
+    private EditText edt_email_id;
+    private TextView edt_exp_yrs;
+    private EditText emergency_contact;
+    private EditText location;
+    private EditText edt_one;
+    private EditText edt_two;
+    private Button btn_save;
+    DoctorSaveListener doctorSaveListener;
+    boolean isDOB = false;
     public void setProfileInit(Result profileInit) {
         this.profileInit = profileInit;
     }
@@ -56,14 +67,17 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
         dob = (TextView) v.findViewById(R.id.dob);
         phone_number = (EditText) v.findViewById(R.id.phone_number);
         edt_email_id = (EditText) v.findViewById(R.id.edt_email_id);
-        edt_exp_yrs = (EditText) v.findViewById(R.id.edt_exp_yrs);
+        edt_exp_yrs = (TextView) v.findViewById(R.id.edt_exp_yrs);
         edt_one = (EditText) v.findViewById(R.id.edt_one);
         edt_two = (EditText) v.findViewById(R.id.edt_two);
         emergency_contact = (EditText) v.findViewById(R.id.emergency_contact);
         location = (EditText) v.findViewById(R.id.location);
         gender = (TextView) v.findViewById(R.id.gender);
+        btn_save = (Button) v.findViewById(R.id.btn_save);
         gender.setOnClickListener(this);
         dob.setOnClickListener(this);
+        edt_exp_yrs.setOnClickListener(this);
+        btn_save.setOnClickListener(this);
         setData();
     }
 
@@ -119,9 +133,53 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
     private void updateLabel() {
         String myFormat = "dd MMM yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        dob.setText(sdf.format(myCalendar.getTime()));
+        if(isDOB) {
+            dob.setText(sdf.format(myCalendar.getTime()));
+        } else {
+            edt_exp_yrs.setText(sdf.format(myCalendar.getTime()));
+        }
     }
-
+    public boolean validate() {
+        if(edt_one.getText().toString().isEmpty()) {
+            edt_one.setError("Enter your First Name");
+            edt_one.requestFocus();
+            return false;
+        } else if(edt_two.getText().toString().isEmpty()) {
+            edt_two.setError("Enter your Last Name");
+            edt_two.requestFocus();
+            return false;
+        } else if(!Helper.isValidMobile(phone_number.getText().toString())) {
+            phone_number.setError("Enter Valid Phone Number");
+            phone_number.requestFocus();
+            return false;
+        } else if(!Helper.isValidEmail(edt_email_id.getText().toString())) {
+            edt_email_id.setError("Enter Valid EmailID");
+            edt_email_id.requestFocus();
+            return false;
+        } else if(edt_exp_yrs.getText().toString().isEmpty()) {
+            edt_exp_yrs.setError("Enter Your Experience");
+            edt_exp_yrs.requestFocus();
+            return false;
+        } else if(emergency_contact.getText().toString().isEmpty()) {
+            emergency_contact.setError("Enter Your Emergency Contact");
+            emergency_contact.requestFocus();
+            return false;
+        } else if(location.getText().toString().isEmpty()) {
+            location.setError("Enter Your Location");
+            location.requestFocus();
+            return false;
+        } else if(gender.getText().toString().isEmpty()) {
+            gender.setError("Select your gender");
+            gender.requestFocus();
+            return false;
+        } else if(dob.getText().toString().isEmpty()) {
+            dob.setError("Select your DOB");
+            dob.requestFocus();
+            return false;
+        } else {
+            return true;
+        }
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -129,6 +187,13 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
                 new DatePickerDialog(getActivity(), datePicker, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                isDOB = true;
+                break;
+            case R.id.edt_exp_yrs :
+                new DatePickerDialog(getActivity(), datePicker, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                isDOB = false;
                 break;
             case R.id.gender :
                 showPopUpMenu(getActivity(), gender, R.menu.gender_popup, new PopUpListener() {
@@ -138,9 +203,27 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
                     }
                 });
                 break;
+            case R.id.btn_save:
+                if(validate()) {
+                    Personnel personnel = profileInit.getPersonnel();
+                    personnel.setFirstName(edt_one.getText().toString());
+                    personnel.setLastName(edt_two.getText().toString());
+                    personnel.setMobileNo(phone_number.getText().toString());
+                    personnel.setEmailID(edt_email_id.getText().toString());
+                    personnel.setPracticingFrom(edt_exp_yrs.getText().toString());
+                    personnel.setEmergencyContactNo(edt_exp_yrs.getText().toString());
+                    personnel.setLocation(location.getText().toString());
+                    personnel.setDateOfBirth(dob.getText().toString());
+                    if(gender.getText().toString().equalsIgnoreCase("male")) {
+                        personnel.setIsMale(true);
+                    } else {
+                        personnel.setIsMale(false);
+                    }
+                    baseParams.setPersonnel(personnel);
+                    doctorSaveListener.onButtonClicked();
+                }
+                break;
         }
     }
-
-
 
 }

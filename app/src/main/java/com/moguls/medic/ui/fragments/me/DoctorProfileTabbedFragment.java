@@ -15,21 +15,24 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.moguls.medic.R;
+import com.moguls.medic.callback.DoctorSaveListener;
 import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.moguls.medic.ui.adapters.ViewPagerAdapter;
 import com.moguls.medic.webservices.BaseViewModel;
 import com.moguls.medic.webservices.GeDoctorProdileDetailsViewModel;
+import com.moguls.medic.webservices.PostSaveDoctorViewModel;
 
 
-public class DoctorProfileTabbedFragment extends BaseFragment implements View.OnClickListener{
+public class DoctorProfileTabbedFragment extends BaseFragment implements View.OnClickListener,DoctorSaveListener{
 
     private TabLayout tabLayout;
     private TextView header_title,percentage;
     private ViewPager viewPager;
     private LoadingCompound ld;
     private GeDoctorProdileDetailsViewModel getDoctorProdileDetailsViewModel;
+    private PostSaveDoctorViewModel postSaveDoctorViewModel;
     public int percentageVal;
     public void setBottomNavigation(BottomNavigationView bottomNavigation) {
         this.bottomNavigation = bottomNavigation;
@@ -49,6 +52,7 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
         super.onViewCreated(view, savedInstanceState);
         setBackButtonToolbarStyleOne(v);
         setProfileAPIObserver();
+        setSaveProfileAPIObserver();
 
         tabLayout = (TabLayout) v.findViewById(R.id.tabLayout);
         viewPager = (ViewPager) v.findViewById(R.id.viewPager);
@@ -64,18 +68,28 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
     }
 
     private void addTabs() {
+        baseParams.setPersonnel(getDoctorProdileDetailsViewModel.getdDoctorsProfileDetails.getResult().getPersonnel());
+        baseParams.setMedical(getDoctorProdileDetailsViewModel.getdDoctorsProfileDetails.getResult().getMedical());
+        baseParams.setIdProof(getDoctorProdileDetailsViewModel.getdDoctorsProfileDetails.getResult().getIDProof());
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         DoctorProfileUpdateFragment doctorProfileUpdateFragment = new DoctorProfileUpdateFragment();
         DoctorMedicalTabFragment doctorMedicalTabFragment = new DoctorMedicalTabFragment();
         DoctorIDProofTabFragment doctorIDProofTabFragment = new DoctorIDProofTabFragment();
+
         doctorProfileUpdateFragment.setProfileInit(getDoctorProdileDetailsViewModel.getdDoctorsProfileDetails.getResult());
         doctorMedicalTabFragment.setProfileInit(getDoctorProdileDetailsViewModel.getdDoctorsProfileDetails.getResult());
         doctorIDProofTabFragment.setProfileInit(getDoctorProdileDetailsViewModel.getdDoctorsProfileDetails.getResult());
+
+        doctorProfileUpdateFragment.doctorSaveListener = this;
+        doctorMedicalTabFragment.doctorSaveListener = this;
+        doctorIDProofTabFragment.doctorSaveListener = this;
+
         adapter.addFrag(doctorProfileUpdateFragment, "Personal");
         adapter.addFrag(doctorMedicalTabFragment, "Medical");
         adapter.addFrag(doctorIDProofTabFragment, "ID Proof");
         viewPager.setAdapter(adapter);
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -89,6 +103,45 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
 
         }
     }
+    public void setSaveProfileAPIObserver() {
+        postSaveDoctorViewModel = ViewModelProviders.of(this).get(PostSaveDoctorViewModel.class);
+        postSaveDoctorViewModel.errorMessage.observe(this, new Observer<BaseViewModel.ErrorMessageModel>() {
+            @Override
+            public void onChanged(BaseViewModel.ErrorMessageModel errorMessageModel) {
+                showNotifyDialog(errorMessageModel.title,
+                        errorMessageModel.message, "OK",
+                        "", (NotifyListener) (new NotifyListener() {
+                            public void onButtonClicked(int which) {
+
+                            }
+                        }));
+            }
+        });
+        postSaveDoctorViewModel.isOauthExpired.observe(this, new Observer() {
+            @Override
+            public void onChanged(Object o) {
+                logOut(getActivity());
+            }
+        });
+        postSaveDoctorViewModel.isLoading.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoading) {
+                if(isLoading) {
+                    ld.showLoadingV2();
+                } else {
+                    ld.hide();
+                }
+            }
+        });
+        postSaveDoctorViewModel.isNetworkAvailable.observe(this, obsNoInternet);
+        postSaveDoctorViewModel.getTrigger().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+
+            }
+        });
+    }
+
     public void setProfileAPIObserver() {
         getDoctorProdileDetailsViewModel = ViewModelProviders.of(this).get(GeDoctorProdileDetailsViewModel.class);
         getDoctorProdileDetailsViewModel.errorMessage.observe(this, new Observer<BaseViewModel.ErrorMessageModel>() {
@@ -129,4 +182,9 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
         });
     }
 
+    @Override
+    public void onButtonClicked() {
+        postSaveDoctorViewModel.loadData(baseParams.getPersonnel(),baseParams.getMedical(),baseParams.getIdProof());
+
+    }
 }

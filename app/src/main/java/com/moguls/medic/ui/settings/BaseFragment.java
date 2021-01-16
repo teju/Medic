@@ -26,6 +26,7 @@ import com.moguls.medic.callback.PopUpListener;
 import com.moguls.medic.etc.Constants;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.SharedPreference;
+import com.moguls.medic.model.BaseParams;
 import com.moguls.medic.ui.fragments.LoginFragment;
 import com.moguls.medic.ui.dialog.ConfirmBookingDialogFragment;
 import com.moguls.medic.ui.dialog.ApptActionsDialogFragment;
@@ -45,7 +46,7 @@ public class BaseFragment extends GenericFragment {
     List<String> permissionsThatNeedTobeCheck = new ArrayList<>();
     public PermissionListener permissionListener;
     public View  v = null;
-
+    public BaseParams baseParams = new BaseParams();
     public void onBackTriggered() {
         home().proceedDoOnBackPressed();
     }
