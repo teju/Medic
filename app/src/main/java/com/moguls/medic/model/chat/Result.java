@@ -5,7 +5,16 @@ import com.moguls.medic.model.myChat.File;
 public class Result {
     String IsSendByMe;
     String Message;
-    String File;
+
+    public com.moguls.medic.model.myChat.File getFile() {
+        return File;
+    }
+
+    public void setFile(com.moguls.medic.model.myChat.File file) {
+        File = file;
+    }
+
+    File File;
     String SendOn;
     String ReadOn;
     String DeletedOn;
@@ -26,13 +35,7 @@ public class Result {
         Message = message;
     }
 
-    public String getFile() {
-        return File;
-    }
 
-    public void setFile(String file) {
-        File = file;
-    }
 
     public String getSendOn() {
         return SendOn;

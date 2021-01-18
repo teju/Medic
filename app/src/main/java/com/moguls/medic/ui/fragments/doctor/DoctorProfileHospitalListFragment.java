@@ -62,6 +62,13 @@ public class DoctorProfileHospitalListFragment extends BaseFragment implements V
         hospitalsViewModel.loadData();
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if(!hidden) {
+            hospitalsViewModel.loadData();
+        }
+    }
+
     private void initAdapter() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

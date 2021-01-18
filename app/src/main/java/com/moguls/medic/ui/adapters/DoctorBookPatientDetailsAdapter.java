@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
 import com.moguls.medic.etc.Helper;
-import com.moguls.medic.model.appointmentSlots.DoctorSlots;
+import com.moguls.medic.model.doctorAppointments.DoctorSlots;
 
 import java.util.ArrayList;
 import java.util.Calendar;

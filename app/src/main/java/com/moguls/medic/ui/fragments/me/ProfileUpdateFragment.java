@@ -1,7 +1,11 @@
 package com.moguls.medic.ui.fragments.me;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -40,8 +44,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static com.moguls.medic.etc.Helper.loadImage;
+
 
 public class ProfileUpdateFragment extends BaseFragment implements View.OnClickListener {
+    private static final int PHOTO_IMAGE = 1002;
     private RecyclerView recyclerView;
     private LinearLayout ll_mobile_number,ll_email,ll_gender,ll_location,ll_status,ll_add,profile_details,ll_relation;
     private Button btn_delete;
@@ -58,8 +65,10 @@ public class ProfileUpdateFragment extends BaseFragment implements View.OnClickL
     private GetGetRelationsViewModel getRelationsViewModel;
     private GetProfilePatientViewModel getProfilePatientViewModel;
     private PostDeletePatientViewModel deletePatientViewModel;
+    private Uri cameraOutputUri;
 
     private LoadingCompound ld;
+    private String real_Path = "";
 
     public void setIsprofile(boolean isprofile) {
         this.isprofile = isprofile;
@@ -127,6 +136,7 @@ public class ProfileUpdateFragment extends BaseFragment implements View.OnClickL
         update.setVisibility(View.VISIBLE);
         update.setOnClickListener(this);
         ll_relation.setOnClickListener(this);
+        profile_pic.setOnClickListener(this);
 
         setListners();
         initContact();
@@ -170,22 +180,16 @@ public class ProfileUpdateFragment extends BaseFragment implements View.OnClickL
             blood_group.setText(getprofileRes.getBloodGroup());
         }
         if(getprofileRes.getHeight() != null) {
-            double inch =  Double.parseDouble(getprofileRes.getHeight()) / 2.54;
-            double feet = 0.0328 * Double.parseDouble(getprofileRes.getHeight());
-            edt_height_ft.setText(String.valueOf(feet));
-            edt_height_in.setText(String.valueOf(inch));
+            String[] height = getprofileRes.getHeight().split("\\.");
+            edt_height_ft.setText(height[0]);
+            if(height.length > 1) {
+                edt_height_in.setText(height[1]);
+            }
         }
         if(getprofileRes.getWeight() != null) {
             edtWeight.setText(getprofileRes.getWeight());
         }
-
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getRelationsViewModel.loadData();
+        loadImage(getActivity(),getprofileRes.getPhotoUrl(),R.drawable.doctor_profile_pic_default,profile_pic);
 
     }
 
@@ -249,10 +253,33 @@ public class ProfileUpdateFragment extends BaseFragment implements View.OnClickL
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dob.setText(sdf.format(myCalendar.getTime()));
     }
+    public void pickImage() {
+        cameraOutputUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+        Intent intent = Helper.getPickIntent(cameraOutputUri,getActivity());
+        startActivityForResult(intent, PHOTO_IMAGE);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri imageuri = null;
+        if(data != null) {
+            imageuri = data.getData();// Get intent
+        } else {
+            imageuri = cameraOutputUri;
+        }
+        real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
+        profile_pic.setImageURI(imageuri);
+
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.profile_pic:
+                pickImage();
+                break;
             case R.id.dob :
                 new DatePickerDialog(getActivity(), datePicker, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
@@ -336,15 +363,14 @@ public class ProfileUpdateFragment extends BaseFragment implements View.OnClickL
                     }
                     postUpdateProfileViewModel.loadData(ID,
                             edt_one.getText().toString(),mobileNumber,dob.getText().toString(),
-                            blood_group.getText().toString(),edtWeight.getText().toString(),String.format("%.2f", getHeightInCMS()),
+                            blood_group.getText().toString(),edtWeight.getText().toString(),getHeightInCMS(),
                             edt_email_id.getText().toString(),"",
-                            getRelationID(),marital_status.getText().toString(),location.getText().toString(),"",isMale,LastName);
+                            getRelationID(),marital_status.getText().toString(),location.getText().toString(),real_Path,isMale,LastName);
                 }
         }
     }
-    public double getHeightInCMS() {
-        double centimeter = 30.48 * Double.valueOf(edt_height_ft.getText().toString()) +
-                2.54 * Double.valueOf(edt_height_in.getText().toString());
+    public String getHeightInCMS() {
+        String centimeter = edt_height_ft.getText().toString()+"."+edt_height_in.getText().toString();
         return centimeter;
     }
     public String getRelationID() {

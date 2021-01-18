@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -17,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 
+import com.bumptech.glide.Glide;
 import com.moguls.medic.activity.MainActivity;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.EditSlotsListener;
@@ -24,6 +26,7 @@ import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.callback.OtpListener;
 import com.moguls.medic.callback.PermissionListener;
 import com.moguls.medic.callback.PopUpListener;
+import com.moguls.medic.etc.APIs;
 import com.moguls.medic.etc.Constants;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.SharedPreference;
@@ -83,7 +86,6 @@ public class BaseFragment extends GenericFragment {
 
         }
     });
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

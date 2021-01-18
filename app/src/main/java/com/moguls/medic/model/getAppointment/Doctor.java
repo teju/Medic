@@ -8,6 +8,16 @@ public class Doctor {
     private String Name;
     private String Latitude;
 
+    public String getPhotoUrl() {
+        return PhotoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        PhotoUrl = photoUrl;
+    }
+
+    private String PhotoUrl;
+
     public String getLatitude() {
         return Latitude;
     }

@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.model.userAppointment.Result;
 
 import java.util.List;
@@ -85,7 +86,7 @@ public class PatientAppointmentAdapter extends RecyclerView.Adapter<RecyclerView
 
         LinearLayout llRoot;
         TextView doctor_name,specialization,address,remarks,date,patient_name;
-        ImageView call,chat,settings;
+        ImageView call,chat,settings,logo;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -99,6 +100,7 @@ public class PatientAppointmentAdapter extends RecyclerView.Adapter<RecyclerView
             remarks = itemView.findViewById(R.id.remarks);
             date = itemView.findViewById(R.id.date);
             patient_name = itemView.findViewById(R.id.patient_name);
+            logo = itemView.findViewById(R.id.logo);
         }
     }
 
@@ -164,5 +166,7 @@ public class PatientAppointmentAdapter extends RecyclerView.Adapter<RecyclerView
         viewHolder.date.setText(mItemList.get(position).getAppointmentOn());
         viewHolder.patient_name.setText(mItemList.get(position).getPatient().getName());
         viewHolder.remarks.setText(mItemList.get(position).getRemarks());
+        Helper.loadImage(context, mItemList.get(position).getDoctor().getPhotoUrl(),
+                R.drawable.doctor_profile_pic_default,viewHolder.logo);
     }
 }

@@ -34,7 +34,7 @@ public class PostSendMessageViewModel extends BaseViewModel {
         return trigger;
     }
 
-    public void loadData(String ToUserID,String Message,JSONObject file) {
+    public void loadData(String ToUserID,String Message,String file) {
         genericHttpAsyncTask = new Helper.GenericHttpAsyncTask(new Helper.GenericHttpAsyncTask.TaskListener() {
 
 
@@ -67,6 +67,7 @@ public class PostSendMessageViewModel extends BaseViewModel {
                                 errorMessage.postValue(createErrorMessageObject(response));
                             }
                         } catch ( Exception e) {
+                            e.printStackTrace();
                             showUnknowResponseErrorMessage();
                         }
                     }
@@ -79,9 +80,9 @@ public class PostSendMessageViewModel extends BaseViewModel {
         genericHttpAsyncTask.setUrl(APIs.sendmessage);
         Helper.applyHeader(apl,genericHttpAsyncTask);
         genericHttpAsyncTask.context = apl.getApplicationContext();
-        genericHttpAsyncTask.setPostParams(BaseKeys.ToUserID,ToUserID);
-        genericHttpAsyncTask.setPostParams(BaseKeys.Message,Message);
-        genericHttpAsyncTask.setPostParams(BaseKeys.File,file);
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.ToUserID,ToUserID);
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.Message,Message);
+        genericHttpAsyncTask.setFileParams(BaseKeys.File,file,"multipart/form-data; boundar");
         genericHttpAsyncTask.setCache(false);
         genericHttpAsyncTask.execute();
 

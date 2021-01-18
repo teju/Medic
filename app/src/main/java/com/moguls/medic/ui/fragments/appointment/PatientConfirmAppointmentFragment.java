@@ -33,6 +33,8 @@ import com.moguls.medic.webservices.PostConfirmAppointmentViewModel;
 import java.security.spec.ECField;
 import java.util.Date;
 
+import static com.moguls.medic.etc.Helper.loadImage;
+
 
 public class PatientConfirmAppointmentFragment extends BaseFragment implements View.OnClickListener {
 
@@ -40,7 +42,7 @@ public class PatientConfirmAppointmentFragment extends BaseFragment implements V
     private TextView header_title,doctor_name,specialization,appointmentOn,hospital_name,address,no_patients;
     private RecyclerView recyclerView;
     private Button btn_confirm;
-    private ImageView add_patient;
+    private ImageView add_patient,doctor_profile_pic;
     public PostConfirmAppointmentViewModel postConfirmAppointmentViewModel;
     private LoadingCompound ld;
     private BookingData bookingData;
@@ -82,6 +84,7 @@ public class PatientConfirmAppointmentFragment extends BaseFragment implements V
         no_patients = (TextView) v.findViewById(R.id.no_patients);
         ld = (LoadingCompound)v.findViewById(R.id.ld);
         add_patient = (ImageView) v.findViewById(R.id.add_patient);
+        doctor_profile_pic = (ImageView) v.findViewById(R.id.doctor_profile_pic);
         TextView update = (TextView) v.findViewById(R.id.update);
         recyclerView = (RecyclerView) v.findViewById(R.id.rv_patient);
         btn_confirm = (Button) v.findViewById(R.id.btn_confirm);
@@ -120,6 +123,9 @@ public class PatientConfirmAppointmentFragment extends BaseFragment implements V
         } catch (Exception e) {
 
         }
+        loadImage(getActivity(),getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getPhotoUrl()
+                ,R.drawable.doctor_profile_pic_default,doctor_profile_pic);
+
         bookingData.setDoctorName(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getName());
         bookingData.setSpecializaion(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getSpecializations());
     }

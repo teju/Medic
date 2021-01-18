@@ -1,10 +1,15 @@
 package com.moguls.medic.ui.fragments.doctor;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.EditSlotsListener;
 import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.model.consultations.Result;
 import com.moguls.medic.model.consultations.Sessions;
@@ -41,6 +47,7 @@ import java.util.List;
 
 public class DoctorAddDoctorFragment extends BaseFragment {
 
+    private static final int PHOTO_IMAGE = 1003;
     public boolean isEdit = false;
     boolean isAdd = false;
     ArrayList<PatientList> rowsArrayList = new ArrayList<>();
@@ -57,6 +64,9 @@ public class DoctorAddDoctorFragment extends BaseFragment {
     private RelativeLayout createSlots;
     private LinearLayout lladd;
     List<Sessions> Sessions = new ArrayList<>();
+    private ImageView hospital_img;
+    private Uri cameraOutputUri;
+    private String real_Path;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +83,7 @@ public class DoctorAddDoctorFragment extends BaseFragment {
         setGetSaveHospitalViewModelHospitalAPIObserver();
 
         viewView = (LinearLayout)v.findViewById(R.id.viewView);
+        hospital_img = (ImageView)v.findViewById(R.id.hospital_img);
         lladd = (LinearLayout)v.findViewById(R.id.lladd);
         createSlots = (RelativeLayout)v.findViewById(R.id.createSlots);
         editView = (LinearLayout)v.findViewById(R.id.editView);
@@ -90,22 +101,28 @@ public class DoctorAddDoctorFragment extends BaseFragment {
         update = (TextView)v.findViewById(R.id.update);
         recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
         update.setVisibility(View.VISIBLE);
+        hospital_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickImage();
+            }
+        });
         setBackButtonToolbarStyleOne(v);
         if(isAdd) {
             header_title.setText("Add Hospitals/Clinincs");
             editView.setVisibility(View.VISIBLE);
             viewView.setVisibility(View.GONE);
-            lladd.setVisibility(View.GONE);
             iniAdapter();
         } else if(isEdit) {
             editView.setVisibility(View.VISIBLE);
             viewView.setVisibility(View.GONE);
-            lladd.setVisibility(View.GONE);
         } else {
             update.setVisibility(View.GONE);
             editView.setVisibility(View.GONE);
             viewView.setVisibility(View.VISIBLE);
-            lladd.setVisibility(View.GONE);
+            consultationFee.setEnabled(false);
+            slotsDuration.setEnabled(false);
+            bookingDays.setEnabled(false);
         }
         update.setText("Save");
         if(!hospitalID.isEmpty()) {
@@ -120,6 +137,24 @@ public class DoctorAddDoctorFragment extends BaseFragment {
             }
         });
     }
+    public void pickImage() {
+        cameraOutputUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+        Intent intent = Helper.getPickIntent(cameraOutputUri,getActivity());
+        startActivityForResult(intent, PHOTO_IMAGE);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri imageuri = null;
+        if(data != null) {
+            imageuri = data.getData();// Get intent
+        } else {
+            imageuri = cameraOutputUri;
+        }
+        real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
+        hospital_img.setImageURI(imageuri);
+
+    }
     public boolean validate() {
         if(edt_one.getText().toString().isEmpty()) {
             edt_one.setError("Enter Name");
@@ -129,19 +164,19 @@ public class DoctorAddDoctorFragment extends BaseFragment {
             edt_two.setError("Enter Address");
             edt_two.requestFocus();
             return false;
-        } /*else if(isAdd && consultationFee.getText().toString().isEmpty()) {
+        } else if(consultationFee.getText().toString().isEmpty()) {
             consultationFee.setError("Enter consultation Fee");
             consultationFee.requestFocus();
             return false;
-        } else if(isAdd && slotsDuration.getText().toString().isEmpty()) {
+        } else if(slotsDuration.getText().toString().isEmpty()) {
             slotsDuration.setError("Enter Duration");
             slotsDuration.requestFocus();
             return false;
-        } else if(isAdd && bookingDays.getText().toString().isEmpty()) {
+        } else if(bookingDays.getText().toString().isEmpty()) {
             bookingDays.setError("Enter Advance Booking Days");
             bookingDays.requestFocus();
             return false;
-        } */else {
+        } else {
             return true;
         }
     }
@@ -152,10 +187,10 @@ public class DoctorAddDoctorFragment extends BaseFragment {
             result = gtHospitalsViewModel.hospital.getResult();
         }
         result.setName(edt_one.getText().toString());
+        result.setPhotoUrl(real_Path);
         result.setAddress(edt_two.getText().toString());
         result.setTimeslot(slotsDuration.getText().toString());
         result.setConsultationFee(consultationFee.getText().toString());
-        result.setAdvanceBookingDays(bookingDays.getText().toString());
         result.setAdvanceBookingDays(bookingDays.getText().toString());
         result.setSessions(Sessions);
         postSaveHospitalViewModel.loadData(result);
@@ -170,6 +205,15 @@ public class DoctorAddDoctorFragment extends BaseFragment {
             hospital_address.setText(result.getAddress());
             edt_two.setText(result.getAddress());
             duration.setText(result.getTimeslot() + " mins");
+            if(result.getConsultationFee() != null) {
+                consultationFee.setText(result.getConsultationFee());
+            }
+            if(result.getTimeslot() != null) {
+                slotsDuration.setText(result.getTimeslot());
+            }
+            if(result.getAdvanceBookingDays() != null) {
+                bookingDays.setText(result.getAdvanceBookingDays());
+            }
         }
 
     }
@@ -325,13 +369,7 @@ public class DoctorAddDoctorFragment extends BaseFragment {
         postSaveHospitalViewModel.getTrigger().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                showNotifyDialog("",
-                        postSaveHospitalViewModel.genericResponse.getMessage(), "OK",
-                        "", (NotifyListener) (new NotifyListener() {
-                            public void onButtonClicked(int which) {
-
-                            }
-                        }));
+                home().proceedDoOnBackPressed();
             }
         });
     }

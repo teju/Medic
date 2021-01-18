@@ -71,6 +71,7 @@ public class PostSaveDoctorViewModel extends BaseViewModel {
                                 errorMessage.postValue(createErrorMessageObject(response));
                             }
                         } catch ( Exception e) {
+                            e.printStackTrace();
                             showUnknowResponseErrorMessage();
                         }
                     }
@@ -88,21 +89,27 @@ public class PostSaveDoctorViewModel extends BaseViewModel {
         genericHttpAsyncTask.setUrl(APIs.savedoctor);
         Helper.applyHeader(apl,genericHttpAsyncTask);
         genericHttpAsyncTask.context = apl.getApplicationContext();
-        try {
-            genericHttpAsyncTask.setPostParams(BaseKeys.Personnel,new JSONObject(personaljson));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            genericHttpAsyncTask.setPostParams(BaseKeys.Medical,new JSONObject(Medicaljson));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            genericHttpAsyncTask.setPostParams(BaseKeys.IDProof,new JSONObject(IDProofjson));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        genericHttpAsyncTask.setFileParams(BaseKeys.PhotoData,personnel.getPhotoUrl(),"multipart/form-data; boundar");
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.FirstName,personnel.getFirstName());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.LastName,personnel.getLastName());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.MobileNo,personnel.getMobileNo());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.EmailID,personnel.getEmailID());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.IsMale,String.valueOf(personnel.getIsMale()));
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.DateOfBirth,String.valueOf(personnel.getDateOfBirth()));
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.PracticingFrom,personnel.getPracticingFrom());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.Location,personnel.getLocation());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.EmergencyContactNo,personnel.getEmergencyContactNo());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.Statement,personnel.getStatement());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.IsVerified,personnel.getIsVerified());
+//        try {
+//            genericHttpAsyncTask.setFileParams(BaseKeys.Medical,new JSONObject(Medicaljson).toString(),"multipart/form-data; boundar");
+//            //genericHttpAsyncTask.settxtFileParams(BaseKeys.Personnel,new JSONObject(personaljson).toString());
+//            genericHttpAsyncTask.setFileParams(BaseKeys.IDProof,new JSONObject(IDProofjson).toString(),"multipart/form-data; boundar");
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
         genericHttpAsyncTask.setCache(false);
         genericHttpAsyncTask.execute();
 

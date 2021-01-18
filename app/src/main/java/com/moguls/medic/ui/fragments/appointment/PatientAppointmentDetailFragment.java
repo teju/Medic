@@ -30,6 +30,8 @@ import com.moguls.medic.webservices.PostCancelAppointmentViewModel;
 
 import java.util.Date;
 
+import static com.moguls.medic.etc.Helper.loadImage;
+
 
 public class PatientAppointmentDetailFragment extends BaseFragment implements View.OnClickListener {
 
@@ -43,6 +45,7 @@ public class PatientAppointmentDetailFragment extends BaseFragment implements Vi
             patient_name,appointmentid,fee,distance;
     private LinearLayout llDist;
     private Button cancel;
+    private ImageView logo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,6 +77,7 @@ public class PatientAppointmentDetailFragment extends BaseFragment implements Vi
         Button reschedule = (Button) v.findViewById(R.id.reschedule);
         ImageView chat = (ImageView) v.findViewById(R.id.chat);
         ImageView call = (ImageView) v.findViewById(R.id.call);
+        logo = (ImageView) v.findViewById(R.id.logo);
         cancel = (Button) v.findViewById(R.id.cancel);
         ld = (LoadingCompound)v.findViewById(R.id.ld);
 
@@ -113,6 +117,9 @@ public class PatientAppointmentDetailFragment extends BaseFragment implements Vi
             if (diffdays != 0) {
                 days_remaining.setText("in " + diffdays + " daya");
             }
+            loadImage(getActivity(),result.getDoctor().getPhotoUrl()
+                    ,R.drawable.doctor_profile_pic_default,logo);
+
         }
     }
 

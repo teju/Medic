@@ -1,13 +1,18 @@
 package com.moguls.medic.ui.fragments.me;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +40,7 @@ import java.util.Locale;
 
 public class DoctorProfileUpdateFragment extends BaseFragment implements View.OnClickListener {
 
+    private static final int PHOTO_IMAGE = 101;
     private TextView dob;
     final Calendar myCalendar = Calendar.getInstance();
     private TextView gender;
@@ -49,6 +55,10 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
     private Button btn_save;
     DoctorSaveListener doctorSaveListener;
     boolean isDOB = false;
+    private Uri cameraOutputUri;
+    private String real_Path = "";
+    private ImageView profile_pic;
+
     public void setProfileInit(Result profileInit) {
         this.profileInit = profileInit;
     }
@@ -66,6 +76,7 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
         super.onViewCreated(view, savedInstanceState);
         dob = (TextView) v.findViewById(R.id.dob);
         phone_number = (EditText) v.findViewById(R.id.phone_number);
+        profile_pic = (ImageView) v.findViewById(R.id.profile_pic);
         edt_email_id = (EditText) v.findViewById(R.id.edt_email_id);
         edt_exp_yrs = (TextView) v.findViewById(R.id.edt_exp_yrs);
         edt_one = (EditText) v.findViewById(R.id.edt_one);
@@ -78,7 +89,27 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
         dob.setOnClickListener(this);
         edt_exp_yrs.setOnClickListener(this);
         btn_save.setOnClickListener(this);
+        profile_pic.setOnClickListener(this);
         setData();
+    }
+    public void pickImage() {
+        cameraOutputUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+        Intent intent = Helper.getPickIntent(cameraOutputUri,getActivity());
+        startActivityForResult(intent, PHOTO_IMAGE);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri imageuri = null;
+        if(data != null) {
+            imageuri = data.getData();// Get intent
+        } else {
+            imageuri = cameraOutputUri;
+        }
+        real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
+        profile_pic.setImageURI(imageuri);
     }
 
     public void setData(){
@@ -176,6 +207,20 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
             dob.setError("Select your DOB");
             dob.requestFocus();
             return false;
+        } else if(dob.getText().toString().isEmpty()) {
+            dob.setError("Select your DOB");
+            dob.requestFocus();
+            return false;
+        }  else if(real_Path.isEmpty()) {
+            showNotifyDialog("","Select your profile image",
+                    "OK","",new NotifyListener() {
+
+                @Override
+                public void onButtonClicked(int which) {
+
+                }
+            });
+            return false;
         } else {
             return true;
         }
@@ -203,6 +248,9 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
                     }
                 });
                 break;
+            case R.id.profile_pic:
+                pickImage();
+                break;
             case R.id.btn_save:
                 if(validate()) {
                     Personnel personnel = profileInit.getPersonnel();
@@ -219,6 +267,7 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
                     } else {
                         personnel.setIsMale(false);
                     }
+                    personnel.setPhotoUrl(real_Path);
                     baseParams.setPersonnel(personnel);
                     doctorSaveListener.onButtonClicked();
                 }

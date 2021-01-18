@@ -321,21 +321,27 @@ public abstract class HTTPAsyncTask
 	}
 
 	public void setFileParams(String key, String path, String mime) {
-		if (path.length() <= 0 || key.trim().length() <= 0) { return; }
-		this.isMultipart = true;
-		String[] q = path.split("/");
-		int idx = q.length - 1;
-		LinkedHashMap<String, String> file = new LinkedHashMap<String, String>();
-		file.put(BaseKeys.KEY, key);
-		if(!Helper.isEmpty(mime)) {
-			file.put(BaseKeys.NAME, q[idx]);
-			file.put(BaseKeys.FILEPATH, path);
-		} else {
-			file.put(BaseKeys.NAME,path);
-			file.put(BaseKeys.FILEPATH,"");
+		try {
+			if (path != null && (path.length() <= 0 || key.trim().length() <= 0)) {
+				return;
+			}
+			this.isMultipart = true;
+			String[] q = path.split("/");
+			int idx = q.length - 1;
+			LinkedHashMap<String, String> file = new LinkedHashMap<String, String>();
+			file.put(BaseKeys.KEY, key);
+			if (!Helper.isEmpty(mime)) {
+				file.put(BaseKeys.NAME, q[idx]);
+				file.put(BaseKeys.FILEPATH, path);
+			} else {
+				file.put(BaseKeys.NAME, path);
+				file.put(BaseKeys.FILEPATH, "");
+			}
+			file.put(BaseKeys.MIME, mime);
+			this.fileParams.add(file);
+		}catch (Exception e){
+
 		}
-		file.put(BaseKeys.MIME, mime);
-		this.fileParams.add(file);
 	}
 
 	public void settxtFileParams(String key, String path) {
@@ -685,8 +691,7 @@ public abstract class HTTPAsyncTask
 							outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
 							outputStream.writeBytes(lineEnd);
 							outputStream.writeBytes(filetxtParams.get(key));
-							System.out.println("filetxtParams key  " + filetxtParams.get(key));
-							Log.d("filetxtParams value", key + ":" + filetxtParams.get(key));
+							Log.d("filetxtParams key", key + ": value" + filetxtParams.get(key));
 							outputStream.writeBytes(lineEnd);
 
 						}
@@ -780,36 +785,54 @@ public abstract class HTTPAsyncTask
 
 						for (LinkedHashMap<String, String> map : fileParams) {
 							int bytesRead, bytesAvailable, bufferSize;
+							File file = new File(map.get(BaseKeys.FILEPATH));
 
 							outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-							outputStream.writeBytes("Content-Disposition: form-data; name=\""
-									+ map.get(BaseKeys.KEY) + "\"; filename=\""
-									+ map.get(BaseKeys.NAME) + "\"");
-							outputStream.writeBytes(lineEnd);
-							outputStream
-									.writeBytes("Content-Type: " + map.get(BaseKeys.MIME) + lineEnd);
-							outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
-							outputStream.writeBytes(lineEnd);
+							if(file.isFile()) {
+								outputStream.writeBytes("Content-Disposition: form-data; name=\""
+										+ map.get(BaseKeys.KEY) + "\"; filename=\""
+										+ map.get(BaseKeys.NAME) + "\"");
+								outputStream.writeBytes(lineEnd);
+								outputStream
+										.writeBytes("Content-Type: " + map.get(BaseKeys.MIME) + lineEnd);
+								outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
+								outputStream.writeBytes(lineEnd);
+								Log.d("photo filetxtParams key", map.get(BaseKeys.KEY)
+										+" value "+map.get(BaseKeys.NAME)+":"+map.get(BaseKeys.FILEPATH));
+							} else {
+								outputStream.writeBytes("Content-Disposition: form-data; name=\"" +  map.get(BaseKeys.KEY)
+										+ "\"");
+								outputStream.writeBytes(lineEnd);
+								outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
+								outputStream.writeBytes(lineEnd);
+								outputStream.writeBytes(map.get(BaseKeys.NAME));
+								Log.d("filetxtParams key", map.get(BaseKeys.KEY) + "value :" + map.get(BaseKeys.NAME));
+								outputStream.writeBytes(lineEnd);
 
-							 Log.d("value", map.get(BaseKeys.KEY)
-									 +":"+map.get(BaseKeys.NAME)+":"+map.get(BaseKeys.FILEPATH));
-							File file = new File(map.get(BaseKeys.FILEPATH));
-							FileInputStream fileInputStream = new FileInputStream(file);
-							bytesAvailable = fileInputStream.available();
-							bufferSize = Math.min(bytesAvailable, maxBufferSize);
-							byte[] buffer = new byte[bufferSize];
-
-							bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-							while (bytesRead > 0) {
-								outputStream.write(buffer, 0, bufferSize);
-								bytesAvailable = fileInputStream.available();
-								bufferSize = Math.min(bytesAvailable, maxBufferSize);
-								bytesRead = fileInputStream.read(buffer, 0, bufferSize);
 							}
+							try {
+								 if(file.isFile()) {
+									 FileInputStream fileInputStream = new FileInputStream(file);
+									 bytesAvailable = fileInputStream.available();
+									 bufferSize = Math.min(bytesAvailable, maxBufferSize);
+									 byte[] buffer = new byte[bufferSize];
+
+									 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+									 while (bytesRead > 0) {
+										 outputStream.write(buffer, 0, bufferSize);
+										 bytesAvailable = fileInputStream.available();
+										 bufferSize = Math.min(bytesAvailable, maxBufferSize);
+										 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+									 }
+									 fileInputStream.close();
+								 }
+							 }catch (Exception e){
+								e.printStackTrace();
+							 }
 
 							outputStream.writeBytes(lineEnd);
 
-							fileInputStream.close();
+
 						}
 
 						for (String key : this.bytesParams.keySet()) {
@@ -835,15 +858,18 @@ public abstract class HTTPAsyncTask
 								outputStream.writeBytes(lineEnd);
 								outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
 								outputStream.writeBytes(lineEnd);
-								outputStream.writeBytes(filetxtParams.get(key));
-								System.out.println("filetxtParams key  " + filetxtParams.get(key));
-								Log.d("filetxtParams value", key + ":" + filetxtParams.get(key));
+								try {
+									outputStream.writeBytes(filetxtParams.get(key));
+								}catch (Exception e) {
+
+								}
+								Log.d("filetxtParams key", key + " value: " + filetxtParams.get(key));
 								outputStream.writeBytes(lineEnd);
 
 
 							}
 						} catch (Exception e){
-
+							e.printStackTrace();
 						}
 
 

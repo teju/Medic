@@ -49,4 +49,12 @@ public class BaseKeys {
 	public static final String Personnel = "Personnel";
 	public static final String Medical = "Medical";
 	public static final String IDProof = "IDProof";
+	public static final String PracticingFrom = "PracticingFrom";
+	public static final String Statement = "Statement";
+	public static final String IsVerified = "IsVerified";
+	public static final String Address = "Address";
+	public static final String Latitude = "Latitude";
+	public static final String Longitude = "Longitude";
+	public static final String ConsultationFee = "ConsultationFee";
+	public static final String Sessions = "Sessions";
 }

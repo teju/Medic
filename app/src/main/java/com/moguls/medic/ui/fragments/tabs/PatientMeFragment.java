@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.APIs;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.etc.SharedPreference;
 import com.moguls.medic.ui.adapters.PatientBookingAdapter;
@@ -30,6 +32,8 @@ import com.moguls.medic.ui.fragments.me.ProfileUpdateFragment;
 import com.moguls.medic.ui.fragments.LoginFragment;
 import com.moguls.medic.webservices.BaseViewModel;
 import com.moguls.medic.webservices.GetProfileViewModel;
+
+import static com.moguls.medic.etc.Helper.loadImage;
 
 
 public class PatientMeFragment extends BaseFragment implements View.OnClickListener{
@@ -43,6 +47,7 @@ public class PatientMeFragment extends BaseFragment implements View.OnClickListe
     private GetProfileViewModel getProfileViewModel;
     private TextView no_patients,name,experience,location,blood_group,height,weight,profile_completed;
     private ProgressBar progress;
+    private ImageView logo;
 
     public void setBottomNavigation(BottomNavigationView bottomNavigation) {
         this.bottomNavigation = bottomNavigation;
@@ -64,6 +69,7 @@ public class PatientMeFragment extends BaseFragment implements View.OnClickListe
         update = (RelativeLayout) v.findViewById(R.id.update);
         btnadd = (ImageView) v.findViewById(R.id.btnadd);
         settings = (ImageView) v.findViewById(R.id.settings);
+        logo = (ImageView) v.findViewById(R.id.logo);
         ll_appointment = (LinearLayout) v.findViewById(R.id.ll_appointment);
         ll_logout = (LinearLayout) v.findViewById(R.id.ll_logout);
         ll_doctor = (LinearLayout) v.findViewById(R.id.ll_doctor);
@@ -246,6 +252,8 @@ public class PatientMeFragment extends BaseFragment implements View.OnClickListe
         if(getProfileViewModel.getProfile.getResult().getLocation() != null) {
             location.setText(getProfileViewModel.getProfile.getResult().getLocation());
         }
+        loadImage(getActivity(), getProfileViewModel.getProfile.getResult().getPhotoUrl(),
+                R.drawable.doctor_profile_pic_default,logo);
         progress.setProgress(Integer.valueOf(getProfileViewModel.getProfile.getResult().getCompletedPercentage()));
         profile_completed.setText("Completed Profile "+getProfileViewModel.getProfile.getResult().getCompletedPercentage()+"%");
     }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.model.userAppointment.Result;
 
 import java.util.List;
@@ -82,6 +84,7 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         LinearLayout llRoot;
         Button rebook;
+        ImageView logo;
         TextView doctor_name,specialization,address,status,date,patient_name;
 
         public ItemViewHolder(@NonNull View itemView) {
@@ -95,6 +98,7 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             status = itemView.findViewById(R.id.status);
             date = itemView.findViewById(R.id.date);
             patient_name = itemView.findViewById(R.id.patient_name);
+            logo = itemView.findViewById(R.id.logo);
         }
     }
 
@@ -137,6 +141,8 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         viewHolder.date.setText(mItemList.get(position).getAppointmentOn());
         viewHolder.patient_name.setText(mItemList.get(position).getPatient().getName());
         viewHolder.status.setText(mItemList.get(position).getStatus());
+        Helper.loadImage(context, mItemList.get(position).getDoctor().getPhotoUrl(),
+                R.drawable.doctor_profile_pic_default,viewHolder.logo);
     }
 
 

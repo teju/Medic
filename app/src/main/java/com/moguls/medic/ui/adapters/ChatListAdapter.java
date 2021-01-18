@@ -1,10 +1,12 @@
 package com.moguls.medic.ui.adapters;
 
 
+import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -24,6 +26,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
+    private final Context context;
 
     public List<Result> mItemList;
 
@@ -31,9 +34,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public interface OnClickListner {
         void OnClick(int position);
     }
-    public ChatListAdapter(List<Result> itemList, OnClickListner listener) {
+    public ChatListAdapter(List<Result> itemList, OnClickListner listener, Context context) {
         mItemList = itemList;
         this.listener = listener;
+        this.context = context;
     }
 
     @NonNull
@@ -81,7 +85,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         RelativeLayout llroot;
         TextView name,latest_msg,date,count;
-
+        ImageView logo;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -90,6 +94,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             latest_msg = itemView.findViewById(R.id.latest_msg);
             date = itemView.findViewById(R.id.date);
             count = itemView.findViewById(R.id.count);
+            logo = itemView.findViewById(R.id.logo);
         }
     }
 
@@ -134,5 +139,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             viewHolder.count.setVisibility(View.GONE);
         }
+        Helper.loadImage(context, mItemList.get(position).getPhotoUrl(),
+                R.drawable.doctor_profile_pic_default,viewHolder.logo);
     }
 }

@@ -28,4 +28,14 @@ public class Member {
 
     String Name;
 
+    public String getPhotoUrl() {
+        return PhotoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        PhotoUrl = photoUrl;
+    }
+
+    String PhotoUrl;
+
 }

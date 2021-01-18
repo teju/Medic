@@ -1,12 +1,15 @@
 package com.moguls.medic.ui.fragments.chat;
 
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.etc.APIs;
 import com.moguls.medic.etc.BaseKeys;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.etc.SharedPreference;
 import com.moguls.medic.ui.adapters.ChatAdapter;
@@ -50,6 +54,7 @@ import microsoft.aspnet.signalr.client.http.Request;
 
 public class ChatFragment extends BaseFragment implements View.OnClickListener {
 
+    private static final int PHOTO_IMAGE = 1004;
     private DrawerLayout drawer;
     private ChatAdapter chatAdapter;
     private RecyclerView recyclerView;
@@ -61,12 +66,14 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
     private LoadingCompound ld;
     String PastMessages = "false";
     String ToUserID = "";
-    ImageView send_msg;
+    ImageView send_msg,attach,logo;
     private EditText message;
     private SignalRService mService;
     private boolean mBound = false;
     private HubConnection hubConnection;
-
+    private Uri cameraOutputUri;
+    private String real_Path;
+    String imageUrl = "";
     public void setPastMessages(String pastMessages) {
         PastMessages = pastMessages;
     }
@@ -103,12 +110,17 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
         header_title = (TextView)v.findViewById(R.id.header_title);
         message = (EditText)v.findViewById(R.id.message);
         send_msg = (ImageView) v.findViewById(R.id.send_msg);
+        attach = (ImageView) v.findViewById(R.id.attach);
+        logo = (ImageView) v.findViewById(R.id.logo);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
         header_title.setText(Name);
         ld = (LoadingCompound)v.findViewById(R.id.ld);
         getChatViewModel.loadData(PastMessages,"10",ToUserID,MessageID);
         send_msg.setOnClickListener(this);
-        chatSettings();
+        attach.setOnClickListener(this);
+        Helper.loadImage(getActivity(), imageUrl,
+                R.drawable.doctor_profile_pic_default,logo);
+      //  chatSettings();
     }
 
     @Override
@@ -119,7 +131,24 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
         }
         super.onStop();
     }
+    public void pickImage() {
+        cameraOutputUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+        Intent intent = Helper.getPickIntent(cameraOutputUri,getActivity());
+        startActivityForResult(intent, PHOTO_IMAGE);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri imageuri = null;
+        if(data != null) {
+            imageuri = data.getData();// Get intent
+        } else {
+            imageuri = cameraOutputUri;
+        }
+        real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
 
+
+    }
     public void chatSettings() {
        /* try {
 
@@ -145,6 +174,7 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
         intent.setClass(getActivity(), SignalRService.class);
         getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
+
     private void initAdapter() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,true));
@@ -243,15 +273,15 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.send_msg :
-                if (mBound) {
                     if(!message.getText().toString().isEmpty()){
                       //  hubConnection.send("Send", message);
-                        postSendMessageViewModel.loadData(ToUserID,message.getText().toString(),new JSONObject());
-                        mService.sendMessage(message.getText().toString());
-
+                        postSendMessageViewModel.loadData(ToUserID,message.getText().toString(),real_Path);
+//                        mService.sendMessage(message.getText().toString());
                     }
-            }
 
+                break;
+            case R.id.attach:
+                pickImage();
                 break;
         }
     }

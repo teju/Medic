@@ -3,8 +3,11 @@ package com.moguls.medic.etc;
 public class APIs {
     public static String BaseUrl = "http://207.180.231.136:5060/api/";
     public static String SecuredBaseUrl = "http://207.180.231.136:5060/secured-api/";
+
     public static String ChatUrl = "http://207.180.231.136:5070/secured-hub/chathub";
     public static String mobility = "mobility";
+    public static String PhotoBaseUrl = SecuredBaseUrl+mobility+"/get-file/";
+
     public static String register = BaseUrl + mobility +"/register-user";
     public static String sendOtp = BaseUrl + mobility +"/send-otp";
     public static String verify = BaseUrl + mobility +"/verify-otp";
@@ -43,6 +46,7 @@ public class APIs {
     public static String gethospital = SecuredBaseUrl + mobility +"/get-hospital";
     public static String getdoctorprofileinit = SecuredBaseUrl + mobility +"/get-doctor-profile-init";
     public static String savedoctor = SecuredBaseUrl + mobility +"/save-doctor";
+    public static String savehospital = SecuredBaseUrl + mobility +"/save-hospital";
     public static String leavehospital = SecuredBaseUrl + mobility +"/leave-hospital";
 
 }

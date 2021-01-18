@@ -25,6 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PatientBookApptHospitalAdapter extends RecyclerView.Adapter<PatientBookApptHospitalAdapter.MyViewHolder>  {
 
     private final List<Sessions> expandableListTitle;
+    public boolean isDoctor = false;
     Context context;
     private OnItemClickListner listener;
     int selectedPos = -1;
@@ -76,46 +77,21 @@ public class PatientBookApptHospitalAdapter extends RecyclerView.Adapter<Patient
         }
         holder.recyclerView.setHasFixedSize(true);
 
-        if(!SharedPreference.getBoolean(context,SharedPreference.isDOCTOR)) {
-            holder.recyclerView.setLayoutManager(new GridLayoutManager(context,4));
-            appointmentAdapter = new AppointmentTimeAdapter(context, expandableListTitle.get(position).getSlotsArr(),
-                    new AppointmentTimeAdapter.OnItemClickListner() {
-                        @Override
-                        public void OnItemClick(String time, int pos, int parent_id) {
-                            timeselectedPos = pos;
-                            selectedPos = parent_id;
-                            notifyDataSetChanged();
-                            listener.OnItemClick(selectedPos);
-                            onTimeClickListner.OnItemClick(time);
-                        }
-                    });
-            appointmentAdapter.selectedPos = timeselectedPos;
-            holder.recyclerView.setAdapter(appointmentAdapter);
-        } else {
-            holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        holder.recyclerView.setLayoutManager(new GridLayoutManager(context,4));
+        appointmentAdapter = new AppointmentTimeAdapter(context, expandableListTitle.get(position).getSlotsArr(),
+                new AppointmentTimeAdapter.OnItemClickListner() {
+                    @Override
+                    public void OnItemClick(String time, int pos, int parent_id) {
+                        timeselectedPos = pos;
+                        selectedPos = parent_id;
+                        notifyDataSetChanged();
+                        listener.OnItemClick(selectedPos);
+                        onTimeClickListner.OnItemClick(time);
+                    }
+                });
+        appointmentAdapter.selectedPos = timeselectedPos;
+        holder.recyclerView.setAdapter(appointmentAdapter);
 
-            DoctorBookPatientDetailsAdapter appointmentAdapter =
-                    new DoctorBookPatientDetailsAdapter(sessions.getSlots(),
-                            context, new DoctorBookPatientDetailsAdapter.OnItemClickListner() {
-                @Override
-                public void OnItemClick(String position) {
-                    onClickListner.OnItemClick(position);
-
-                }
-
-                @Override
-                public void OnCancelClick(String position) {
-                    onClickListner.OnCancelClick(position);
-                }
-
-                @Override
-                public void OnChatClicked(String ID,String  name) {
-                    onClickListner.OnChatClicked(ID,name);
-                }
-            });
-
-            holder.recyclerView.setAdapter(appointmentAdapter);
-        }
         holder.rlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

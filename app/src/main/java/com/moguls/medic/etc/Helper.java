@@ -19,7 +19,11 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.moguls.medic.model.Response;
 import com.moguls.medic.model.SpannString;
 import com.moguls.medic.webservices.settings.HTTPAsyncTask;
@@ -165,6 +169,21 @@ public class Helper {
     public static boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
+    public static void loadImage(Context context, String url, int placeholder, ImageView v) {
+        try {
+            GlideUrl glideurl = new GlideUrl(APIs.PhotoBaseUrl.concat(url), new LazyHeaders.Builder()
+                    .addHeader(BaseKeys.ContentType, "application/json")
+                    .addHeader(BaseKeys.Authorization, "Bearer " + SharedPreference.getString(context, BaseKeys.Authorization))
+                    .build());
+            Glide.with(context)
+                    .load(glideurl)
+                    .placeholder(placeholder)
+                    .into(v);
+        }catch (Exception e) {
+
+        }
+    }
+
     public static void applyHeader(Context context, HTTPAsyncTask async) {
         if (async == null)
             return;

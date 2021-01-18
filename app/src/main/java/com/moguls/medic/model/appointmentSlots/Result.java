@@ -24,7 +24,6 @@ public class Result {
         Date = date;
     }
 
-
     public List<Sessions> getSessions() {
         return Sessions;
     }

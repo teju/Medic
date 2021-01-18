@@ -22,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.etc.SharedPreference;
 import com.moguls.medic.ui.fragments.LoginFragment;
@@ -46,7 +47,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private TextView tv_desc_one,tv_title_one,tv_title_two,tv_desc_two,msgs_cnt,doctor_name,
             specialization,address, date_time,patient_name,remarks;
     private ImageView img_doctor_white;
-    private ImageView icn_one,icn_two,book_appointment_banner;
+    private ImageView icn_one,icn_two,book_appointment_banner,logo;
     private GetDashBoardViewModel getDashBoardViewModel;
     private LoadingCompound ld;
 
@@ -88,6 +89,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         address = (TextView)v.findViewById(R.id.address);
         icn_one = (ImageView)v.findViewById(R.id.icn_one);
         icn_two = (ImageView)v.findViewById(R.id.icn_two);
+        logo = (ImageView)v.findViewById(R.id.logo);
         book_appointment_banner = (ImageView)v.findViewById(R.id.book_appointment_banner);
         ld = (LoadingCompound)v.findViewById(R.id.ld);
 
@@ -124,6 +126,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         remarks.setText("Experience "+getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getExperience()+" years");
         date_time.setText(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getAppointmentOn());
         patient_name.setText(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getPatient().getName());
+        Helper.loadImage(getActivity(),
+                getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getPatient().getPhotoUrl(),
+                R.drawable.doctor_profile_pic_default,logo);
     }
 
     public void initDoctorView() {

@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.model.hospitalViews.Result;
 
 import java.util.List;
@@ -77,7 +78,7 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
     private class ItemViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout llRoot;
-        ImageView icon;
+        ImageView icon,hospital_img;
         TextView hospital_name,hospital_address,slots,verifies,edit_slots;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,6 +89,7 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
             verifies = itemView.findViewById(R.id.verifies);
             icon = itemView.findViewById(R.id.icon);
             edit_slots = itemView.findViewById(R.id.edit_slots);
+            hospital_img = itemView.findViewById(R.id.hospital_img);
 
         }
     }
@@ -132,6 +134,7 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
                 listener.onEditClick(position);
             }
         });
+        Helper.loadImage(context,mItemList.get(position).getPhotoUrl(),R.drawable.doctor_profile_pic_default,viewHolder.hospital_img);
     }
 
 

@@ -77,12 +77,8 @@ public class PostGetAppointmentsSlotsViewModel extends BaseViewModel {
         });
 
         genericHttpAsyncTask.method = Constants.GET;
-        if(SharedPreference.getBoolean(apl,SharedPreference.isDOCTOR)) {
-            genericHttpAsyncTask.setUrl(APIs.getdoctorappointments+"/"+date);
+        genericHttpAsyncTask.setUrl(APIs.getappointmentslots+"/"+doctorid+"/"+date);
 
-        } else {
-            genericHttpAsyncTask.setUrl(APIs.getappointmentslots+"/"+doctorid+"/"+date);
-        }
         Helper.applyHeader(apl,genericHttpAsyncTask);
         genericHttpAsyncTask.context = apl.getApplicationContext();
         genericHttpAsyncTask.setCache(false);

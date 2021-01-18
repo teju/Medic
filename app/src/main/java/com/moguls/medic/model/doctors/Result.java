@@ -10,6 +10,16 @@ public class Result {
     String Experience;
     String Name;
 
+    public String getPhotoUrl() {
+        return PhotoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        PhotoUrl = photoUrl;
+    }
+
+    String PhotoUrl;
+
     public String getMobileNo() {
         return MobileNo;
     }

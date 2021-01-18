@@ -18,11 +18,10 @@ import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
-import com.moguls.medic.etc.SharedPreference;
-import com.moguls.medic.model.appointmentSlots.DoctorSlots;
 import com.moguls.medic.model.appointmentSlots.Sessions;
 import com.moguls.medic.model.appointmentSlots.Slots;
 import com.moguls.medic.ui.adapters.AppointmentDateAdapter;
+import com.moguls.medic.ui.adapters.DoctorBookApptHospitalAdapter;
 import com.moguls.medic.ui.adapters.PatientBookApptHospitalAdapter;
 import com.moguls.medic.ui.dialog.NotifyDialogFragment;
 import com.moguls.medic.ui.fragments.chat.ChatFragment;
@@ -30,9 +29,9 @@ import com.moguls.medic.ui.fragments.me.ProfileUpdateFragment;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.moguls.medic.model.BookingData;
 import com.moguls.medic.model.appointmentSlots.Result;
-import com.moguls.medic.model.getAppointment.Doctor;
 import com.moguls.medic.webservices.BaseViewModel;
 import com.moguls.medic.webservices.PostGetAppointmentsSlotsViewModel;
+import com.moguls.medic.webservices.PostGetDoctorAppointmentsSlotsViewModel;
 import com.moguls.medic.webservices.PostSaveAppointmentViewModel;
 
 import java.util.ArrayList;
@@ -48,11 +47,11 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
     private Button book_now;
     public String appointmentID = "";
     public PostGetAppointmentsSlotsViewModel postGetAppointmentsSlotsViewModel;
+    public PostGetDoctorAppointmentsSlotsViewModel postGetDoctorAppointmentsSlotsViewModel;
     public PostSaveAppointmentViewModel postSaveAppointmentViewModel;
     private LoadingCompound ld;
     private RecyclerView recyclerView;
     private int selectedPos = -1;
-    private PatientBookApptHospitalAdapter patientBookApptHospitalAdapter = null;
     private String selectedDate = "";
     private String selectedTime = "";
 
@@ -88,7 +87,7 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
         setBackButtonToolbarStyleOne(v);
         initData();
         initDateAdapter();
-        if(SharedPreference.getBoolean(getActivity(),SharedPreference.isDOCTOR)) {
+        if(doctor_id.isEmpty()) {
             book_now.setVisibility(View.GONE);
         }
     }
@@ -100,13 +99,18 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
 
     public void initData() {
         today_date.setText(Helper.dateFormat("dd MMM yyyy",new Date()));
-        postGetAppointmentsSlotsViewModel.loadData(doctor_id, selectedDate);
+        if(doctor_id.isEmpty()) {
+            postGetDoctorAppointmentsSlotsViewModel.loadData(doctor_id, selectedDate);
+        } else {
+            postGetAppointmentsSlotsViewModel.loadData(doctor_id, selectedDate);
+        }
 
     }
 
     public void setObservers() {
         setGetAppointmentSlotsAPIObserver();
         setPostSaveAppointmentsAPIObserver();
+        setGetDoctorAppointmentSlotsAPIObserver();
     }
     private void initDateAdapter() {
         recyclerView_date.setHasFixedSize(true);
@@ -116,8 +120,12 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
             @Override
             public void OnItemClick(String date,int pos) {
                 selectedDate = date;
+                if(!doctor_id.isEmpty()) {
+                    postGetAppointmentsSlotsViewModel.loadData(doctor_id, selectedDate);
+                } else {
+                    postGetDoctorAppointmentsSlotsViewModel.loadData(doctor_id, selectedDate);
 
-                postGetAppointmentsSlotsViewModel.loadData(doctor_id, selectedDate);
+                }
 
                 today_date.setText(date);
             }
@@ -129,21 +137,78 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
     private void initAdapter() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        if(postGetAppointmentsSlotsViewModel.getAppointmentSlots != null) {
+            patientAdapter();
+        } else {
+            doctorAdapter();
+        }
+    }
+
+    public void doctorAdapter() {
+        DoctorBookApptHospitalAdapter doctorBookAppointmentFragment = new DoctorBookApptHospitalAdapter(getActivity(),
+                postGetDoctorAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions(),
+                new DoctorBookApptHospitalAdapter.OnItemClickListner() {
+                    @Override
+                    public void OnItemClick(int position) {
+                        selectedPos = position;
+                    }
+                }, new DoctorBookApptHospitalAdapter.OnTimeClickListner() {
+            @Override
+            public void OnItemClick(String time) {
+                selectedTime = time;
+            }
+        }, new DoctorBookApptHospitalAdapter.OnClickListner() {
+            @Override
+            public void OnItemClick(String position) {
+                ProfileUpdateFragment profileUpdateFragment = new ProfileUpdateFragment();
+                profileUpdateFragment.setIsprofile(false);
+                profileUpdateFragment.setPatient_id(position);
+                // home().setFragment(profileUpdateFragment);
+            }
+
+            @Override
+            public void OnCancelClick(String position) {
+                showNotifyDialog("Are you sure you want to cancel the appointment?",
+                        "", "OK",
+                        "Cancel", (NotifyListener) (new NotifyListener() {
+                            public void onButtonClicked(int which) {
+                                if (which == NotifyDialogFragment.BUTTON_POSITIVE) {
+
+                                }
+                            }
+                        }));
+            }
+
+            @Override
+            public void OnChatClicked(String position, String name) {
+                ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setToUserID(position);
+                chatFragment.setName(name);
+                home().setFragment(chatFragment);
+            }
+        });
+        recyclerView.setAdapter(doctorBookAppointmentFragment);
+
+    }
+    public void patientAdapter() {
         int ID = 1;
-        for(int i=0;i<postGetAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions().size();i++ ) {
+        for (int i = 0; i < postGetAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions().size(); i++) {
             List<Slots> slotsArr = new ArrayList<>();
             Sessions sessions = postGetAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions().get(i);
-            for(DoctorSlots s : sessions.getSlots()) {
+            for (String s : sessions.getSlots()) {
                 Slots slots = new Slots();
-                slots.setTime(s.getID());
+                slots.setTime(s);
                 slots.setParentID(i);
                 slots.setID(ID);
-                ID= ID + 1;
+                ID = ID + 1;
                 slotsArr.add(slots);
             }
             sessions.setSlotsArr(slotsArr);
         }
-        patientBookApptHospitalAdapter = new PatientBookApptHospitalAdapter(getActivity(),
+
+
+        PatientBookApptHospitalAdapter patientBookApptHospitalAdapter = new PatientBookApptHospitalAdapter(getActivity(),
                 postGetAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions(),
                 new PatientBookApptHospitalAdapter.OnItemClickListner() {
                     @Override
@@ -161,16 +226,16 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
                 ProfileUpdateFragment profileUpdateFragment = new ProfileUpdateFragment();
                 profileUpdateFragment.setIsprofile(false);
                 profileUpdateFragment.setPatient_id(position);
-               // home().setFragment(profileUpdateFragment);
+                // home().setFragment(profileUpdateFragment);
             }
 
             @Override
             public void OnCancelClick(String position) {
                 showNotifyDialog("Are you sure you want to cancel the appointment?",
                         "", "OK",
-                        "Cancel", (NotifyListener)(new NotifyListener() {
+                        "Cancel", (NotifyListener) (new NotifyListener() {
                             public void onButtonClicked(int which) {
-                                if(which == NotifyDialogFragment.BUTTON_POSITIVE) {
+                                if (which == NotifyDialogFragment.BUTTON_POSITIVE) {
 
                                 }
                             }
@@ -178,7 +243,7 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
             }
 
             @Override
-            public void OnChatClicked(String position,String name) {
+            public void OnChatClicked(String position, String name) {
                 ChatFragment chatFragment = new ChatFragment();
                 chatFragment.setToUserID(position);
                 chatFragment.setName(name);
@@ -187,7 +252,6 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
         });
 
         recyclerView.setAdapter(patientBookApptHospitalAdapter);
-
 
     }
 
@@ -294,6 +358,53 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
             }
         });
     }
+    public void setGetDoctorAppointmentSlotsAPIObserver() {
+        postGetDoctorAppointmentsSlotsViewModel = ViewModelProviders.of(this).get(PostGetDoctorAppointmentsSlotsViewModel.class);
+        postGetDoctorAppointmentsSlotsViewModel.errorMessage.observe(this, new Observer<BaseViewModel.ErrorMessageModel>() {
+            @Override
+            public void onChanged(BaseViewModel.ErrorMessageModel errorMessageModel) {
+                showNotifyDialog(errorMessageModel.title,
+                        errorMessageModel.message, "OK",
+                        "", (NotifyListener) (new NotifyListener() {
+                            public void onButtonClicked(int which) {
+
+                            }
+                        }));
+            }
+        });
+        postGetDoctorAppointmentsSlotsViewModel.isLoading.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoading) {
+                if(isLoading) {
+                    ld.showLoadingV2();
+                } else {
+                    ld.hide();
+                }
+            }
+        });
+        postGetDoctorAppointmentsSlotsViewModel.isOauthExpired.observe(this, new Observer() {
+            @Override
+            public void onChanged(Object o) {
+                logOut(getActivity());
+            }
+        });
+        postGetDoctorAppointmentsSlotsViewModel.isNetworkAvailable.observe(this, obsNoInternet);
+        postGetDoctorAppointmentsSlotsViewModel.getTrigger().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(postGetDoctorAppointmentsSlotsViewModel.getAppointmentSlots.getResult() != null) {
+                    initAdapter();
+                }
+                if(postGetDoctorAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions().size() == 0){
+                    no_appointments.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                } else {
+                    no_appointments.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
 
     public void setPostSaveAppointmentsAPIObserver() {
         postSaveAppointmentViewModel = ViewModelProviders.of(this).get(PostSaveAppointmentViewModel.class);
@@ -333,14 +444,21 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
                 if(Helper.convertStringToDate("dd-MMM-yyyy",selectedDate) != null) {
                     date = Helper.dateFormat("dd MMM yyyy",Helper.convertStringToDate("dd-MMM-yyyy",selectedDate));
                 }
-                Result app = postGetAppointmentsSlotsViewModel.getAppointmentSlots.getResult();
+
                 PatientConfirmAppointmentFragment patientConfirmAppointmentFragment = new PatientConfirmAppointmentFragment();
                 BookingData bookingData = new BookingData();
                 bookingData.setDate(date);
                 bookingData.setTime(selectedTime);
                 bookingData.setRefID(postSaveAppointmentViewModel.saveAppointment.getResult().getRefNo());
-                bookingData.setHospitalID(app.getSessions().get(selectedPos).getHospitalID());
-                bookingData.setFees(app.getSessions().get(selectedPos).getFee());
+                if(postGetAppointmentsSlotsViewModel.getAppointmentSlots != null) {
+                    bookingData.setHospitalID(postGetAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions().get(selectedPos).getHospitalID());
+                    bookingData.setFees(postGetAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions().get(selectedPos).getFee());
+                } else {
+                    bookingData.setHospitalID(postGetDoctorAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions().get(selectedPos).getHospitalID());
+                    bookingData.setFees(postGetDoctorAppointmentsSlotsViewModel.getAppointmentSlots.getResult().getSessions().get(selectedPos).getFee());
+                }
+
+
                 bookingData.setID(postSaveAppointmentViewModel.saveAppointment.getResult().getID());
                 patientConfirmAppointmentFragment.setBookingData(bookingData);
                 patientConfirmAppointmentFragment.setDoctorID(doctor_id);

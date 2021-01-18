@@ -19,6 +19,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.moguls.medic.etc.Helper.loadImage;
+
 
 public class PatientBookingAdapter extends RecyclerView.Adapter<PatientBookingAdapter.MyViewHolder>  {
 
@@ -63,6 +65,8 @@ public class PatientBookingAdapter extends RecyclerView.Adapter<PatientBookingAd
                 listener.OnItemClick((int)v.getTag());
             }
         });
+        loadImage(context, result.get(position).getPhotoUrl(),
+                R.drawable.doctor_profile_pic_default,holder.profile_pic);
     }
 
     @Override

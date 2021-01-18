@@ -2,7 +2,7 @@ package com.moguls.medic.model.consultations;
 
 public class ConsultationType {
 
-    String Name;
+    String Name = "";
 
     public String getName() {
         return Name;
@@ -20,7 +20,7 @@ public class ConsultationType {
         this.ID = ID;
     }
 
-    String ID;
+    String ID = "";
 
 
 

@@ -5,12 +5,32 @@ import java.util.List;
 
 public class Result {
 
-    String Hospital;
-    String Name;
-    String Address;
-    String HospitalID;
-    String Timeslot;
-    String Fee;
+    String Hospital ="";
+    String Name = "";
+    String Address ="";
+    String HospitalID="";
+    String Timeslot="";
+    String Fee="";
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    String ID;
+
+    public String getPhotoUrl() {
+        return PhotoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        PhotoUrl = photoUrl;
+    }
+
+    String PhotoUrl;
     Double Latitude = 0.0;
 
     public Double getLatitude() {
@@ -39,10 +59,10 @@ public class Result {
         ConsultationFee = consultationFee;
     }
 
-    String ConsultationFee;
-    String AdvanceBookingDays;
+    String ConsultationFee = "";
+    String AdvanceBookingDays = "";
     List<Sessions> Sessions = new ArrayList<>();
-    ConsultationType ConsultationType;
+    ConsultationType ConsultationType ;
 
     public String getName() {
         return Name;

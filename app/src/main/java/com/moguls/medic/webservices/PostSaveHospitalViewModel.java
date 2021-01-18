@@ -19,6 +19,7 @@ import com.moguls.medic.model.doctorProfileDetails.Personnel;
 import com.moguls.medic.webservices.settings.HTTPAsyncTask;
 import com.moguls.medic.webservices.settings.SingleLiveEvent;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,14 +81,24 @@ public class PostSaveHospitalViewModel extends BaseViewModel {
         });
 
         genericHttpAsyncTask.method = Constants.POST;
-        genericHttpAsyncTask.setUrl(APIs.savedoctor);
+        genericHttpAsyncTask.setUrl(APIs.savehospital);
         Helper.applyHeader(apl,genericHttpAsyncTask);
         genericHttpAsyncTask.context = apl.getApplicationContext();
         Gson gson = new GsonBuilder().create();
 
-        String personaljson = gson.toJson(params);
+        String personaljson = gson.toJson(params.getSessions());
+
+        genericHttpAsyncTask.setFileParams(BaseKeys.PhotoData,params.getPhotoUrl(),"multipart/form-data; boundar");
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.Address,params.getAddress());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.Timeslot,params.getTimeslot());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.Latitude,params.getLatitude().toString());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.Longitude,params.getLatitude().toString());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.ConsultationFee,params.getConsultationFee());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.AdvanceBookingDays,params.getAdvanceBookingDays());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.Name,params.getName());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.ID,params.getID());
         try {
-            genericHttpAsyncTask.setPostParams(new JSONObject(personaljson));
+            genericHttpAsyncTask.settxtFileParams(BaseKeys.Sessions,new JSONArray(personaljson).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

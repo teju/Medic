@@ -84,7 +84,7 @@ public class ChatListFragment extends BaseFragment implements ChatListAdapter.On
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         if(getMyChatListViewModel.myChat != null) {
-            chatAdapter = new ChatListAdapter(getMyChatListViewModel.myChat.getResult(), this);
+            chatAdapter = new ChatListAdapter(getMyChatListViewModel.myChat.getResult(), this,getActivity());
         }
         recyclerView.setAdapter(chatAdapter);
         touchListener = new RecyclerTouchListener(getActivity(),recyclerView);

@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.model.doctors.Result;
 
 import java.util.List;
@@ -156,7 +157,8 @@ public class PatientDoctorListAdapter extends RecyclerView.Adapter<RecyclerView.
 
             }
         });
-
+        Helper.loadImage(context, item.getPhotoUrl(),
+                R.drawable.doctor_profile_pic_default,viewHolder.logo);
     }
 
 

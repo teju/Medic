@@ -9,7 +9,7 @@ import java.util.List;
 public class Personnel implements Serializable {
 
 
-    String PhotoUrl;
+    String PhotoUrl = "";
     String FirstName;
     String LastName;
     String MobileNo;

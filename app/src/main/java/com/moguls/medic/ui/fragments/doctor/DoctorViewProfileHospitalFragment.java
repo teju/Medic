@@ -180,13 +180,7 @@ public class DoctorViewProfileHospitalFragment extends BaseFragment implements V
         getLeaveHospitalViewModel.getTrigger().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                showNotifyDialog("",
-                        getLeaveHospitalViewModel.genericResponse.getMessage(), "OK",
-                        "", (NotifyListener) (new NotifyListener() {
-                            public void onButtonClicked(int which) {
-
-                            }
-                        }));
+                home().proceedDoOnBackPressed();
             }
         });
     }
