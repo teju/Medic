@@ -139,7 +139,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             viewHolder.count.setVisibility(View.GONE);
         }
-        Helper.loadImage(context, mItemList.get(position).getPhotoUrl(),
-                R.drawable.doctor_profile_pic_default,viewHolder.logo);
+        if(mItemList.get(position).getPhotoUrl() != null) {
+            Helper.loadImage(context,mItemList.get(position).getPhotoUrl(),R.drawable.doctor_profile_pic_default,viewHolder.logo);
+        } else {
+            viewHolder.logo.setImageResource(R.drawable.doctor_profile_pic_default);
+        }
     }
 }

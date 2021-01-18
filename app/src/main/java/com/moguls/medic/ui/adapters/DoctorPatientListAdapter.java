@@ -15,10 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.model.PatientList;
 import com.moguls.medic.model.doctorPatients.Result;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -96,6 +99,7 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
     private class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ph_call,chat;
+        CircleImageView patient_img;
         TextView remarks,age,blood_group,height,weight,date,mobile_number,name;
 
         public ItemViewHolder(@NonNull View itemView) {
@@ -110,6 +114,7 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
             date = itemView.findViewById(R.id.date);
             mobile_number = itemView.findViewById(R.id.mobile_number);
             name = itemView.findViewById(R.id.name);
+            patient_img = itemView.findViewById(R.id.patient_img);
         }
     }
     public class SectionHeaderViewHolder extends RecyclerView.ViewHolder {
@@ -168,6 +173,14 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
         viewHolder.height.setText(mItemList.get(position).getResult().getHeight()+"ft");
         viewHolder.weight.setText(mItemList.get(position).getResult().getWeight()+" Kgs");
         viewHolder.remarks.setText(mItemList.get(position).getResult().getAppointmentRemark());
+        //viewHolder.patient_img.setImageResource(R.drawable.hospital_img);
+        if(mItemList.get(position).getResult().getPhotoUrl() != null) {
+            Helper.loadImage(context, mItemList.get(position).getResult().getPhotoUrl(), R.drawable.doctor_profile_pic_default, viewHolder.patient_img);
+        } else {
+            viewHolder.patient_img.setImageResource(R.drawable.doctor_profile_pic_default);
+        }
+
+
     }
 
 }
