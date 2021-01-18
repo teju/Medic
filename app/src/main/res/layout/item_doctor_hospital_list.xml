@@ -76,6 +76,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:src="@drawable/hospital_img"
+                android:id="@+id/hospital_img"
                 android:scaleType="fitXY"
                 android:layout_height="80dp">
             </ImageView>

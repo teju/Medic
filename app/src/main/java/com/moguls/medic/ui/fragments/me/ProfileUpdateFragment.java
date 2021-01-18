@@ -140,6 +140,7 @@ public class ProfileUpdateFragment extends BaseFragment implements View.OnClickL
 
         setListners();
         initContact();
+        getRelationsViewModel.loadData();
 
     }
     public void updateData() {
@@ -379,7 +380,7 @@ public class ProfileUpdateFragment extends BaseFragment implements View.OnClickL
                 return result.getID();
             }
         }
-        return null;
+        return "";
     }
     public void setUpdateProfileAPIObserver() {
         postUpdateProfileViewModel = ViewModelProviders.of(this).get(PostUpdateProfileViewModel.class);

@@ -134,7 +134,7 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
                 listener.onEditClick(position);
             }
         });
-        Helper.loadImage(context,mItemList.get(position).getPhotoUrl(),R.drawable.doctor_profile_pic_default,viewHolder.hospital_img);
+       Helper.loadImage(context,mItemList.get(position).getPhotoUrl(),R.drawable.doctor_profile_pic_default,viewHolder.hospital_img);
     }
 
 

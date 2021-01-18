@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.etc.SharedPreference;
 import com.moguls.medic.model.hospitalSummary.Result;
@@ -48,6 +50,7 @@ public class DoctorViewProfileHospitalFragment extends BaseFragment implements V
     String hospitalID;
     private Button leave_hospital;
     private RelativeLayout goTogoogle;
+    private ImageView hospital_img;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +72,7 @@ public class DoctorViewProfileHospitalFragment extends BaseFragment implements V
         hospital_address = (TextView)v.findViewById(R.id.hospital_address);
         leave_hospital = (Button)v.findViewById(R.id.leave_hospital);
         distance = (TextView)v.findViewById(R.id.distance);
+        hospital_img = (ImageView)v.findViewById(R.id.hospital_img);
         setBackButtonToolbarStyleOne(v);
         setGetHospitalAPIObserver();
         setGetLeaveHospitalViewModelHospitalAPIObserver();
@@ -87,6 +91,8 @@ public class DoctorViewProfileHospitalFragment extends BaseFragment implements V
         header_title.setText(result.getName());
         hospital_status.setText(result.getToday());
         hospital_address.setText(result.getAddress());
+        Helper.loadImage(getActivity(),result.getPhotoUrl(),R.drawable.doctor_profile_pic_default,hospital_img);
+
         //distance.setText(result.());
         iniAdapter();
     }

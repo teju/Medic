@@ -128,6 +128,7 @@ public class PatientConfirmAppointmentFragment extends BaseFragment implements V
 
         bookingData.setDoctorName(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getName());
         bookingData.setSpecializaion(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getSpecializations());
+        bookingData.setPhotoUrl(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getPhotoUrl());
     }
 
     public void setHospitalDEtails() {

@@ -13,6 +13,16 @@ public class BookingData {
     private String fees;
     private String doctorName;
 
+    public String getPhotoUrl() {
+        return PhotoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        PhotoUrl = photoUrl;
+    }
+
+    private String PhotoUrl;
+
     public String getDoctorName() {
         return doctorName;
     }

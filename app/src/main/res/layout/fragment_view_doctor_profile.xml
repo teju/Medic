@@ -21,6 +21,7 @@
                     android:layout_width="match_parent"
                     android:src="@drawable/hospital_img_new"
                     android:scaleType="fitXY"
+                    android:id="@+id/hospital_img"
                     android:layout_height="150dp">
                 </ImageView>
                 <LinearLayout

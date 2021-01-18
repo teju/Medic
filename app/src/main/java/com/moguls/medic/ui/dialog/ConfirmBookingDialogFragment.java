@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.moguls.medic.etc.Helper;
 import com.moguls.medic.model.BookingData;
 
 import java.util.Date;
+
+import static com.moguls.medic.etc.Helper.loadImage;
 
 public class ConfirmBookingDialogFragment extends DialogFragment {
     public static String TAG = "NotifyDialogFragment";
@@ -44,6 +47,7 @@ public class ConfirmBookingDialogFragment extends DialogFragment {
         Button btnok = (Button) v.findViewById(R.id.btnok);
         TextView ref_id = (TextView) v.findViewById(R.id.ref_id);
         LinearLayout llRefID = (LinearLayout) v.findViewById(R.id.llRefID);
+        ImageView logo = (ImageView) v.findViewById(R.id.logo);
         TextView date = (TextView) v.findViewById(R.id.date);
         TextView app_time = (TextView) v.findViewById(R.id.app_time);
         TextView doctor_name = (TextView) v.findViewById(R.id.doctor_name);
@@ -67,10 +71,12 @@ public class ConfirmBookingDialogFragment extends DialogFragment {
                 llRefID.setVisibility(View.VISIBLE);
                 ref_id.setText(refNo);
             }
+
         } catch (Exception e){
 
         }
-
+        loadImage(getActivity(),bookingData.getPhotoUrl()
+                ,R.drawable.doctor_profile_pic_default,logo);
         btnok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

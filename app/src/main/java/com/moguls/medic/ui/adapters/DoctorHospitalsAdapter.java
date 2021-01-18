@@ -6,6 +6,7 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.model.hospitalViews.Result;
 
 import java.util.List;
@@ -77,6 +79,7 @@ public class DoctorHospitalsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         private final RecyclerView recyclerView;
         LinearLayout llRoot;
         TextView appointments,sppointment_cnt,hospital_name;
+        ImageView hospital_img;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             llRoot = itemView.findViewById(R.id.llRoot);
@@ -84,6 +87,7 @@ public class DoctorHospitalsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             sppointment_cnt = itemView.findViewById(R.id.sppointment_cnt);
             hospital_name = itemView.findViewById(R.id.hospital_name);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerview);
+            hospital_img = (ImageView) itemView.findViewById(R.id.hospital_img);
 
         }
     }
@@ -129,6 +133,8 @@ public class DoctorHospitalsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
         });
         viewHolder.recyclerView.setAdapter(appointmentAdapter);
+        Helper.loadImage(context,mItemList.get(position).getPhotoUrl(),R.drawable.doctor_profile_pic_default,viewHolder.hospital_img);
+
     }
 
 

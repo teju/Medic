@@ -169,7 +169,7 @@ public class Helper {
     public static boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
-    public static void loadImage(Context context, String url, int placeholder, ImageView v) {
+    public static void loadImage(Context context, String url, int placeholder, ImageView imageView) {
         try {
             GlideUrl glideurl = new GlideUrl(APIs.PhotoBaseUrl.concat(url), new LazyHeaders.Builder()
                     .addHeader(BaseKeys.ContentType, "application/json")
@@ -178,9 +178,9 @@ public class Helper {
             Glide.with(context)
                     .load(glideurl)
                     .placeholder(placeholder)
-                    .into(v);
+                    .into(imageView);
         }catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
