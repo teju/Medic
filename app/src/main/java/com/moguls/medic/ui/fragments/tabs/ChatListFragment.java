@@ -255,6 +255,7 @@ public class ChatListFragment extends BaseFragment implements ChatListAdapter.On
             @Override
             public void onChanged(Integer integer) {
                 ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setPhoto(getMyChatListViewModel.myChat.getResult().get(selectedPos).getPhotoUrl());
                 chatFragment.setName(getMyChatListViewModel.myChat.getResult().get(selectedPos).getName());
                 chatFragment.setToUserID(getMyChatListViewModel.myChat.getResult().get(selectedPos).getID());
                 home().setFragment(chatFragment);

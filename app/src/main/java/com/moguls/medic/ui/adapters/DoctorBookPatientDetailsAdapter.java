@@ -32,7 +32,7 @@ public class DoctorBookPatientDetailsAdapter extends RecyclerView.Adapter<Doctor
     public interface OnItemClickListner {
         void OnItemClick(String position);
         void OnCancelClick(String ID);
-        void OnChatClicked(String ID,String name);
+        void OnChatClicked(String ID,String name,String image);
 
     }
 
@@ -79,7 +79,8 @@ public class DoctorBookPatientDetailsAdapter extends RecyclerView.Adapter<Doctor
         holder.chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.OnChatClicked(slots.get(position).getID(),slots.get(position).getPatient().getName());
+                listener.OnChatClicked(slots.get(position).getID(),
+                        slots.get(position).getPatient().getName(),slots.get(position).getPatient().getPhotoUrl());
             }
         });
         holder.llsubroot.setOnClickListener(new View.OnClickListener() {

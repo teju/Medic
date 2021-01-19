@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.EditSlotsListener;
 import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.APIs;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.model.consultations.Result;
@@ -66,7 +67,7 @@ public class DoctorAddDoctorFragment extends BaseFragment {
     List<Sessions> Sessions = new ArrayList<>();
     private ImageView hospital_img;
     private Uri cameraOutputUri;
-    private String real_Path;
+    private String real_Path ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -145,14 +146,16 @@ public class DoctorAddDoctorFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri imageuri = null;
-        if(data != null) {
-            imageuri = data.getData();// Get intent
-        } else {
-            imageuri = cameraOutputUri;
+        if(resultCode != 0) {
+            Uri imageuri = null;
+            if (data != null) {
+                imageuri = data.getData();// Get intent
+            } else {
+                imageuri = cameraOutputUri;
+            }
+            real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
+            hospital_img.setImageURI(imageuri);
         }
-        real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
-        hospital_img.setImageURI(imageuri);
 
     }
     public boolean validate() {
@@ -188,6 +191,7 @@ public class DoctorAddDoctorFragment extends BaseFragment {
         }
         result.setName(edt_one.getText().toString());
         result.setPhotoUrl(real_Path);
+
         result.setAddress(edt_two.getText().toString());
         result.setTimeslot(slotsDuration.getText().toString());
         result.setConsultationFee(consultationFee.getText().toString());
@@ -211,9 +215,11 @@ public class DoctorAddDoctorFragment extends BaseFragment {
             if(result.getTimeslot() != null) {
                 slotsDuration.setText(result.getTimeslot());
             }
+
             if(result.getAdvanceBookingDays() != null) {
                 bookingDays.setText(result.getAdvanceBookingDays());
             }
+            Helper.loadImage(getActivity(),result.getPhotoUrl(),R.drawable.domain_gray,hospital_img);
         }
 
     }

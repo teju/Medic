@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StartEndTime {
-    String Start;
+    String Start="";
 
     public String getStart() {
         return Start;
@@ -25,6 +25,6 @@ public class StartEndTime {
         End = end;
     }
 
-    String End;
+    String End="";
 
 }

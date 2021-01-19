@@ -191,6 +191,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         break;
                     case R.id.chat :
                         ChatFragment chatFragment = new ChatFragment();
+                        chatFragment.setPhoto(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getPhotoUrl());
                         chatFragment.setToUserID(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getID());
                         chatFragment.setName(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getName());
                         home().setFragment(chatFragment);

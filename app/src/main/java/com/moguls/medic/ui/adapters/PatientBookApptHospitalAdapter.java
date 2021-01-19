@@ -44,7 +44,7 @@ public class PatientBookApptHospitalAdapter extends RecyclerView.Adapter<Patient
     public interface OnClickListner {
         void OnItemClick(String position);
         void OnCancelClick(String position);
-        void OnChatClicked(String position,String name);
+        void OnChatClicked(String position,String name,String image);
     }
     public PatientBookApptHospitalAdapter(Context context,List<Sessions> expandableListTitle,
                                           OnItemClickListner onItemClickListner,

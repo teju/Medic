@@ -21,4 +21,14 @@ public class Registration {
     }
 
     String VerifierComment;
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    String ID;
 }

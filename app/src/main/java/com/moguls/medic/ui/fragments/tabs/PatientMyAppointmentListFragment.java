@@ -186,6 +186,8 @@ public class PatientMyAppointmentListFragment extends BaseFragment implements
             @Override
             public void run() {
                 ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setPhoto(appointmentListViewModel.userAppointments.getResult().get(position).getDoctor().getPhotoUrl());
+
                 chatFragment.setToUserID(appointmentListViewModel.userAppointments.getResult().get(position).getDoctor().getID());
                 chatFragment.setName(appointmentListViewModel.userAppointments.getResult().get(position).getDoctor().getName());
                 home().setFragment(chatFragment);

@@ -137,6 +137,7 @@ public class PatientAppointmentDetailFragment extends BaseFragment implements Vi
                 break;
             case R.id.chat :
                 ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setPhoto(getAppointment.getAppointment.getResult().getDoctor().getPhotoUrl());
                 chatFragment.setToUserID(getAppointment.getAppointment.getResult().getDoctor().getID());
                 chatFragment.setName(getAppointment.getAppointment.getResult().getDoctor().getName());
                 home().setFragment(chatFragment);

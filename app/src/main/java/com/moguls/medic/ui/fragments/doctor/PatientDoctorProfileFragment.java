@@ -163,6 +163,7 @@ public class PatientDoctorProfileFragment extends BaseFragment implements View.O
                 switch (v.getId()){
                     case R.id.chat:
                         ChatFragment chatFragment = new ChatFragment();
+                        chatFragment.setPhoto(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getPhotoUrl());
                         chatFragment.setToUserID(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getID());
                         chatFragment.setName(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getName());
                         home().setFragment(chatFragment);
@@ -260,11 +261,15 @@ public class PatientDoctorProfileFragment extends BaseFragment implements View.O
     }
 
     private void updateData() {
-        doctor_name.setText(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getName());
-        experience.setText(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getExperience()+" Years");
-        description.setText(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getStatement());
-        specialization.setText(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getQualifications()+", "
-                +getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getSpecializations());
+        try {
+            doctor_name.setText(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getName());
+            experience.setText(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getExperience() + " Years");
+            description.setText(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getStatement());
+            specialization.setText(getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getQualifications() + ", "
+                    + getPatientDoctorProfileViewModel.getDoctorsProfile.getResult().getSpecializations());
+        } catch (Exception e){
+
+        }
         initAdapter();
     }
 

@@ -73,11 +73,15 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
     }
 
     public void setData() {
-        reg_year.setText(profileInit.getMedical().getYear());
-        reg_council.setText(profileInit.getMedical().getCouncil().getName());
-        registration_no.setText(profileInit.getMedical().getNo());
-        specialization.setText(profileInit.getPersonnel().getSpecializations().get(0).getName());
-        education.setText(profileInit.getPersonnel().getQualifications().get(0).getName());
+        try {
+            reg_year.setText(profileInit.getMedical().getYear());
+            reg_council.setText(profileInit.getMedical().getCouncil().getName());
+            registration_no.setText(profileInit.getMedical().getNo());
+            specialization.setText(profileInit.getPersonnel().getSpecializations().get(0).getName());
+            education.setText(profileInit.getPersonnel().getQualifications().get(0).getName());
+        }catch (Exception e){
+
+        }
     }
     @Override
     public void onResume() {

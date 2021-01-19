@@ -170,6 +170,7 @@ public class DoctorsListFragment extends BaseFragment implements PatientDoctorLi
             @Override
             public void run() {
                 ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setPhoto(getDoctorsViewModel.getDoctors.getResult().get(position).getPhotoUrl());
                 chatFragment.setToUserID(getDoctorsViewModel.getDoctors.getResult().get(position).getID());
                 chatFragment.setName(getDoctorsViewModel.getDoctors.getResult().get(position).getName());
                 home().setFragment(chatFragment);

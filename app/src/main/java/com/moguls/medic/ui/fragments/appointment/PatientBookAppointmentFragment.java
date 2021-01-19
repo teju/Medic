@@ -181,8 +181,9 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
             }
 
             @Override
-            public void OnChatClicked(String position, String name) {
+            public void OnChatClicked(String position, String name,String image) {
                 ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setPhoto(image);
                 chatFragment.setToUserID(position);
                 chatFragment.setName(name);
                 home().setFragment(chatFragment);
@@ -243,8 +244,9 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
             }
 
             @Override
-            public void OnChatClicked(String position, String name) {
+            public void OnChatClicked(String position, String name,String image) {
                 ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setPhoto(image);
                 chatFragment.setToUserID(position);
                 chatFragment.setName(name);
                 home().setFragment(chatFragment);

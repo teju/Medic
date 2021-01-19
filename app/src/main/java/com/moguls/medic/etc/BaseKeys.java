@@ -57,4 +57,24 @@ public class BaseKeys {
 	public static final String Longitude = "Longitude";
 	public static final String ConsultationFee = "ConsultationFee";
 	public static final String Sessions = "Sessions";
+	public static final String PersonnelFirstName = "Personnel.FirstName";
+	public static final String PersonnelLastName = "Personnel.LastName";
+	public static final String PersonnelMobileNo = "Personnel.MobileNo";
+	public static final String PersonnelEmailID = "Personnel.EmailID";
+	public static final String PersonnelIsMale = "Personnel.IsMale";
+	public static final String PersonnelLocation = "Personnel.Location";
+	public static final String PersonnelEmergencyContactNo = "Personnel.EmergencyContactNo";
+	public static final String PersonnelDateOfBirth = "Personnel.DateOfBirth";
+	public static final String PersonnelPhotoData = "Personnel.PhotoData";
+	public static final String MedicalPracticingFrom = "Medical.PracticingFrom";
+	public static final String MedicalStatement = "Medical.Statement";
+	public static final String MedicalNo = "Medical.No";
+	public static final String MedicalCouncil = "Medical.Council";
+	public static final String MedicalYear = "Medical.Year";
+	public static final String MedicalSpecializations = "Medical.Specializations";
+	public static final String MedicalQualifications = "Medical.Qualifications";
+	public static final String IDProofRegistrationData = "IDProof.Registration.Data";
+	public static final String IDProofRegistrationID = "IDProof.Registration.ID";
+	public static final String IDProofPhotoIdentityID = "IDProof.PhotoIdentity.ID";
+	public static final String IDProofPhotoIdentityData = "IDProof.PhotoIdentity.Data";
 }

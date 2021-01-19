@@ -20,8 +20,8 @@
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_width="100dp"
-                    android:src="@drawable/hospital_img"
                     android:id="@+id/hospital_img"
+                    android:src="@drawable/domain_gray"
                     android:scaleType="fitXY"
                     android:layout_marginTop="3dp"
                     android:layout_height="80dp">
@@ -103,7 +103,7 @@
                         android:inputType="text"
                         android:singleLine="true"
                         android:layout_marginLeft="10dp"
-                        android:hint="First Name"
+                        android:hint="Name"
                         android:layout_height="wrap_content">
                     </EditText>
                     <RelativeLayout

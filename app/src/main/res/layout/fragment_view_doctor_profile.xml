@@ -19,7 +19,7 @@
                 <include layout="@layout/header"></include>
                 <ImageView
                     android:layout_width="match_parent"
-                    android:src="@drawable/hospital_img_new"
+                    android:src="@drawable/domain_gray"
                     android:scaleType="fitXY"
                     android:id="@+id/hospital_img"
                     android:layout_height="150dp">

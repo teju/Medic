@@ -106,9 +106,11 @@ public class DoctorMeFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.llprofile :
-                DoctorProfileTabbedFragment doctorProfileTabbedFragment = new DoctorProfileTabbedFragment();
-                doctorProfileTabbedFragment.percentageVal = getDoctorProfileSummaryViewModel.getDoctors.getResult().getCompletedPercentage();
-                home().setFragment(doctorProfileTabbedFragment);
+                if( getDoctorProfileSummaryViewModel.getDoctors != null) {
+                    DoctorProfileTabbedFragment doctorProfileTabbedFragment = new DoctorProfileTabbedFragment();
+                    doctorProfileTabbedFragment.percentageVal = getDoctorProfileSummaryViewModel.getDoctors.getResult().getCompletedPercentage();
+                    home().setFragment(doctorProfileTabbedFragment);
+                }
                 break;
             case R.id.ll_patients :
                 home().setFragment(new DoctorPatientListFragment());

@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
+import com.moguls.medic.R;
 import com.moguls.medic.model.Response;
 import com.moguls.medic.model.SpannString;
 import com.moguls.medic.webservices.settings.HTTPAsyncTask;
@@ -180,6 +181,7 @@ public class Helper {
                     .placeholder(placeholder)
                     .into(imageView);
         }catch (Exception e) {
+            imageView.setImageResource(placeholder);
             e.printStackTrace();
         }
     }

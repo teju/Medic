@@ -108,6 +108,7 @@ public class DoctorPatientListFragment extends BaseFragment {
             @Override
             public void OnChatClicked(int position) {
                 ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setPhoto(resultArrayList.get(position).getPhotoUrl());
                 chatFragment.setToUserID(resultArrayList.get(position).getID());
                 chatFragment.setName(resultArrayList.get(position).getName());
                 home().setFragment(chatFragment);

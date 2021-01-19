@@ -42,7 +42,7 @@ public class DoctorBookApptHospitalAdapter extends RecyclerView.Adapter<DoctorBo
     public interface OnClickListner {
         void OnItemClick(String position);
         void OnCancelClick(String position);
-        void OnChatClicked(String position, String name);
+        void OnChatClicked(String position, String name,String image);
     }
     public DoctorBookApptHospitalAdapter(Context context, List<com.moguls.medic.model.doctorAppointments.Sessions> expandableListTitle,
                                          OnItemClickListner onItemClickListner,
@@ -91,8 +91,8 @@ public class DoctorBookApptHospitalAdapter extends RecyclerView.Adapter<DoctorBo
             }
 
             @Override
-            public void OnChatClicked(String ID,String  name) {
-                onClickListner.OnChatClicked(ID,name);
+            public void OnChatClicked(String ID,String  name,String image) {
+                onClickListner.OnChatClicked(ID,name,image);
             }
         });
 

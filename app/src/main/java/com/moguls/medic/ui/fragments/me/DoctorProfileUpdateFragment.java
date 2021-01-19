@@ -259,7 +259,7 @@ public class DoctorProfileUpdateFragment extends BaseFragment implements View.On
                     personnel.setMobileNo(phone_number.getText().toString());
                     personnel.setEmailID(edt_email_id.getText().toString());
                     personnel.setPracticingFrom(edt_exp_yrs.getText().toString());
-                    personnel.setEmergencyContactNo(edt_exp_yrs.getText().toString());
+                    personnel.setEmergencyContactNo(emergency_contact.getText().toString());
                     personnel.setLocation(location.getText().toString());
                     personnel.setDateOfBirth(dob.getText().toString());
                     if(gender.getText().toString().equalsIgnoreCase("male")) {

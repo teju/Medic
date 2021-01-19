@@ -74,10 +74,13 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
     private Uri cameraOutputUri;
     private String real_Path;
     String imageUrl = "";
+    private String photo = "";
     public void setPastMessages(String pastMessages) {
         PastMessages = pastMessages;
     }
-
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
     public void setToUserID(String toUserID) {
         ToUserID = toUserID;
     }
@@ -299,6 +302,8 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
             mBound = false;
         }
     };
+
+
     class HubConnectionTask extends AsyncTask<HubConnection, Void, Void> {
 
         @Override

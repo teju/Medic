@@ -135,9 +135,10 @@ public class DoctorHospitalsClinicsAdapter extends RecyclerView.Adapter<Recycler
             }
         });
         if(mItemList.get(position).getPhotoUrl() != null) {
-            Helper.loadImage(context,mItemList.get(position).getPhotoUrl(),R.drawable.doctor_profile_pic_default,viewHolder.hospital_img);
+            Helper.loadImage(context,mItemList.get(position).getPhotoUrl(),
+                    R.drawable.domain_gray,viewHolder.hospital_img);
         } else {
-            viewHolder.hospital_img.setImageResource(R.drawable.doctor_profile_pic_default);
+            viewHolder.hospital_img.setImageResource(R.drawable.domain_gray);
         }
     }
 

@@ -91,7 +91,7 @@ public class DoctorViewProfileHospitalFragment extends BaseFragment implements V
         header_title.setText(result.getName());
         hospital_status.setText(result.getToday());
         hospital_address.setText(result.getAddress());
-        Helper.loadImage(getActivity(),result.getPhotoUrl(),R.drawable.doctor_profile_pic_default,hospital_img);
+        Helper.loadImage(getActivity(),result.getPhotoUrl(),R.drawable.domain_gray,hospital_img);
 
         //distance.setText(result.());
         iniAdapter();

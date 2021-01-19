@@ -241,9 +241,11 @@ public class PatientMeFragment extends BaseFragment implements View.OnClickListe
         experience.setText("("+getProfileViewModel.getProfile.getResult().getAge()+") yrs");
         blood_group.setText(getProfileViewModel.getProfile.getResult().getBloodGroup());
         if (getProfileViewModel.getProfile.getResult().getHeight() != null) {
-            double inch =  Double.parseDouble(getProfileViewModel.getProfile.getResult().getHeight()) / 2.54;
-            double feet = 0.0328 * Double.parseDouble(getProfileViewModel.getProfile.getResult().getHeight());
-            height.setText((int)feet+"'"+(int) inch+"\"");
+            String[] heightArr = getProfileViewModel.getProfile.getResult().getHeight().split("\\.");
+            height.setText(heightArr[0]+"'");
+            if(heightArr.length > 1) {
+                height.append(heightArr[1]+"\"");
+            }
         }
         if(getProfileViewModel.getProfile.getResult().getWeight() != null) {
             double weight_val = Double.parseDouble(getProfileViewModel.getProfile.getResult().getWeight());
