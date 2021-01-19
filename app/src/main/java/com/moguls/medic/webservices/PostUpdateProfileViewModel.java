@@ -107,7 +107,7 @@ public class PostUpdateProfileViewModel extends BaseViewModel {
         genericHttpAsyncTask.settxtFileParams(BaseKeys.RelationID,RelationID);
         genericHttpAsyncTask.settxtFileParams(BaseKeys.IsMarried,IsMarried);
         genericHttpAsyncTask.settxtFileParams(BaseKeys.Location,Location);
-        genericHttpAsyncTask.setFileParams(BaseKeys.PhotoData,PhotoData,"");
+        genericHttpAsyncTask.setFileParams(BaseKeys.PhotoData,PhotoData,"multipart/form-data; boundar");
         genericHttpAsyncTask.context = apl.getApplicationContext();
         genericHttpAsyncTask.setCache(false);
         genericHttpAsyncTask.execute();

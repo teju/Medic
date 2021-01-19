@@ -124,7 +124,7 @@
                             android:textSize="@dimen/text_med"
                             android:fontFamily="@font/opensansregular"
                             android:imeOptions="actionNext"
-                            android:hint="Last Name"
+                            android:hint="Address"
                             android:singleLine="true"
                             android:id="@+id/edt_two"
                             android:layout_marginLeft="10dp"

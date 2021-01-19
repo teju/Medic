@@ -190,6 +190,9 @@ public class ProfileUpdateFragment extends BaseFragment implements View.OnClickL
         if(getprofileRes.getWeight() != null) {
             edtWeight.setText(getprofileRes.getWeight());
         }
+        if(getprofileRes.getPhotoUrl() != null) {
+            real_Path = getprofileRes.getPhotoUrl();
+        }
         loadImage(getActivity(),getprofileRes.getPhotoUrl(),R.drawable.doctor_profile_pic_default,profile_pic);
 
     }
@@ -380,7 +383,7 @@ public class ProfileUpdateFragment extends BaseFragment implements View.OnClickL
                 return result.getID();
             }
         }
-        return "";
+        return "0";
     }
     public void setUpdateProfileAPIObserver() {
         postUpdateProfileViewModel = ViewModelProviders.of(this).get(PostUpdateProfileViewModel.class);
