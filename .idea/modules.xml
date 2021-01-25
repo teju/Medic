@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Medic.iml" filepath="$PROJECT_DIR$/.idea/modules/Medic.iml" group="Medic" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Medic/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/slide_jsonviewer_lib/slide_jsonviewer_lib.iml" filepath="$PROJECT_DIR$/.idea/modules/slide_jsonviewer_lib/slide_jsonviewer_lib.iml" group="Medic/slide_jsonviewer_lib" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/slide_log_lib/slide_log_lib.iml" filepath="$PROJECT_DIR$/.idea/modules/slide_log_lib/slide_log_lib.iml" group="Medic/slide_log_lib" />
     </modules>
   </component>
 </project>

@@ -22,4 +22,14 @@ public class Specializations {
 
     String ID;
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    boolean isSelected = false;
+
 }

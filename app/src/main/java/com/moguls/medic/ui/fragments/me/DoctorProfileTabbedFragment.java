@@ -64,7 +64,22 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
         getDoctorProdileDetailsViewModel.loadData();
         percentage.setText(percentageVal+"% Completed");
 
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                selectedTabPos = position;
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+                selectedTabPos = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void addTabs() {
@@ -89,6 +104,7 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
         adapter.addFrag(doctorIDProofTabFragment, "ID Proof");
         viewPager.setAdapter(adapter);
     }
+
 
     @Override
     public void onResume() {
@@ -137,7 +153,7 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
         postSaveDoctorViewModel.getTrigger().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-
+                getDoctorProdileDetailsViewModel.loadData();
             }
         });
     }
@@ -178,6 +194,7 @@ public class DoctorProfileTabbedFragment extends BaseFragment implements View.On
             public void onChanged(Integer integer) {
 
                 addTabs();
+                viewPager.setCurrentItem(selectedTabPos);
             }
         });
     }

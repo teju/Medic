@@ -98,28 +98,15 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="10dp"
                         android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="100dp"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
                             android:src="@drawable/camera_plus"
-                            android:id="@+id/degree_proof"
+                            android:id="@+id/recyclerView"
                             android:scaleType="fitXY"
                             android:layout_gravity="center_horizontal"
                             android:layout_height="100dp">
 
-                        </ImageView>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:fontFamily="@font/opensansregular"
-                            android:textSize="@dimen/text_small"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:textColor="@color/orange"
-                            android:background="@color/white"
-                            android:text="edit proof"
-                            android:textAllCaps="true"
-                            android:layout_height="wrap_content">
-                        </TextView>
-
+                        </androidx.recyclerview.widget.RecyclerView>
                     </LinearLayout>
 
                 </LinearLayout>

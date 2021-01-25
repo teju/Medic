@@ -15,13 +15,21 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.moguls.medic.R;
 import com.moguls.medic.callback.DoctorSaveListener;
 import com.moguls.medic.etc.Helper;
+import com.moguls.medic.model.doctorProfileDetails.IDProof;
+import com.moguls.medic.model.doctorProfileDetails.Medical;
 import com.moguls.medic.model.doctorProfileDetails.Personnel;
+import com.moguls.medic.model.doctorProfileDetails.Registration;
 import com.moguls.medic.model.doctorProfileDetails.Result;
+import com.moguls.medic.ui.adapters.DegreeImageAdapter;
 import com.moguls.medic.ui.settings.BaseFragment;
+
+import java.util.List;
 
 
 public class DoctorIDProofTabFragment extends BaseFragment implements View.OnClickListener {
@@ -35,6 +43,11 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
     private EditText statement;
     DoctorSaveListener doctorSaveListener;
     private Button btnSave;
+    private String degree_real_Path = "",id_real_Path ="",reg_real_Path = "";
+    private RecyclerView recyclerView;
+    private Registration registrations;
+    private int selImageposition;
+    private DegreeImageAdapter degreeImageAdapter;
 
     public void setProfileInit(Result profileInit) {
         this.profileInit = profileInit;
@@ -55,12 +68,32 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
         id_proof = (ImageView)v.findViewById(R.id.id_proof);
         statement = (EditText)v.findViewById(R.id.statement);
         btnSave = (Button)v.findViewById(R.id.btnSave);
-        statement.setText(profileInit.getPersonnel().getStatement());
+        recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
+        statement.setText(profileInit.getMedical().getStatement());
         reg_proof.setOnClickListener(this);
-        degree_proof.setOnClickListener(this);
+        //degree_proof.setOnClickListener(this);
         id_proof.setOnClickListener(this);
         btnSave.setOnClickListener(this);
+        setData();
 
+    }
+    public void setData() {
+        IDProof idProof = profileInit.getIDProof();
+        Helper.loadImage(getActivity(),idProof.getPhotoIdentity().getDocumentUrl(),R.drawable.camera_plus,id_proof);
+        Helper.loadImage(getActivity(),idProof.getRegistration().getDocumentUrl(),R.drawable.camera_plus,reg_proof);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
+        degreeImageAdapter = new DegreeImageAdapter(getActivity(), new DegreeImageAdapter.OnClickListner() {
+            @Override
+            public void OnClick(int position) {
+                pickImage(PICK_DEGREE_PHOTO_PHOTO);
+                selImageposition = position;
+
+
+            }
+        });
+        degreeImageAdapter.mItemList =  profileInit.getIDProof().getDegrees();
+        recyclerView.setAdapter(degreeImageAdapter);
     }
 
     @Override
@@ -77,20 +110,22 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri imageuri = null;
-        if(data != null) {
-            imageuri = data.getData();// Get intent
-        } else {
-            imageuri = cameraOutputUri;
-        }
-        //String real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
-
-        if(requestCode == PICK_DEGREE_PHOTO_PHOTO) {
-            degree_proof.setImageURI(imageuri);
-        } else if(requestCode == PICK_ID_PHOTO_PHOTO) {
-            id_proof.setImageURI(imageuri);
-        } else if(requestCode == PICK_REG_PHOTO_PHOTO) {
-            reg_proof.setImageURI(imageuri);
+        if(requestCode != 0) {
+            Uri imageuri = null;
+            if (data != null) {
+                imageuri = data.getData();// Get intent
+            } else {
+                imageuri = cameraOutputUri;
+            }
+            if (requestCode == PICK_DEGREE_PHOTO_PHOTO) {
+                degree_real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
+            } else if (requestCode == PICK_ID_PHOTO_PHOTO) {
+                id_real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
+                id_proof.setImageURI(imageuri);
+            } else if (requestCode == PICK_REG_PHOTO_PHOTO) {
+                reg_real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
+                reg_proof.setImageURI(imageuri);
+            }
         }
     }
 
@@ -107,11 +142,20 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
                 pickImage(PICK_DEGREE_PHOTO_PHOTO);
                 break;
             case R.id.btnSave:
-                Personnel personnel = profileInit.getPersonnel();
+                Medical personnel = profileInit.getMedical();
                 if(!statement.getText().toString().isEmpty()) {
                     personnel.setStatement(statement.getText().toString());
                 }
-                baseParams.setPersonnel(personnel);
+                IDProof idProof = profileInit.getIDProof();
+                if(!reg_real_Path.isEmpty()) {
+                    idProof.getRegistration().setDocumentUrl(reg_real_Path);
+                } else if(!id_real_Path.isEmpty()) {
+                    idProof.getPhotoIdentity().setDocumentUrl(id_real_Path);
+                }else if(!degree_real_Path.isEmpty()) {
+                    idProof.getDegrees().get(selImageposition).setDocumentUrl(degree_real_Path);
+                }
+                baseParams.setIdProof(idProof);
+                baseParams.setMedical(personnel);
                 doctorSaveListener.onButtonClicked();
                 break;
         }

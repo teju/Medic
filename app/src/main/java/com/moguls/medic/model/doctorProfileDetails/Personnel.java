@@ -21,7 +21,6 @@ public class Personnel implements Serializable {
     String EmergencyContactNo;
     String Statement;
     String IsVerified;
-    List<Specializations> Specializations = new ArrayList<>();
 
     public String getPhotoUrl() {
         return PhotoUrl;
@@ -119,23 +118,10 @@ public class Personnel implements Serializable {
         IsVerified = isVerified;
     }
 
-    public List<com.moguls.medic.model.doctorProfileDetails.Specializations> getSpecializations() {
-        return Specializations;
-    }
 
-    public void setSpecializations(List<com.moguls.medic.model.doctorProfileDetails.Specializations> specializations) {
-        Specializations = specializations;
-    }
 
-    public List<com.moguls.medic.model.doctorProfileDetails.Specializations> getQualifications() {
-        return Qualifications;
-    }
 
-    public void setQualifications(List<com.moguls.medic.model.doctorProfileDetails.Specializations> qualifications) {
-        Qualifications = qualifications;
-    }
 
-    List<Specializations> Qualifications = new ArrayList<>();
 
     @Override
     public String toString() {

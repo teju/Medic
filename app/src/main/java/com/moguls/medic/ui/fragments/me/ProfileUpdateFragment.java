@@ -267,14 +267,18 @@ public class ProfileUpdateFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri imageuri = null;
-        if(data != null) {
-            imageuri = data.getData();// Get intent
-        } else {
-            imageuri = cameraOutputUri;
+        if(resultCode != 0) {
+            Uri imageuri = null;
+            if (data != null) {
+                imageuri = data.getData();// Get intent
+            } else {
+                imageuri = cameraOutputUri;
+            }
+            real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
+            if (!real_Path.isEmpty()) {
+                profile_pic.setImageURI(imageuri);
+            }
         }
-        real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
-        profile_pic.setImageURI(imageuri);
 
     }
 

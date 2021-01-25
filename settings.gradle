@@ -1,2 +1,4 @@
+include ':slide_jsonviewer_lib'
+include ':slide_log_lib'
 include ':app'
 rootProject.name = "Medic"

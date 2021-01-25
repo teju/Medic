@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
+import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.etc.SharedPreference;
 import com.moguls.medic.model.doctorProfileSummary.Result;
@@ -39,6 +41,7 @@ public class DoctorMeFragment extends BaseFragment implements View.OnClickListen
     private LoadingCompound ld;
     private TextView name,age,specialization,prodile_complete,education,gender,experience;
     private ProgressBar progress;
+    private ImageView logo;
 
     public void setBottomNavigation(BottomNavigationView bottomNavigation) {
         this.bottomNavigation = bottomNavigation;
@@ -56,6 +59,7 @@ public class DoctorMeFragment extends BaseFragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setBackButtonToolbarStyleOne(v);
+        logo = (ImageView) v.findViewById(R.id.logo);
         llprofile = (LinearLayout) v.findViewById(R.id.llprofile);
         ll_patients = (LinearLayout) v.findViewById(R.id.ll_patients);
         ll_hospitals = (LinearLayout) v.findViewById(R.id.ll_hospitals);
@@ -100,6 +104,8 @@ public class DoctorMeFragment extends BaseFragment implements View.OnClickListen
         }
         progress.setProgress(result.getCompletedPercentage());
         prodile_complete.setText("Completed Profile "+result.getCompletedPercentage());
+        Helper.loadImage(getActivity(),result.getPhotoUrl(),R.drawable.doctor_profile_pic_default,logo);
+
     }
 
     @Override

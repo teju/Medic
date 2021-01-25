@@ -99,6 +99,7 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
 
     public void initData() {
         today_date.setText(Helper.dateFormat("dd MMM yyyy",new Date()));
+        selectedDate = Helper.dateFormat("dd-MMM-yyyy",new Date());
         if(doctor_id.isEmpty()) {
             postGetDoctorAppointmentsSlotsViewModel.loadData(doctor_id, selectedDate);
         } else {

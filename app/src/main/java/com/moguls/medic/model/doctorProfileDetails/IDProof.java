@@ -10,8 +10,7 @@ public class IDProof {
     Registration Registration;
     Registration PhotoIdentity;
     List<Registration> Degrees = new ArrayList();
-    List<Specializations> Specializations = new ArrayList();
-    List<Specializations> Qualifications = new ArrayList();
+
 
     public String getNo() {
         return No;
@@ -53,29 +52,7 @@ public class IDProof {
         Degrees = degrees;
     }
 
-    public List<com.moguls.medic.model.doctorProfileDetails.Specializations> getSpecializations() {
-        return Specializations;
-    }
 
-    public void setSpecializations(List<com.moguls.medic.model.doctorProfileDetails.Specializations> specializations) {
-        Specializations = specializations;
-    }
 
-    public List<com.moguls.medic.model.doctorProfileDetails.Specializations> getQualifications() {
-        return Qualifications;
-    }
 
-    public void setQualifications(List<com.moguls.medic.model.doctorProfileDetails.Specializations> qualifications) {
-        Qualifications = qualifications;
-    }
-
-    public List<com.moguls.medic.model.doctorProfileDetails.Specializations> getRegistartionCouncils() {
-        return RegistartionCouncils;
-    }
-
-    public void setRegistartionCouncils(List<com.moguls.medic.model.doctorProfileDetails.Specializations> registartionCouncils) {
-        RegistartionCouncils = registartionCouncils;
-    }
-
-    List<Specializations> RegistartionCouncils = new ArrayList();
 }

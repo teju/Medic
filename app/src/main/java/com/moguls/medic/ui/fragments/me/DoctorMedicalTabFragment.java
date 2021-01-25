@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,10 +25,14 @@ import com.moguls.medic.callback.PopUpListener;
 import com.moguls.medic.model.doctorProfileDetails.Medical;
 import com.moguls.medic.model.doctorProfileDetails.Result;
 import com.moguls.medic.model.doctorProfileDetails.Specializations;
+import com.moguls.medic.ui.adapters.HospitalSpinnerAdapter;
+import com.moguls.medic.ui.adapters.SpecializationSpinnerAdapter;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -38,11 +44,15 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
     private TextView specialization,education;
     private EditText reg_council;
     private TextView reg_year;
+    private TextView edt_exp_yrs;
+
     private EditText registration_no;
     private Button save;
     final Calendar myCalendar = Calendar.getInstance();
     DoctorSaveListener doctorSaveListener;
     int choosenYear = 2021;
+    private Spinner sp_specialization,sp_qualification;
+    private RelativeLayout rl_specialization,rl_qualification;
 
     public void setProfileInit(Result profileInit) {
         this.profileInit = profileInit;
@@ -63,13 +73,111 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
         registration_no = (EditText)v.findViewById(R.id.registration_no);
         reg_council = (EditText)v.findViewById(R.id.reg_council);
         specialization = (TextView)v.findViewById(R.id.specialization);
+        edt_exp_yrs = (TextView) v.findViewById(R.id.edt_exp_yrs);
+        sp_specialization = (Spinner) v.findViewById(R.id.sp_specialization);
+        sp_qualification = (Spinner) v.findViewById(R.id.sp_qualification);
+        rl_specialization = (RelativeLayout) v.findViewById(R.id.rl_specialization);
+        rl_qualification = (RelativeLayout) v.findViewById(R.id.rl_qualification);
+
         education = (TextView)v.findViewById(R.id.education);
         save = (Button)v.findViewById(R.id.save);
-        specialization.setOnClickListener(this);
         education.setOnClickListener(this);
         save.setOnClickListener(this);
         reg_year.setOnClickListener(this);
+        edt_exp_yrs.setOnClickListener(this);
+        rl_specialization.setOnClickListener(this);
+        rl_qualification.setOnClickListener(this);
+
         setData();
+        initSpzAdapterAdapter();
+        initQualificationAdapterAdapter();
+    }
+
+    public void containsSpeciaization() {
+        try {
+            if (profileInit.getMedical().getSpecializations() != null) {
+                for (Specializations specializations : profileInit.getSpecializations()) {
+                    for (Specializations specializations1 : profileInit.getMedical().getSpecializations())
+                    if (specializations1.getName().equals(specializations.getName())) {
+                        specializations.setSelected(true);
+                    }
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+    public void containsQualifications() {
+        try {
+            if (profileInit.getMedical().getQualifications() != null) {
+                for (Specializations specializations : profileInit.getQualifications()) {
+                    for (Specializations specializations1 : profileInit.getMedical().getQualifications())
+                    if (specializations1.getName().equals(specializations.getName())) {
+                        specializations.setSelected(true);
+                    }
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void initSpzAdapterAdapter() {
+        containsSpeciaization();
+        SpecializationSpinnerAdapter aa = new SpecializationSpinnerAdapter(getActivity(), new SpecializationSpinnerAdapter.OnItemClickListner() {
+            @Override
+            public void OnItemClick(int position,boolean isREmove) {
+                specialization.setText(profileInit.getSpecializations().get(position).getName());
+                specialization.setTextColor(getActivity().getResources().getColor(R.color.black));
+                hideSpinnerDropDown(sp_specialization);
+                Specializations specializations = profileInit.getSpecializations().get(position);
+                List<Specializations> medicalspecializations = profileInit.getMedical().getSpecializations();
+                if(medicalspecializations == null) {
+                    medicalspecializations = new ArrayList<>();
+                    medicalspecializations.add(specializations);
+                } else {
+                    if(isREmove) {
+                        medicalspecializations.remove(position);
+                    } else {
+                        medicalspecializations.add(specializations);
+                    }
+                }
+                profileInit.getMedical().setSpecializations(medicalspecializations);
+
+            }
+        });
+        aa.setResults(profileInit.getSpecializations());
+        sp_specialization.setAdapter(aa);
+    }
+
+    public void initQualificationAdapterAdapter() {
+        containsQualifications();
+        SpecializationSpinnerAdapter aa = new SpecializationSpinnerAdapter(getActivity(), new SpecializationSpinnerAdapter.OnItemClickListner() {
+            @Override
+            public void OnItemClick(int position,boolean isREmove) {
+                education.setText(profileInit.getQualifications().get(position).getName());
+                education.setTextColor(getActivity().getResources().getColor(R.color.black));
+                hideSpinnerDropDown(sp_qualification);
+                Specializations specializations = profileInit.getQualifications().get(position);
+                List<Specializations> medicalspecializations = profileInit.getMedical().getQualifications();
+                if(medicalspecializations == null) {
+                    medicalspecializations = new ArrayList<>();
+                    medicalspecializations.add(specializations);
+                } else {
+                    if(isREmove) {
+                        medicalspecializations.remove(position);
+                    } else {
+                        medicalspecializations.add(specializations);
+                    }
+                }
+                profileInit.getMedical().setQualifications(medicalspecializations);
+
+            }
+        });
+        aa.setResults(profileInit.getQualifications());
+        sp_qualification.setAdapter(aa);
     }
 
     public void setData() {
@@ -77,17 +185,29 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
             reg_year.setText(profileInit.getMedical().getYear());
             reg_council.setText(profileInit.getMedical().getCouncil().getName());
             registration_no.setText(profileInit.getMedical().getNo());
-            specialization.setText(profileInit.getPersonnel().getSpecializations().get(0).getName());
-            education.setText(profileInit.getPersonnel().getQualifications().get(0).getName());
+            if(profileInit.getMedical().getPracticingFrom() != null) {
+                edt_exp_yrs.setText(profileInit.getMedical().getPracticingFrom());
+            }
+            if((profileInit.getMedical().getSpecializations().size() != 0)) {
+                specialization.setText(profileInit.getMedical().getSpecializations().get(0).getName());
+            }
+            if(profileInit.getMedical().getQualifications() != null && profileInit.getMedical().getQualifications().size() != 0) {
+                education.setText(profileInit.getMedical().getQualifications().get(0).getName());
+            }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     }
     @Override
     public void onResume() {
         super.onResume();
     }
+    private void updateLabel() {
+        String myFormat = "dd MMM yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        edt_exp_yrs.setText(sdf.format(myCalendar.getTime()));
 
+    }
     public boolean validate() {
         if(registration_no.getText().toString().isEmpty()) {
             registration_no.setError("Enter Reg No.");
@@ -101,20 +221,36 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
             reg_year.setError("Enter Reg Council.");
             reg_year.requestFocus();
             return false;
-        } else {
+        }  else if(edt_exp_yrs.getText().toString().isEmpty()) {
+            edt_exp_yrs.setError("Enter Your Experience");
+            edt_exp_yrs.requestFocus();
+            return false;
+        }else {
             return true;
         }
     }
+    DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
 
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.specialization :
-                showPopUpMenu(profileInit.getPersonnel().getSpecializations(),specialization);
+                showPopUpMenu(profileInit.getMedical().getSpecializations(),specialization);
                 break;
             case R.id.education :
-                showPopUpMenu(profileInit.getPersonnel().getQualifications());
+                showPopUpMenu(profileInit.getMedical().getQualifications());
                 break;
             case R.id.reg_year:
                 MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getActivity(),
@@ -131,6 +267,17 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
                         .build()
                         .show();
                 break;
+            case R.id.edt_exp_yrs :
+                new DatePickerDialog(getActivity(), datePicker, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                break;
+            case R.id.rl_specialization:
+                sp_specialization.performClick();
+                break;
+            case R.id.rl_qualification:
+                sp_qualification.performClick();
+                break;
             case R.id.save:
                 if(validate()) {
                     Medical medical = profileInit.getMedical();
@@ -139,6 +286,8 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
                     medical.setCouncil(specializations);
                     medical.setNo(registration_no.getText().toString());
                     medical.setYear(reg_year.getText().toString());
+                    medical.setPracticingFrom(edt_exp_yrs.getText().toString());
+                    medical.setSpecializations(profileInit.getMedical().getSpecializations());
                     baseParams.setMedical(medical);
                     doctorSaveListener.onButtonClicked();
                 }
@@ -181,6 +330,15 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
         });
 
         popup.show();//showing popup menu
+    }
+    public static void hideSpinnerDropDown(Spinner spinner) {
+        try {
+            Method method = Spinner.class.getDeclaredMethod("onDetachedFromWindow");
+            method.setAccessible(true);
+            method.invoke(spinner);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

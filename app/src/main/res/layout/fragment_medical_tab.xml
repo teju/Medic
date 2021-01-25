@@ -1,158 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@color/light_gray"
-    android:layout_height="match_parent">
-    <FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_marginBottom="70dp"
+        android:background="@color/light_gray"
         android:layout_height="match_parent">
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
+            android:background="@color/white"
+            android:layout_marginBottom="70dp"
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:layout_margin="15dp"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="@dimen/text_small"
-                    android:text="Specialization"
-                    android:fontFamily="@font/opensansregular"
-                    android:layout_height="wrap_content">
-                </TextView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:textSize="@dimen/text_med"
-                    android:id="@+id/specialization"
-                    android:fontFamily="@font/opensansregular"
-                    android:textColor="@color/black"
-                    android:layout_height="wrap_content">
-                </TextView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="@dimen/text_small"
-                    android:text="Education Qualification"
-                    android:layout_marginTop="15dp"
-                    android:fontFamily="@font/opensansregular"
-                    android:layout_height="wrap_content">
-                </TextView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:textSize="@dimen/text_med"
-                    android:fontFamily="@font/opensansregular"
-                    android:id="@+id/education"
-                    android:textColor="@color/black"
-                    android:layout_height="wrap_content">
-                </TextView>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:background="@color/light_gray">
-            </View>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_margin="15dp"
                     android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:textSize="@dimen/text_med"
-                        android:fontFamily="@font/opensansregular"
-                        android:text="Registration No."
-                        android:textColor="@color/black"
-                        android:layout_height="wrap_content">
-                    </TextView>
-                    <EditText
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:textSize="@dimen/text_med"
-                        android:background="@drawable/button_border_rounder_rect"
-                        android:id="@+id/registration_no"
-                        android:fontFamily="@font/opensansregular"
-                        android:layout_marginTop="10dp"
-                        android:paddingLeft="10dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_height="40dp">
-                    </EditText>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_margin="15dp"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:textSize="@dimen/text_med"
-                        android:fontFamily="@font/opensansregular"
-                        android:text="Registration Council"
-                        android:textColor="@color/black"
+                        android:orientation="vertical"
+                        android:background="@color/white"
                         android:layout_height="wrap_content">
-                    </TextView>
-                    <EditText
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:id="@+id/sp_specialization"
+                            android:visibility="gone"
+                            android:background="@null"
+                            android:spinnerMode="dialog"
+                            android:gravity="center"
+                            android:layout_height="wrap_content">
+                        </Spinner>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:padding="15dp"
+                            android:id="@+id/rl_specialization"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:fontFamily="@font/opensansregular"
+                                android:textSize="@dimen/text_med"
+                                android:visibility="visible"
+                                android:id="@+id/specialization"
+                                android:text="Specialization"
+                                android:layout_centerVertical="true"
+                                android:layout_height="wrap_content">
+                            </TextView>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:src="@drawable/chevron_down"
+                                android:visibility="visible"
+                                android:layout_alignParentRight="true"
+                                android:layout_height="wrap_content">
+                            </ImageView>
+                        </RelativeLayout>
+                    </RelativeLayout>
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:textSize="@dimen/text_med"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/button_border_rounder_rect"
-                        android:paddingLeft="10dp"
-                        android:fontFamily="@font/opensansregular"
-                        android:id="@+id/reg_council"
-                        android:layout_alignParentRight="true"
-                        android:layout_height="40dp">
-                    </EditText>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_margin="15dp"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:textSize="@dimen/text_med"
-                        android:fontFamily="@font/opensansregular"
-                        android:text="Registration Year"
-                        android:textColor="@color/black"
+                        android:orientation="vertical"
+                        android:background="@color/white"
                         android:layout_height="wrap_content">
-                    </TextView>
-                    <TextView
+                    <Spinner
                         android:layout_width="match_parent"
-                        android:textSize="@dimen/text_med"
-                        android:fontFamily="@font/opensansregular"
-                        android:id="@+id/reg_year"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/button_border_rounder_rect"
-                        android:paddingLeft="10dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_height="40dp">
-                    </TextView>
+                        android:id="@+id/sp_qualification"
+                        android:visibility="gone"
+                        android:background="@null"
+                        android:spinnerMode="dialog"
+                        android:gravity="center"
+                        android:layout_height="wrap_content">
+                    </Spinner>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="15dp"
+                        android:id="@+id/rl_qualification"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:fontFamily="@font/opensansregular"
+                            android:textSize="@dimen/text_med"
+                            android:visibility="visible"
+                            android:id="@+id/education"
+                            android:text="Education Qualification"
+                            android:layout_centerVertical="true"
+                            android:layout_height="wrap_content">
+                        </TextView>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:src="@drawable/chevron_down"
+                            android:visibility="visible"
+                            android:layout_alignParentRight="true"
+                            android:layout_height="wrap_content">
+                        </ImageView>
+                    </RelativeLayout>
+                    </RelativeLayout>
+                    <!-- <TextView
+                         android:layout_width="wrap_content"
+                         android:textSize="@dimen/text_small"
+                         android:text="Specialization"
+                         android:fontFamily="@font/opensansregular"
+                         android:layout_height="wrap_content">
+                     </TextView>
+                     <TextView
+                         android:layout_width="match_parent"
+                         android:textSize="@dimen/text_med"
+                         android:id="@+id/specialization"
+                         android:fontFamily="@font/opensansregular"
+                         android:textColor="@color/black"
+                         android:layout_height="wrap_content">
+                     </TextView>
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:textSize="@dimen/text_small"
+                         android:text="Education Qualification"
+                         android:layout_marginTop="15dp"
+                         android:fontFamily="@font/opensansregular"
+                         android:layout_height="wrap_content">
+                     </TextView>
+                     <TextView
+                         android:layout_width="match_parent"
+                         android:textSize="@dimen/text_med"
+                         android:fontFamily="@font/opensansregular"
+                         android:id="@+id/education"
+                         android:textColor="@color/black"
+                         android:layout_height="wrap_content">
+                     </TextView>-->
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
+                    android:layout_height="15dp"
                     android:background="@color/light_gray">
                 </View>
-            </LinearLayout>
-        </LinearLayout>
-    </FrameLayout>
-    <Button
-        android:layout_width="150dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="15dp"
-        android:backgroundTint="@color/colorAccent"
-        android:text="Save"
-        android:id="@+id/save"
-        android:textColor="@color/white"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/button_bg_selector"
-        android:layout_height="40dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_margin="15dp"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="@dimen/text_med"
+                            android:fontFamily="@font/opensansregular"
+                            android:text="Registration No."
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content">
+                        </TextView>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:textSize="@dimen/text_med"
+                            android:background="@drawable/button_border_rounder_rect"
+                            android:id="@+id/registration_no"
+                            android:fontFamily="@font/opensansregular"
+                            android:layout_marginTop="10dp"
+                            android:paddingLeft="10dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_height="40dp">
+                        </EditText>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_margin="15dp"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="@dimen/text_med"
+                            android:fontFamily="@font/opensansregular"
+                            android:text="Registration Council"
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content">
+                        </TextView>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:textSize="@dimen/text_med"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/button_border_rounder_rect"
+                            android:paddingLeft="10dp"
+                            android:fontFamily="@font/opensansregular"
+                            android:id="@+id/reg_council"
+                            android:layout_alignParentRight="true"
+                            android:layout_height="40dp">
+                        </EditText>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_med"
+                            android:text="Experience"
+                            android:layout_height="wrap_content">
+                        </TextView>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:textSize="@dimen/text_med"
+                            android:layout_marginTop="10dp"
+                            android:paddingLeft="10dp"
+                            android:background="@drawable/button_border_rounder_rect"
+                            android:inputType="number"
+                            android:gravity="center_vertical"
+                            android:id="@+id/edt_exp_yrs"
+                            android:drawablePadding="10dp"
+                            android:textColor="@color/dark_gray"
+                            android:layout_height="40dp">
+                        </TextView>
+                    </LinearLayout>
 
-    </Button>
-</RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_margin="15dp"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="@dimen/text_med"
+                            android:fontFamily="@font/opensansregular"
+                            android:text="Registration Year"
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content">
+                        </TextView>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:textSize="@dimen/text_med"
+                            android:fontFamily="@font/opensansregular"
+                            android:id="@+id/reg_year"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/button_border_rounder_rect"
+                            android:paddingLeft="10dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_height="40dp">
+                        </TextView>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/light_gray">
+                    </View>
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+        <Button
+            android:layout_width="150dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="15dp"
+            android:backgroundTint="@color/colorAccent"
+            android:text="Save"
+            android:id="@+id/save"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_bg_selector"
+            android:layout_height="40dp">
+
+        </Button>
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

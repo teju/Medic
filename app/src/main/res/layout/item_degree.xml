@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:id="@+id/root"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="100dp"
+        android:src="@drawable/camera_plus"
+        android:id="@+id/degree_proof"
+        android:layout_marginRight="10dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="100dp">
+
+    </ImageView>
+
+</RelativeLayout>

@@ -52,6 +52,7 @@ public class BaseFragment extends GenericFragment {
     public PermissionListener permissionListener;
     public View  v = null;
     public BaseParams baseParams = new BaseParams();
+    public int selectedTabPos = 0;
     public void onBackTriggered() {
         home().proceedDoOnBackPressed();
     }

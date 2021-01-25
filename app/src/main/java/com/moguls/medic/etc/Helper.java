@@ -185,7 +185,6 @@ public class Helper {
             e.printStackTrace();
         }
     }
-
     public static void applyHeader(Context context, HTTPAsyncTask async) {
         if (async == null)
             return;

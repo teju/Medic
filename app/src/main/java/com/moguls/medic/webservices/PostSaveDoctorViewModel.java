@@ -19,6 +19,7 @@ import com.moguls.medic.model.doctorProfileDetails.Personnel;
 import com.moguls.medic.webservices.settings.HTTPAsyncTask;
 import com.moguls.medic.webservices.settings.SingleLiveEvent;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,8 +83,8 @@ public class PostSaveDoctorViewModel extends BaseViewModel {
         Gson gson = new GsonBuilder().create();
 
         String medicalcounciljson = gson.toJson(Medical.getCouncil());
-        String medicalspl = gson.toJson(IDProof.getSpecializations());
-        String medicalQualifications = gson.toJson(IDProof.getQualifications());
+        String medicalspl = gson.toJson(Medical.getSpecializations());
+        String medicalQualifications = gson.toJson(Medical.getQualifications());
 
         genericHttpAsyncTask.method = Constants.POST;
         genericHttpAsyncTask.setUrl(APIs.savedoctor);
@@ -92,28 +93,35 @@ public class PostSaveDoctorViewModel extends BaseViewModel {
         genericHttpAsyncTask.setFileParams(BaseKeys.PersonnelPhotoData,personnel.getPhotoUrl(),"multipart/form-data; boundar");
         genericHttpAsyncTask.setFileParams(BaseKeys.IDProofRegistrationData,IDProof.getRegistration().getDocumentUrl(),"multipart/form-data; boundar");
         genericHttpAsyncTask.setFileParams(BaseKeys.IDProofPhotoIdentityData,IDProof.getPhotoIdentity().getDocumentUrl(),"multipart/form-data; boundar");
+        for(int i =0;i< IDProof.getDegrees().size();i++) {
+            genericHttpAsyncTask.settxtFileParams("IDProof.Degrees["+i+"].ID",IDProof.getDegrees().get(i).getID());
+            genericHttpAsyncTask.setFileParams("IDProof.Degrees["+i+"].Data",IDProof.getDegrees().get(i).getDocumentUrl(),"multipart/form-data; boundar");
+        }
         genericHttpAsyncTask.settxtFileParams(BaseKeys.PersonnelFirstName,personnel.getFirstName());
         genericHttpAsyncTask.settxtFileParams(BaseKeys.PersonnelLastName,personnel.getLastName());
         genericHttpAsyncTask.settxtFileParams(BaseKeys.PersonnelMobileNo,personnel.getMobileNo());
         genericHttpAsyncTask.settxtFileParams(BaseKeys.PersonnelEmailID,personnel.getEmailID());
         genericHttpAsyncTask.settxtFileParams(BaseKeys.PersonnelIsMale,String.valueOf(personnel.getIsMale()));
         genericHttpAsyncTask.settxtFileParams(BaseKeys.PersonnelDateOfBirth,String.valueOf(personnel.getDateOfBirth()));
-        genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalPracticingFrom,personnel.getPracticingFrom());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalPracticingFrom,Medical.getPracticingFrom());
         genericHttpAsyncTask.settxtFileParams(BaseKeys.PersonnelLocation,personnel.getLocation());
         genericHttpAsyncTask.settxtFileParams(BaseKeys.PersonnelEmergencyContactNo,personnel.getEmergencyContactNo());
-        genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalStatement,personnel.getStatement());
+        genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalStatement,Medical.getStatement());
         genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalNo,Medical.getNo());
         genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalYear,Medical.getYear());
         genericHttpAsyncTask.settxtFileParams(BaseKeys.IDProofRegistrationID,IDProof.getRegistration().getID());
         genericHttpAsyncTask.settxtFileParams(BaseKeys.IDProofPhotoIdentityID,IDProof.getPhotoIdentity().getID());
         try {
             genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalCouncil,new JSONObject(medicalcounciljson).toString());
-            genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalSpecializations,new JSONObject(medicalspl).toString());
-            genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalQualifications,new JSONObject(medicalQualifications).toString());
+            genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalSpecializations,new JSONArray(medicalspl).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        try {
+            genericHttpAsyncTask.settxtFileParams(BaseKeys.MedicalQualifications,new JSONArray(medicalQualifications).toString());
+        }catch (Exception e){
 
+        }
 
         genericHttpAsyncTask.setCache(false);
         genericHttpAsyncTask.execute();

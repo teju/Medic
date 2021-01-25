@@ -119,11 +119,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void updateData() {
-        doctor_name.setText(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getName());
-        specialization.setText(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getSpecialization()
-                +"|"+getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getHospital());
-        address.setText(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getHospitalAddress());
-        remarks.setText("Experience "+getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getExperience()+" years");
+        try {
+            doctor_name.setText(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getName());
+            specialization.setText(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getSpecialization()
+                    + "|" + getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getHospital());
+            address.setText(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getHospitalAddress());
+            remarks.setText("Experience " + getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getDoctor().getExperience() + " years");
+        } catch (Exception e){
+
+        }
         date_time.setText(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getAppointmentOn());
         patient_name.setText(getDashBoardViewModel.dashBoard.getResult().getAppointments().get(0).getPatient().getName());
         Helper.loadImage(getActivity(),
