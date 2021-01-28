@@ -48,7 +48,7 @@ public class PatientConfirmAppointmentFragment extends BaseFragment implements V
     private BookingData bookingData;
     private GetPatientsViewModel getPatientsViewModel;
     private EditText remarks;
-    int selectedPatientPos = -1;
+    int selectedPatientPos = 0;
     String appointmentID = "";
 
     public void setDoctorID(String doctorID) {

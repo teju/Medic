@@ -1,5 +1,6 @@
 package com.moguls.medic.ui.dialog;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -67,7 +68,7 @@ public class OtpDialogFragment extends DialogFragment {
             }
             @Override
             public void onOTPComplete(String otp) {
-                // fired when user has entered the OTP fully.
+                btnsubmit.setBackgroundTintList(ColorStateList.valueOf(getActivity().getResources().getColor(R.color.colorAccent)));
             }
         });
         if(btncancel.getText() != "") {

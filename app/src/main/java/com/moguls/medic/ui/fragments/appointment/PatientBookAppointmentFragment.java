@@ -43,7 +43,7 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
 
     private AppointmentDateAdapter appointmentDateAdapter;
     private RecyclerView recyclerView_date;
-    private TextView header_title,today_date,no_appointments;
+    private TextView header_title,today_date,no_appointments,today;
     private Button book_now;
     public String appointmentID = "";
     public PostGetAppointmentsSlotsViewModel postGetAppointmentsSlotsViewModel;
@@ -77,6 +77,7 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
         recyclerView_date = (RecyclerView)v.findViewById(R.id.recyclerView_date);
         header_title = (TextView)v.findViewById(R.id.header_title);
         today_date = (TextView)v.findViewById(R.id.today_date);
+        today = (TextView)v.findViewById(R.id.today);
         no_appointments = (TextView)v.findViewById(R.id.no_appointments);
         ld = (LoadingCompound)v.findViewById(R.id.ld);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
@@ -90,6 +91,7 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
         if(doctor_id.isEmpty()) {
             book_now.setVisibility(View.GONE);
         }
+        today.setOnClickListener(this);
     }
 
     @Override
@@ -261,6 +263,11 @@ public class PatientBookAppointmentFragment extends BaseFragment implements View
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.today:
+                appointmentDateAdapter.selectedPos = 0;
+                appointmentDateAdapter.notifyDataSetChanged();
+                initData();
+                break;
             case R.id.book_now :
                 if(validate()) {
                     if (postGetAppointmentsSlotsViewModel.getAppointmentSlots != null) {

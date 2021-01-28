@@ -33,6 +33,8 @@ import com.moguls.medic.ui.fragments.LoginFragment;
 import com.moguls.medic.webservices.BaseViewModel;
 import com.moguls.medic.webservices.GetProfileViewModel;
 
+import java.text.DecimalFormat;
+
 import static com.moguls.medic.etc.Helper.loadImage;
 
 
@@ -241,7 +243,9 @@ public class PatientMeFragment extends BaseFragment implements View.OnClickListe
         experience.setText("("+getProfileViewModel.getProfile.getResult().getAge()+") yrs");
         blood_group.setText(getProfileViewModel.getProfile.getResult().getBloodGroup());
         if (getProfileViewModel.getProfile.getResult().getHeight() != null) {
-            String[] heightArr = getProfileViewModel.getProfile.getResult().getHeight().split("\\.");
+            DecimalFormat f = new DecimalFormat("##.00");
+            String heightStr = f.format(Double.parseDouble(getProfileViewModel.getProfile.getResult().getHeight()));
+            String[] heightArr = heightStr.split("\\.");
             height.setText(heightArr[0]+"'");
             if(heightArr.length > 1) {
                 height.append(heightArr[1]+"\"");

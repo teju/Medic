@@ -66,7 +66,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/opensansbold"
-                android:backgroundTint="@color/colorAccent"
+                android:backgroundTint="@color/light_theme_color"
                 android:background="@drawable/button_bg_selector"
                 android:textColor="@color/white"
                 android:text="Submit"

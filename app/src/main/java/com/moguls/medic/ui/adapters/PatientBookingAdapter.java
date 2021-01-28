@@ -27,7 +27,7 @@ public class PatientBookingAdapter extends RecyclerView.Adapter<PatientBookingAd
     private List<Member> result = new ArrayList<>();
     Context context;
     private OnItemClickListner listener;
-    int selectedPos = -1;
+    int selectedPos = 0;
 
     public interface OnItemClickListner {
         void OnItemClick(int position);

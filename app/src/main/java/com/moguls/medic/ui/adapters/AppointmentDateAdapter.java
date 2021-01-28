@@ -24,7 +24,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
     private List<String> timeList;
     Context context;
     private OnItemClickListner listener;
-    public int selectedPos = -1;
+    public int selectedPos = 0;
     public interface OnItemClickListner {
         void OnItemClick(String date,int pos);
     }
