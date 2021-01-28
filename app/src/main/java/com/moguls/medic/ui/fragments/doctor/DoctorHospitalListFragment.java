@@ -140,8 +140,9 @@ public class DoctorHospitalListFragment extends BaseFragment implements View.OnC
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                PatientBookAppointmentFragment patientBookAppointmentFragment = new PatientBookAppointmentFragment();
-                home().setFragment(patientBookAppointmentFragment);
+                DoctorViewProfileHospitalFragment doctorViewProfileHospitalFragment = new DoctorViewProfileHospitalFragment();
+                doctorViewProfileHospitalFragment.hospitalID = hospitalsViewModel.hospitalView.getResult().get(position).getID();
+                home().setFragment(doctorViewProfileHospitalFragment);
             }
         },500);
     }

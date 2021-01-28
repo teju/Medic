@@ -57,6 +57,7 @@ public class DoctorHospitalsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         if (viewHolder instanceof ItemViewHolder) {
             populateItemRows((ItemViewHolder) viewHolder, position);
+
         } else if (viewHolder instanceof LoadingViewHolder) {
             showLoadingView((LoadingViewHolder) viewHolder, position);
         }
@@ -122,7 +123,7 @@ public class DoctorHospitalsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         viewHolder.recyclerView.setLayoutManager(new GridLayoutManager(context,5));
         viewHolder.hospital_name.setText(mItemList.get(position).getName());
         String str = String.join(",", mItemList.get(position).getSessions());
-
+        str = str.replaceAll(",","\n");
         viewHolder.appointments.setText(str);
         viewHolder.sppointment_cnt.setText(mItemList.get(position).getAppointmentCount()+" appointments");
         DoctorBookedPatientAdapter appointmentAdapter = new DoctorBookedPatientAdapter(context,

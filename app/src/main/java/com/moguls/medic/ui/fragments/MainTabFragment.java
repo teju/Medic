@@ -13,6 +13,7 @@ import com.moguls.medic.R;
 
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.SharedPreference;
+import com.moguls.medic.ui.fragments.doctor.DoctorPatientListFragment;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.moguls.medic.ui.fragments.tabs.PatientMyAppointmentListFragment;
 import com.moguls.medic.ui.fragments.tabs.ChatListFragment;
@@ -41,6 +42,9 @@ public class MainTabFragment extends BaseFragment {
     public void initUI() {
         bottomNavigation = (BottomNavigationView)v.findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        if(SharedPreference.getBoolean(getActivity(),SharedPreference.isDOCTOR)) {
+            bottomNavigation.getMenu().getItem(2).setTitle("MY Patients");
+        }
 
         HomeFragment homeFragment = new HomeFragment();
         homeFragment.setBottomNavigation(bottomNavigation);
@@ -75,11 +79,19 @@ public class MainTabFragment extends BaseFragment {
                                         "MAIN_TAB", "THIRD_TAB");
                             return true;
                         case R.id.navigation_doctors:
-                            DoctorsListFragment doctorsListFragment = new DoctorsListFragment();
-                            doctorsListFragment.setBottomNavigation(bottomNavigation);
-                            home().setFragmentInFragment(
-                                    R.id.mainLayoutFragment, doctorsListFragment,
-                                    "MAIN_TAB", "FOURTH_TAB");
+                            if(SharedPreference.getBoolean(getActivity(),SharedPreference.isDOCTOR)) {
+                                DoctorPatientListFragment doctorsListFragment = new DoctorPatientListFragment();
+                                doctorsListFragment.setBottomNavigation(bottomNavigation);
+                                home().setFragmentInFragment(
+                                        R.id.mainLayoutFragment, doctorsListFragment,
+                                        "MAIN_TAB", "FOURTH_TAB");
+                            } else {
+                                DoctorsListFragment doctorsListFragment = new DoctorsListFragment();
+                                doctorsListFragment.setBottomNavigation(bottomNavigation);
+                                home().setFragmentInFragment(
+                                        R.id.mainLayoutFragment, doctorsListFragment,
+                                        "MAIN_TAB", "FOURTH_TAB");
+                            }
                             return true;
                         case R.id.navigation_profile:
                             if(SharedPreference.getBoolean(getActivity(),SharedPreference.isDOCTOR)) {

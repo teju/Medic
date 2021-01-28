@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.etc.BaseKeys;
@@ -56,7 +57,11 @@ public class DoctorPatientListFragment extends BaseFragment {
     int pageNo = 1;
     int searchPAgeNo = 1;
     private EditText search;
+    private BottomNavigationView bottomNavigation;
 
+    public void setBottomNavigation(BottomNavigationView bottomNavigation) {
+        this.bottomNavigation = bottomNavigation;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -224,6 +229,11 @@ public class DoctorPatientListFragment extends BaseFragment {
             }
         });
     }
+    @Override
+    public void onBackTriggered() {
+        super.onBackTriggered();
+        bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
+    }
 
     private void loadMore() {
         rowsArrayList.add(null);
@@ -290,5 +300,6 @@ public class DoctorPatientListFragment extends BaseFragment {
             }
         });
     }
+
 
 }

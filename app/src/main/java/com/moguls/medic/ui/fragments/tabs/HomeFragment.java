@@ -72,26 +72,26 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     public void initUI() {
         setGetDashboardAPIObserver();
-        ll_two = (RelativeLayout)v.findViewById(R.id.ll_two);
-        upcoming_appt = (LinearLayout)v.findViewById(R.id.upcoming_appt);
-        ll_three = (RelativeLayout)v.findViewById(R.id.ll_three);
-        ll_one = (RelativeLayout)v.findViewById(R.id.ll_one);
-        tv_desc_one = (TextView)v.findViewById(R.id.tv_desc_one);
-        tv_title_two = (TextView)v.findViewById(R.id.tv_title_two);
-        tv_title_one = (TextView)v.findViewById(R.id.tv_title_one);
-        tv_desc_two = (TextView)v.findViewById(R.id.tv_desc_two);
-        msgs_cnt = (TextView)v.findViewById(R.id.msgs_cnt);
-        date_time = (TextView)v.findViewById(R.id.date_time);
-        patient_name = (TextView)v.findViewById(R.id.patient_name);
-        remarks = (TextView)v.findViewById(R.id.remarks);
-        doctor_name = (TextView)v.findViewById(R.id.doctor_name);
-        specialization = (TextView)v.findViewById(R.id.specialization);
-        address = (TextView)v.findViewById(R.id.address);
-        icn_one = (ImageView)v.findViewById(R.id.icn_one);
-        icn_two = (ImageView)v.findViewById(R.id.icn_two);
-        logo = (ImageView)v.findViewById(R.id.logo);
-        book_appointment_banner = (ImageView)v.findViewById(R.id.book_appointment_banner);
-        ld = (LoadingCompound)v.findViewById(R.id.ld);
+        ll_two = (RelativeLayout) v.findViewById(R.id.ll_two);
+        upcoming_appt = (LinearLayout) v.findViewById(R.id.upcoming_appt);
+        ll_three = (RelativeLayout) v.findViewById(R.id.ll_three);
+        ll_one = (RelativeLayout) v.findViewById(R.id.ll_one);
+        tv_desc_one = (TextView) v.findViewById(R.id.tv_desc_one);
+        tv_title_two = (TextView) v.findViewById(R.id.tv_title_two);
+        tv_title_one = (TextView) v.findViewById(R.id.tv_title_one);
+        tv_desc_two = (TextView) v.findViewById(R.id.tv_desc_two);
+        msgs_cnt = (TextView) v.findViewById(R.id.msgs_cnt);
+        date_time = (TextView) v.findViewById(R.id.date_time);
+        patient_name = (TextView) v.findViewById(R.id.patient_name);
+        remarks = (TextView) v.findViewById(R.id.remarks);
+        doctor_name = (TextView) v.findViewById(R.id.doctor_name);
+        specialization = (TextView) v.findViewById(R.id.specialization);
+        address = (TextView) v.findViewById(R.id.address);
+        icn_one = (ImageView) v.findViewById(R.id.icn_one);
+        icn_two = (ImageView) v.findViewById(R.id.icn_two);
+        logo = (ImageView) v.findViewById(R.id.logo);
+        book_appointment_banner = (ImageView) v.findViewById(R.id.book_appointment_banner);
+        ld = (LoadingCompound) v.findViewById(R.id.ld);
 
         FloatingActionButton scan_doctor = (FloatingActionButton) v.findViewById(R.id.floating_action_button);
         ImageView chat = (ImageView) v.findViewById(R.id.chat);
@@ -104,6 +104,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         chat.setOnClickListener(this);
         call.setOnClickListener(this);
         upcoming_appt.setOnClickListener(this);
+        if (SharedPreference.getBoolean(getActivity(), SharedPreference.isDOCTOR)) {
+            scan_doctor.setVisibility(View.GONE);
+        }
     }
 
     @Override
