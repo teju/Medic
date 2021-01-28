@@ -70,6 +70,9 @@ public class ConsultationFragment extends BaseFragment implements View.OnClickLi
         consultationsPlanAdapter = new ConsultationsPlanAdapter(getActivity(), new ConsultationsPlanAdapter.OnItemClickListner() {
             @Override
             public void OnItemClick(int pos) {
+                AddConsultationFragment addConsultationFragment = new AddConsultationFragment();
+                addConsultationFragment.consultationsobj = gConsultationsViewModel.getcConsultationPlans.getResult().get(pos);
+                home().setFragment(addConsultationFragment);
 
             }
         });

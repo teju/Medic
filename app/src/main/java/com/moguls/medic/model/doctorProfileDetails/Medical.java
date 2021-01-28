@@ -60,7 +60,7 @@ public class Medical {
         Statement = statement;
     }
 
-    String Statement;
+    String Statement = "";
     public List<com.moguls.medic.model.doctorProfileDetails.Specializations> getSpecializations() {
         return Specializations;
     }

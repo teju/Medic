@@ -22,6 +22,8 @@ import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.callback.PopUpListener;
 import com.moguls.medic.etc.LoadingCompound;
+import com.moguls.medic.model.consultations.ConsultationPlans;
+import com.moguls.medic.model.consultations.Result;
 import com.moguls.medic.ui.adapters.HospitalSpinnerAdapter;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.moguls.medic.webservices.BaseViewModel;
@@ -32,6 +34,7 @@ import com.moguls.medic.webservices.PostConsultationsAddViewModel;
 
 public class AddConsultationFragment extends BaseFragment implements View.OnClickListener {
 
+    public Result consultationsobj;
     private TextView header_title,tv_visitType,hospital_name;
     private RelativeLayout rl_visit_type,rl_doctor_list;
     private Spinner sp_visit_type,sp_hospital;
@@ -67,7 +70,7 @@ public class AddConsultationFragment extends BaseFragment implements View.OnClic
         create_plan = (Button)v.findViewById(R.id.create_plan);
         sp_visit_type = (Spinner)v.findViewById(R.id.sp_visit_type);
         sp_hospital = (Spinner)v.findViewById(R.id.sp_hospital);
-        header_title.setText("Add consultation Plan");
+        header_title.setText("Edit consultation Plan");
         rl_visit_type.setOnClickListener(this);
         rl_doctor_list.setOnClickListener(this);
         create_plan.setOnClickListener(this);
@@ -76,6 +79,25 @@ public class AddConsultationFragment extends BaseFragment implements View.OnClic
         setBackButtonToolbarStyleOne(v);
         visitTypeAdapter();
         hospitalsViewModel.loadData();
+
+    }
+
+    public void setData() {
+        consultationFee.setText("Rs "+consultationsobj.getFee());
+        slots_duration.setText(consultationsobj.getTimeslot()+" mins");
+        advance_booking_days.setText(consultationsobj.getAdvanceBookingDays()+" days");
+        for (int i= 0;i<visit_type.length;i++) {
+            if(visit_type[i].equalsIgnoreCase(consultationsobj.getConsultationType().getName())) {
+                sp_visit_type.setSelection(i);
+            }
+        }
+        for(int i=0;i<hospitalsViewModel.hospitalView.getResult().size();i++) {
+            if(hospitalsViewModel.hospitalView.getResult().get(i).getID().equalsIgnoreCase(consultationsobj.getHospitalID())) {
+                hospitalID = hospitalsViewModel.hospitalView.getResult().get(i).getID();
+                hospital_name.setText(hospitalsViewModel.hospitalView.getResult().get(i).getName());
+                hospital_name.setTextColor(getActivity().getResources().getColor(R.color.black));
+            }
+        }
     }
 
     public void visitTypeAdapter() {
@@ -122,8 +144,10 @@ public class AddConsultationFragment extends BaseFragment implements View.OnClic
                 break;
             case R.id.create_plan :
                 if(validate()) {
-                    postConsultationsAddViewModel.loadData(hospitalID,slots_duration.getText().
-                            toString(),consultationFee.getText().toString(),advance_booking_days.getText().toString(),
+                    postConsultationsAddViewModel.loadData(hospitalID,
+                            slots_duration.getText().toString().replaceAll("mins","").trim(),
+                            consultationFee.getText().toString().replaceAll("Rs","").trim(),
+                            advance_booking_days.getText().toString().replaceAll("days","").trim(),
                             sp_visit_type.getSelectedItem().toString());
                 }
                 break;
@@ -237,6 +261,9 @@ public class AddConsultationFragment extends BaseFragment implements View.OnClic
             @Override
             public void onChanged(Integer integer) {
                 hospitalAdapter();
+                if(consultationsobj != null) {
+                    setData();
+                }
             }
         });
     }

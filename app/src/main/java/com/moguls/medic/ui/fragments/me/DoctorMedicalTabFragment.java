@@ -53,6 +53,7 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
     int choosenYear = 2021;
     private Spinner sp_specialization,sp_qualification;
     private RelativeLayout rl_specialization,rl_qualification;
+    private EditText statement;
 
     public void setProfileInit(Result profileInit) {
         this.profileInit = profileInit;
@@ -78,6 +79,7 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
         sp_qualification = (Spinner) v.findViewById(R.id.sp_qualification);
         rl_specialization = (RelativeLayout) v.findViewById(R.id.rl_specialization);
         rl_qualification = (RelativeLayout) v.findViewById(R.id.rl_qualification);
+        statement = (EditText)v.findViewById(R.id.statement);
 
         education = (TextView)v.findViewById(R.id.education);
         save = (Button)v.findViewById(R.id.save);
@@ -194,6 +196,10 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
             if(profileInit.getMedical().getQualifications() != null && profileInit.getMedical().getQualifications().size() != 0) {
                 education.setText(profileInit.getMedical().getQualifications().get(0).getName());
             }
+            if(!profileInit.getMedical().getStatement().isEmpty()) {
+                statement.setText(profileInit.getMedical().getStatement());
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -288,6 +294,9 @@ public class DoctorMedicalTabFragment extends BaseFragment implements View.OnCli
                     medical.setYear(reg_year.getText().toString());
                     medical.setPracticingFrom(edt_exp_yrs.getText().toString());
                     medical.setSpecializations(profileInit.getMedical().getSpecializations());
+                    if(!statement.getText().toString().isEmpty()) {
+                        medical.setStatement(statement.getText().toString());
+                    }
                     baseParams.setMedical(medical);
                     doctorSaveListener.onButtonClicked();
                 }

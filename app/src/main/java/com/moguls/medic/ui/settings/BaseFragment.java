@@ -216,10 +216,13 @@ public class BaseFragment extends GenericFragment {
         f.show(getActivity().getSupportFragmentManager(), NotifyDialogFragment.TAG);
 
     }
-    public void showEDitSlotsDialog(EditSlotsListener n) {
+    public void showEDitSlotsDialog(int from, int to,int range,EditSlotsListener n) {
         EditDialogFragment f = new EditDialogFragment();
         f.listener = n;
-        f.setCancelable(false);
+        f.from = from;
+        f.to = to;
+        f.range = range;
+        f.setCancelable(true);
         f.show(getActivity().getSupportFragmentManager(), EditDialogFragment.TAG);
 
     }

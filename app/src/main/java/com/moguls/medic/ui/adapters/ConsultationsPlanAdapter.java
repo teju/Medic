@@ -55,6 +55,12 @@ public class ConsultationsPlanAdapter extends RecyclerView.Adapter<Consultations
         holder.hospital_name.setText(result.getHospital());
         holder.hospital_address.setText(result.getAddress());
         holder.consultationType.setText(result.getConsultationType().getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.OnItemClick(position);
+            }
+        });
     }
 
 

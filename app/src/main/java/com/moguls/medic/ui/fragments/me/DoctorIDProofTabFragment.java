@@ -40,7 +40,6 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
     int PICK_REG_PHOTO_PHOTO = 10011;
     int PICK_DEGREE_PHOTO_PHOTO = 10012;
     private Result profileInit;
-    private EditText statement;
     DoctorSaveListener doctorSaveListener;
     private Button btnSave;
     private String degree_real_Path = "",id_real_Path ="",reg_real_Path = "";
@@ -66,10 +65,8 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
         reg_proof = (ImageView)v.findViewById(R.id.reg_proof);
         degree_proof = (ImageView)v.findViewById(R.id.degree_proof);
         id_proof = (ImageView)v.findViewById(R.id.id_proof);
-        statement = (EditText)v.findViewById(R.id.statement);
         btnSave = (Button)v.findViewById(R.id.btnSave);
         recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
-        statement.setText(profileInit.getMedical().getStatement());
         reg_proof.setOnClickListener(this);
         //degree_proof.setOnClickListener(this);
         id_proof.setOnClickListener(this);
@@ -142,10 +139,7 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
                 pickImage(PICK_DEGREE_PHOTO_PHOTO);
                 break;
             case R.id.btnSave:
-                Medical personnel = profileInit.getMedical();
-                if(!statement.getText().toString().isEmpty()) {
-                    personnel.setStatement(statement.getText().toString());
-                }
+
                 IDProof idProof = profileInit.getIDProof();
                 if(!reg_real_Path.isEmpty()) {
                     idProof.getRegistration().setDocumentUrl(reg_real_Path);
@@ -155,7 +149,6 @@ public class DoctorIDProofTabFragment extends BaseFragment implements View.OnCli
                     idProof.getDegrees().get(selImageposition).setDocumentUrl(degree_real_Path);
                 }
                 baseParams.setIdProof(idProof);
-                baseParams.setMedical(personnel);
                 doctorSaveListener.onButtonClicked();
                 break;
         }

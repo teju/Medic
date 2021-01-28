@@ -96,6 +96,9 @@ public class DoctorPatientListFragment extends BaseFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 resultArrayList.clear();
+                if(s.toString().isEmpty()) {
+                    searchPAgeNo = 1;
+                }
                 getDoctorPatientsViewModel.loadData(searchPAgeNo,10,s.toString());
             }
         });

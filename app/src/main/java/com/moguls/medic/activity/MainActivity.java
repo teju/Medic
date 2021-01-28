@@ -145,7 +145,11 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e){
             e.printStackTrace();
         }
-        setFragment(new MainTabFragment());
+        try {
+            setFragment(new MainTabFragment());
+        } catch (Exception e){
+
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.moguls.medic.ui.fragments.doctor;
 
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,21 +26,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.EditSlotsListener;
 import com.moguls.medic.callback.NotifyListener;
-import com.moguls.medic.etc.APIs;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.model.consultations.Result;
 import com.moguls.medic.model.consultations.Sessions;
 import com.moguls.medic.model.consultations.StartEndTime;
-import com.moguls.medic.model.hospital.Hospital;
-import com.moguls.medic.ui.fragments.consultation.AddConsultationFragment;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.moguls.medic.ui.adapters.DoctorEditTimeSlotAdapter;
 import com.moguls.medic.model.PatientList;
 import com.moguls.medic.webservices.BaseViewModel;
-import com.moguls.medic.webservices.GetHospitalSymmaryViewModel;
 import com.moguls.medic.webservices.GetHospitalViewModel;
-import com.moguls.medic.webservices.GetHospitalsViewModel;
 import com.moguls.medic.webservices.PostSaveHospitalViewModel;
 
 import java.util.ArrayList;
@@ -193,9 +189,9 @@ public class DoctorAddDoctorFragment extends BaseFragment {
         result.setPhotoUrl(real_Path);
 
         result.setAddress(edt_two.getText().toString());
-        result.setTimeslot(slotsDuration.getText().toString());
-        result.setConsultationFee(consultationFee.getText().toString());
-        result.setAdvanceBookingDays(bookingDays.getText().toString());
+        result.setTimeslot(slotsDuration.getText().toString().replaceAll("mins","").trim());
+        result.setConsultationFee(consultationFee.getText().toString().replaceAll("Rs","").trim());
+        result.setAdvanceBookingDays(bookingDays.getText().toString().replaceAll("Days","").trim());
         result.setSessions(Sessions);
         postSaveHospitalViewModel.loadData(result);
     }
@@ -210,14 +206,14 @@ public class DoctorAddDoctorFragment extends BaseFragment {
             edt_two.setText(result.getAddress());
             duration.setText(result.getTimeslot() + " mins");
             if(result.getConsultationFee() != null) {
-                consultationFee.setText(result.getConsultationFee());
+                consultationFee.setText(result.getConsultationFee()+" Rs");
             }
             if(result.getTimeslot() != null) {
-                slotsDuration.setText(result.getTimeslot());
+                slotsDuration.setText(result.getTimeslot() +" mins");
             }
 
             if(result.getAdvanceBookingDays() != null) {
-                bookingDays.setText(result.getAdvanceBookingDays());
+                bookingDays.setText(result.getAdvanceBookingDays()+" Days");
             }
             Helper.loadImage(getActivity(),result.getPhotoUrl(),R.drawable.domain_gray,hospital_img);
         }
@@ -256,39 +252,76 @@ public class DoctorAddDoctorFragment extends BaseFragment {
         doctorEditTimeSlotAdapter = new DoctorEditTimeSlotAdapter(getActivity(),Sessions,
                 new DoctorEditTimeSlotAdapter.OnItemClickListner() {
                 @Override
-                public void OnItemClick(int position, int type) {
-                    showEDitSlotsDialog(new EditSlotsListener() {
+                public void OnItemClick(int position, int type,int from, int to, int range) {
+                    showEDitSlotsDialog(from,to,range,new EditSlotsListener() {
                         @Override
-                        public void onButtonClicked(String startDate,String endDate) {
+                        public void onButtonClicked(String startDate,String endDate,boolean errorMessage) {
+                            if(errorMessage) {
+                                showNotifyDialog("",
+                                       "Please select To time greater than From time", "OK",
+                                        "", (NotifyListener) (new NotifyListener() {
+                                            public void onButtonClicked(int which) {
+
+                                            }
+                                        }));
+                                return;
+                            }
                             if(type == DoctorEditTimeSlotAdapter.MORNING) {
+
                                 try {
-                                    finalSessions.get(position).getMorning().setEnd(endDate);
-                                    finalSessions.get(position).getMorning().setStart(startDate);
+                                    if(startDate == null || endDate == null) {
+                                        finalSessions.get(position).setMorning(null);
+                                    } else {
+                                        finalSessions.get(position).getMorning().setEnd(endDate);
+                                        finalSessions.get(position).getMorning().setStart(startDate);
+                                    }
                                 } catch (Exception e) {
-                                    StartEndTime startEndTime = new StartEndTime();
-                                    startEndTime.setStart(startDate);
-                                    startEndTime.setEnd(endDate);
-                                    finalSessions.get(position).setMorning(startEndTime);
+                                    if(startDate == null || endDate == null) {
+                                        finalSessions.get(position).setMorning(null);
+                                    } else {
+                                        StartEndTime startEndTime = new StartEndTime();
+                                        startEndTime.setStart(startDate);
+                                        startEndTime.setEnd(endDate);
+                                        finalSessions.get(position).setMorning(startEndTime);
+                                    }
                                 }
                             } else if(type == DoctorEditTimeSlotAdapter.AFTERNOON) {
+
                                 try {
-                                    finalSessions.get(position).getAfterNoon().setEnd(endDate);
-                                    finalSessions.get(position).getAfterNoon().setStart(startDate);
+                                    if(startDate == null || endDate == null) {
+                                        finalSessions.get(position).setAfterNoon(null);
+                                    } else {
+                                        finalSessions.get(position).getAfterNoon().setEnd(endDate);
+                                        finalSessions.get(position).getAfterNoon().setStart(startDate);
+                                    }
                                 } catch (Exception e) {
-                                    StartEndTime startEndTime = new StartEndTime();
-                                    startEndTime.setStart(startDate);
-                                    startEndTime.setEnd(endDate);
-                                    finalSessions.get(position).setAfterNoon(startEndTime);
+                                    if(startDate == null || endDate == null) {
+                                        finalSessions.get(position).setAfterNoon(null);
+                                    } else {
+                                        StartEndTime startEndTime = new StartEndTime();
+                                        startEndTime.setStart(startDate);
+                                        startEndTime.setEnd(endDate);
+                                        finalSessions.get(position).setAfterNoon(startEndTime);
+                                    }
                                 }
-                            } if(type == DoctorEditTimeSlotAdapter.EVENING) {
+                            } else if(type == DoctorEditTimeSlotAdapter.EVENING) {
+
                                 try {
-                                    finalSessions.get(position).getEvening().setEnd(endDate);
-                                    finalSessions.get(position).getEvening().setStart(startDate);
+                                    if(startDate == null || endDate == null) {
+                                        finalSessions.get(position).setEvening(null);
+                                    } else {
+                                        finalSessions.get(position).getEvening().setEnd(endDate);
+                                        finalSessions.get(position).getEvening().setStart(startDate);
+                                    }
                                 } catch (Exception e) {
-                                    StartEndTime startEndTime = new StartEndTime();
-                                    startEndTime.setStart(startDate);
-                                    startEndTime.setEnd(endDate);
-                                    finalSessions.get(position).setEvening(startEndTime);
+                                    if(startDate == null || endDate == null) {
+                                        finalSessions.get(position).setEvening(null);
+                                    } else {
+                                        StartEndTime startEndTime = new StartEndTime();
+                                        startEndTime.setStart(startDate);
+                                        startEndTime.setEnd(endDate);
+                                        finalSessions.get(position).setEvening(startEndTime);
+                                    }
                                 };
                             }
                             doctorEditTimeSlotAdapter.mItemList = finalSessions;

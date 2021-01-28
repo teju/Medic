@@ -26,13 +26,14 @@
                     android:background="@color/light_white"
                     android:layout_height="wrap_content">
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:src="@drawable/chevron_left"
                         android:id="@+id/arrow_left"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="10dp"
                         app:tint="@color/black"
+                        android:padding="10dp"
                         android:visibility="visible"
-                        android:layout_height="wrap_content">
+                        android:layout_height="50dp">
                     </ImageView>
 
                     <LinearLayout
@@ -53,6 +54,9 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+
                             android:gravity="center_horizontal"
                             android:layout_height="wrap_content">
                             <TextView

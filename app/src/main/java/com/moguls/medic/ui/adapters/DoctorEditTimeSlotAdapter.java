@@ -33,7 +33,7 @@ public class DoctorEditTimeSlotAdapter extends RecyclerView.Adapter<RecyclerView
     private OnItemClickListner listener;
 
     public interface OnItemClickListner {
-        void OnItemClick(int position,int type);
+        void OnItemClick(int position, int type,int from, int to, int range);
     }
     public DoctorEditTimeSlotAdapter(Context context, List<Sessions> itemList, OnItemClickListner listener) {
         this.listener = listener;
@@ -112,19 +112,19 @@ public class DoctorEditTimeSlotAdapter extends RecyclerView.Adapter<RecyclerView
         viewHolder.llmorning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.OnItemClick(position,MORNING);
+                listener.OnItemClick(position,MORNING,8,13,4);
             }
         });
         viewHolder.llevening.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.OnItemClick(position,AFTERNOON);
+                listener.OnItemClick(position,AFTERNOON,12,18,5);
             }
         });
         viewHolder.llNight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.OnItemClick(position,EVENING);
+                listener.OnItemClick(position,EVENING,17,23,5);
             }
         });
 
