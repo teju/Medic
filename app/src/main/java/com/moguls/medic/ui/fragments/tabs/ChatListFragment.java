@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.NotifyListener;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.etc.RecyclerTouchListener;
+import com.moguls.medic.model.chat.Result;
 import com.moguls.medic.ui.adapters.ChatListAdapter;
 import com.moguls.medic.ui.settings.BaseFragment;
 import com.moguls.medic.ui.fragments.chat.ChatFragment;
@@ -27,6 +30,8 @@ import com.moguls.medic.webservices.BaseViewModel;
 import com.moguls.medic.webservices.GetMyChatListViewModel;
 import com.moguls.medic.webservices.PostSetAsDeleteViewModel;
 import com.moguls.medic.webservices.PostSetAsReadViewModel;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -73,6 +78,18 @@ public class ChatListFragment extends BaseFragment implements ChatListAdapter.On
         setBackButtonToolbarStyleOne(v);
         header_title.setText("My Chats");
         getMyChatListViewModel.loadData();
+        chatSettings();
+        chatReceiveSettings();
+    }
+    public void chatReceiveSettings() {
+        hubConnection.on("ReceiveMessage", (user, message) -> {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getMyChatListViewModel.loadData();
+                }
+            });
+        }, String.class, String.class);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.moguls.medic.ui.settings;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,8 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 
 import com.bumptech.glide.Glide;
+import com.microsoft.signalr.HubConnection;
+import com.microsoft.signalr.HubConnectionBuilder;
 import com.moguls.medic.activity.MainActivity;
 import com.moguls.medic.R;
 import com.moguls.medic.callback.EditSlotsListener;
@@ -27,6 +30,7 @@ import com.moguls.medic.callback.OtpListener;
 import com.moguls.medic.callback.PermissionListener;
 import com.moguls.medic.callback.PopUpListener;
 import com.moguls.medic.etc.APIs;
+import com.moguls.medic.etc.BaseKeys;
 import com.moguls.medic.etc.Constants;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.SharedPreference;
@@ -45,6 +49,8 @@ import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
+
 
 public class BaseFragment extends GenericFragment {
 
@@ -56,6 +62,7 @@ public class BaseFragment extends GenericFragment {
     public void onBackTriggered() {
         home().proceedDoOnBackPressed();
     }
+    public HubConnection hubConnection;
 
     public MainActivity home() {
         return (MainActivity)getActivity();
@@ -302,5 +309,28 @@ public class BaseFragment extends GenericFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    class HubConnectionTask extends AsyncTask<HubConnection, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(HubConnection... hubConnections) {
+            HubConnection hubConnection = hubConnections[0];
+            hubConnection.start().blockingAwait();
+            return null;
+        }
+    }
+    public void chatSettings() {
+        hubConnection = HubConnectionBuilder.create(APIs.ChatUrl)
+                .withAccessTokenProvider(Single.defer(() -> {
+                    // Your logic here.
+                    return Single.just(SharedPreference.getString(getActivity(), BaseKeys.Authorization));
+                })).build();
+        new HubConnectionTask().execute(hubConnection);
+
     }
 }

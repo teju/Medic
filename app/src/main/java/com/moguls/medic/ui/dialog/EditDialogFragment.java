@@ -131,7 +131,7 @@ public class EditDialogFragment extends DialogFragment {
     public boolean validate(String fromVal, String toVal) {
         double tempFrom = Double.parseDouble(fromVal);
         double tempTo = Double.parseDouble(toVal);
-        if(tempFrom > tempTo) {
+        if(tempFrom >= tempTo) {
             return true;
         }
         return false;

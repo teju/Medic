@@ -1,10 +1,12 @@
 package com.moguls.medic.ui.adapters;
 
 
+import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
+    private final Context context;
 
     public List<Result> mItemList;
 
@@ -30,9 +33,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnClickListner {
         void OnClick(int position);
     }
-    public ChatAdapter(List<com.moguls.medic.model.chat.Result> itemList, OnClickListner listener) {
-        mItemList = itemList;
+    public ChatAdapter(Context context,OnClickListner listener) {
         this.listener = listener;
+        this.context = context;
     }
 
     @NonNull
@@ -78,7 +81,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView name,sender_message_text,my_msgs_message_text,sender_msgs_date,my_msg_date;
-        LinearLayout sender_msgs,my_msgs;
+        LinearLayout sender_msgs,my_msgs,rlsender,llReceiver;
+        ImageView receivedImage,sentImage;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
@@ -88,7 +92,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             my_msgs = itemView.findViewById(R.id.my_msgs);
             sender_msgs_date = itemView.findViewById(R.id.sender_msgs_date);
             my_msg_date = itemView.findViewById(R.id.my_msg_date);
-
+            receivedImage = itemView.findViewById(R.id.receivedImage);
+            sentImage = itemView.findViewById(R.id.sentImage);
+            rlsender = itemView.findViewById(R.id.rlsender);
+            llReceiver = itemView.findViewById(R.id.llReceiver);
         }
     }
 
@@ -118,13 +125,36 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if(mItemList.get(position).getIsSendByMe() == "false") {
             viewHolder.sender_msgs.setVisibility(View.VISIBLE);
             viewHolder.my_msgs.setVisibility(View.GONE);
-            viewHolder.sender_message_text.setText(mItemList.get(position).getMessage());
-            viewHolder.sender_msgs_date.setText(strDate);
+            if(mItemList.get(position).getMessage() == null) {
+                viewHolder.rlsender.setVisibility(View.GONE);
+            } else {
+                viewHolder.rlsender.setVisibility(View.VISIBLE);
+                viewHolder.sender_message_text.setText(mItemList.get(position).getMessage());
+                viewHolder.sender_msgs_date.setText(strDate);
+            }
+            if(mItemList.get(position).getFile() != null) {
+                viewHolder.sentImage.setVisibility(View.VISIBLE);
+                Helper.loadImage(context,mItemList.get(position).getFile().getUrl(),R.drawable.domain,viewHolder.sentImage);
+            } else {
+                viewHolder.sentImage.setVisibility(View.GONE);
+            }
         } else {
             viewHolder.sender_msgs.setVisibility(View.GONE);
             viewHolder.my_msgs.setVisibility(View.VISIBLE);
-            viewHolder.my_msgs_message_text.setText(mItemList.get(position).getMessage());
-            viewHolder.my_msg_date.setText(strDate);
+            if(mItemList.get(position).getMessage() == null) {
+                viewHolder.llReceiver.setVisibility(View.GONE);
+            } else {
+                viewHolder.llReceiver.setVisibility(View.VISIBLE);
+                viewHolder.my_msgs_message_text.setText(mItemList.get(position).getMessage());
+                viewHolder.my_msg_date.setText(strDate);
+            }
+
+            if(mItemList.get(position).getFile() != null) {
+                viewHolder.receivedImage.setVisibility(View.VISIBLE);
+                Helper.loadImage(context,mItemList.get(position).getFile().getUrl(),R.drawable.domain,viewHolder.receivedImage);
+            } else {
+                viewHolder.receivedImage.setVisibility(View.GONE);
+            }
         }
 
     }

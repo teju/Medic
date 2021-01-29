@@ -96,10 +96,12 @@ public class DoctorPatientListFragment extends BaseFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 resultArrayList.clear();
-                if(s.toString().isEmpty()) {
-                    searchPAgeNo = 1;
+                if(!s.toString().isEmpty()) {
+                    getDoctorPatientsViewModel.loadData(searchPAgeNo, 10, s.toString());
+                } else {
+                    getDoctorPatientsViewModel.loadData(pageNo, 10, "");
+
                 }
-                getDoctorPatientsViewModel.loadData(searchPAgeNo,10,s.toString());
             }
         });
     }
@@ -218,15 +220,16 @@ public class DoctorPatientListFragment extends BaseFragment {
                 super.onScrolled(recyclerView, dx, dy);
 
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-
-                if (!isLoading) {
-                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == rowsArrayList.size() - 1) {
-                        if(!search.getText().toString().isEmpty()) {
-                            getDoctorPatientsViewModel.loadData(searchPAgeNo,pageSize,search.getText().toString());
-                        } else {
-                            getDoctorPatientsViewModel.loadData(pageNo,pageSize,"");
+                if(rowsArrayList.size() > 9) {
+                    if (!isLoading) {
+                        if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == rowsArrayList.size() - 1) {
+                            if (!search.getText().toString().isEmpty()) {
+                                getDoctorPatientsViewModel.loadData(searchPAgeNo, pageSize, search.getText().toString());
+                            } else {
+                                getDoctorPatientsViewModel.loadData(pageNo, pageSize, "");
+                            }
+                            isLoading = true;
                         }
-                        isLoading = true;
                     }
                 }
             }
@@ -235,6 +238,7 @@ public class DoctorPatientListFragment extends BaseFragment {
     @Override
     public void onBackTriggered() {
         super.onBackTriggered();
+
         bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
     }
 
@@ -293,12 +297,17 @@ public class DoctorPatientListFragment extends BaseFragment {
                     resultArrayList.addAll(getDoctorPatientsViewModel.doctorsPatients.getResult());
                     initAdapter();
                 }
-                if(!search.getText().toString().isEmpty()
-                        && getDoctorPatientsViewModel.doctorsPatients.getResult().size() != 0
-                        && resultArrayList.size() % 10 == 0){
-                    searchPAgeNo = searchPAgeNo + 1;
-                }else if(getDoctorPatientsViewModel.doctorsPatients.getResult().size() != 0) {
+                if(!search.getText().toString().isEmpty()){
+                     if(getDoctorPatientsViewModel.doctorsPatients.getResult().size() == 10) {
+                         searchPAgeNo = searchPAgeNo + 1;
+                     } else {
+                         searchPAgeNo = 1;
+                     }
+                    pageNo = 1;
+                }else if(search.getText().toString().isEmpty() &&
+                        getDoctorPatientsViewModel.doctorsPatients.getResult().size() != 0) {
                     pageNo = pageNo + 1;
+                    searchPAgeNo =1;
                 }
             }
         });

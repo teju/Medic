@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.HubConnectionBuilder;
 import com.moguls.medic.R;
@@ -36,6 +39,8 @@ import com.moguls.medic.etc.BaseKeys;
 import com.moguls.medic.etc.Helper;
 import com.moguls.medic.etc.LoadingCompound;
 import com.moguls.medic.etc.SharedPreference;
+import com.moguls.medic.model.chat.Chat;
+import com.moguls.medic.model.chat.Result;
 import com.moguls.medic.ui.adapters.ChatAdapter;
 import com.moguls.medic.ui.service.SignalRService;
 import com.moguls.medic.ui.settings.BaseFragment;
@@ -70,11 +75,13 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
     private EditText message;
     private SignalRService mService;
     private boolean mBound = false;
-    private HubConnection hubConnection;
     private Uri cameraOutputUri;
     private String real_Path;
     String imageUrl = "";
     private String photo = "";
+    private ImageView selectedImage,close;
+    private RelativeLayout rlImage,rlchat;
+
     public void setPastMessages(String pastMessages) {
         PastMessages = pastMessages;
     }
@@ -110,10 +117,14 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
         setGetChatAPIObserver();
         setSendMessageAPIObserver();
         setBackButtonToolbarStyleOne(v);
+        rlImage = (RelativeLayout)v.findViewById(R.id.rlImage);
+        rlchat = (RelativeLayout)v.findViewById(R.id.rlchat);
         header_title = (TextView)v.findViewById(R.id.header_title);
         message = (EditText)v.findViewById(R.id.message);
         send_msg = (ImageView) v.findViewById(R.id.send_msg);
         attach = (ImageView) v.findViewById(R.id.attach);
+        selectedImage = (ImageView) v.findViewById(R.id.selectedImage);
+        close = (ImageView) v.findViewById(R.id.close);
         logo = (ImageView) v.findViewById(R.id.logo);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
         header_title.setText(Name);
@@ -121,9 +132,13 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
         getChatViewModel.loadData(PastMessages,"10",ToUserID,MessageID);
         send_msg.setOnClickListener(this);
         attach.setOnClickListener(this);
+        close.setOnClickListener(this);
         Helper.loadImage(getActivity(), imageUrl,
                 R.drawable.doctor_profile_pic_default,logo);
-      //  chatSettings();
+        rlchat.setVisibility(View.VISIBLE);
+        rlImage.setVisibility(View.GONE);
+        chatSettings();
+        chatReceiveSettings();
     }
 
     @Override
@@ -142,53 +157,53 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri imageuri = null;
-        if(data != null) {
-            imageuri = data.getData();// Get intent
-        } else {
-            imageuri = cameraOutputUri;
+        if(resultCode != 0) {
+            Uri imageuri = null;
+            if (data != null) {
+                imageuri = data.getData();// Get intent
+            } else {
+                imageuri = cameraOutputUri;
+            }
+            real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
+            rlImage.setVisibility(View.VISIBLE);
+            rlchat.setVisibility(View.GONE);
+            selectedImage.setImageURI(imageuri);
         }
-        real_Path = Helper.getRealPathFromUri(getActivity(), imageuri);
-
 
     }
-    public void chatSettings() {
-       /* try {
-
-            hubConnection = HubConnectionBuilder.create(APIs.ChatUrl)
-                    .withAccessTokenProvider(Single.defer(() -> {
-                        // Your logic here.
-                        return Single.just("Bearer "
-                                + SharedPreference.getString(getActivity(), BaseKeys.Authorization));
-                    })).build();
-            hubConnection.on("ReceiveMessage", (message) -> {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
+    public void chatReceiveSettings() {
+        hubConnection.on("ReceiveMessage", (user, message) -> {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Gson gson = new GsonBuilder().create();
+                    try {
+                        JSONObject newmessage = new JSONObject(message);
+                        Result Newchat = gson.fromJson(newmessage.toString(), Result.class);
+                        getChatViewModel.chat.getResult().add(getChatViewModel.chat.getResult().size(), Newchat);
+                        chatAdapter.mItemList = getChatViewModel.chat.getResult();
+                        chatAdapter.notifyDataSetChanged();
+                    } catch (Exception e){
+                        e.printStackTrace();
                     }
-                });
-            }, String.class);
-            new HubConnectionTask().execute(hubConnection);
-        } catch (Exception e){
+                }
+            });
+        }, String.class, String.class);
 
-        }*/
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), SignalRService.class);
-        getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
     private void initAdapter() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,true));
         if(getChatViewModel.chat != null) {
-            chatAdapter = new ChatAdapter(getChatViewModel.chat.getResult(), new ChatAdapter.OnClickListner() {
+            chatAdapter = new ChatAdapter( getActivity(),new ChatAdapter.OnClickListner() {
                 @Override
                 public void OnClick(int position) {
 
                 }
             });
         }
+        chatAdapter.mItemList = getChatViewModel.chat.getResult();
         recyclerView.setAdapter(chatAdapter);
     }
 
@@ -267,6 +282,8 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
             public void onChanged(Integer integer) {
                 message.setText("");
                 getChatViewModel.loadData(PastMessages,"10",ToUserID,MessageID);
+                rlImage.setVisibility(View.GONE);
+                rlchat.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -276,15 +293,24 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.send_msg :
+                    String sendingMsg = "";
                     if(!message.getText().toString().isEmpty()){
-                      //  hubConnection.send("Send", message);
-                        postSendMessageViewModel.loadData(ToUserID,message.getText().toString(),real_Path);
-//                        mService.sendMessage(message.getText().toString());
+                        sendingMsg = message.getText().toString();
                     }
+                    rlImage.setVisibility(View.GONE);
+                    rlchat.setVisibility(View.VISIBLE);
+                    hubConnection.send("Send", sendingMsg);
+                    postSendMessageViewModel.loadData(ToUserID,sendingMsg,real_Path);
+                    message.setText("");
 
                 break;
             case R.id.attach:
                 pickImage();
+                break;
+            case R.id.close:
+                rlImage.setVisibility(View.GONE);
+                rlchat.setVisibility(View.VISIBLE);
+                real_Path = null;
                 break;
         }
     }
@@ -304,18 +330,4 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener {
     };
 
 
-    class HubConnectionTask extends AsyncTask<HubConnection, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(HubConnection... hubConnections) {
-            HubConnection hubConnection = hubConnections[0];
-            hubConnection.start().blockingAwait();
-            return null;
-        }
-    }
 }

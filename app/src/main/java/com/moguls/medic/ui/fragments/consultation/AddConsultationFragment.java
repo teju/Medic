@@ -38,7 +38,7 @@ public class AddConsultationFragment extends BaseFragment implements View.OnClic
     private TextView header_title,tv_visitType,hospital_name;
     private RelativeLayout rl_visit_type,rl_doctor_list;
     private Spinner sp_visit_type,sp_hospital;
-    String[] visit_type = { "Physical Visit","Audio Consultation"};
+    String[] visit_type = {"Physical Visit"};
     private Button create_plan;
     private PostConsultationsAddViewModel postConsultationsAddViewModel;
     private GetHospitalsViewModel hospitalsViewModel;

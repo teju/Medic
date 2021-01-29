@@ -163,7 +163,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 switch (v.getId()){
                     case R.id.ll_one :
                         if(SharedPreference.getBoolean(getActivity(),SharedPreference.isDOCTOR)) {
-                            home().setFragment(new DoctorPatientListFragment());
+                            DoctorPatientListFragment doctorsListFragment = new DoctorPatientListFragment();
+                            doctorsListFragment.setBottomNavigation(bottomNavigation);
+                            home().setFragmentInFragment(
+                                    R.id.mainLayoutFragment, doctorsListFragment,
+                                    "MAIN_TAB","FOURTH_TAB");
+                            bottomNavigation.getMenu().findItem(R.id.navigation_doctors).setChecked(true);
                         } else {
                             DoctorsListFragment doctorsListFragment = new DoctorsListFragment();
                             doctorsListFragment.setBottomNavigation(bottomNavigation);

@@ -170,8 +170,12 @@ public class DoctorPatientListAdapter extends RecyclerView.Adapter<RecyclerView.
         viewHolder.date.setText(mItemList.get(position).getResult().getAppointmentOn());
         viewHolder.age.setText(mItemList.get(position).getResult().getAge());
         viewHolder.blood_group.setText(mItemList.get(position).getResult().getBloodGroup());
-        viewHolder.height.setText(mItemList.get(position).getResult().getHeight()+"ft");
-        viewHolder.weight.setText(mItemList.get(position).getResult().getWeight()+" Kgs");
+        if(mItemList.get(position).getResult().getHeight() != null) {
+            viewHolder.height.setText(mItemList.get(position).getResult().getHeight() + "ft");
+        }
+        if(mItemList.get(position).getResult().getWeight() != null) {
+            viewHolder.weight.setText(mItemList.get(position).getResult().getWeight() + " Kgs");
+        }
         viewHolder.remarks.setText(mItemList.get(position).getResult().getAppointmentRemark());
         //viewHolder.patient_img.setImageResource(R.drawable.hospital_img);
         if(mItemList.get(position).getResult().getPhotoUrl() != null) {
